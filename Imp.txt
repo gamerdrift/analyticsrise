@@ -1,0 +1,44 @@
+AnalyticsRise/
+│
+├── .github/
+│   └── workflows/
+│
+├── docs/
+│   ├── Architecture.md
+│   ├── Branding.md
+│   ├── Database.md
+│   ├── Roadmap.md
+│   └── Security.md
+│
+├── public/
+│   ├── icons/
+│   ├── images/
+│   ├── videos/
+│   ├── logos/
+│   └── fonts/
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── buttons/
+│   │   ├── cards/
+│   │   ├── navigation/
+│   │   ├── footer/
+│   │   ├── forms/
+│   │   └── animations/
+│   │
+│   ├── layouts/
+│   ├── pages/
+│   ├── hooks/
+│   ├── context/
+│   ├── services/
+│   ├── firebase/
+│   ├── styles/
+│   ├── utils/
+│   └── types/
+│
+├── .env.local
+├── README.md
+├── LICENSE
+├── package.json
+└── tsconfig.json
