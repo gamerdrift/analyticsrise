@@ -95,18 +95,20 @@ export default function SqlSimulator() {
               return String(rowVal).toLowerCase() === val.toLowerCase();
             });
           } else if (cleanCond.includes('>')) {
-            const [col, val] = cleanCond.split('>');
-            col = col.trim().toLowerCase();
-            const numericVal = parseFloat(val.trim());
+            const parts = cleanCond.split('>');
+            const col = parts[0].trim().toLowerCase();
+            const val = parts[1].trim();
+            const numericVal = parseFloat(val);
             
             filteredRows = filteredRows.filter(row => {
               const rowVal = parseFloat((row as any)[col]);
               return rowVal > numericVal;
             });
           } else if (cleanCond.includes('<')) {
-            const [col, val] = cleanCond.split('<');
-            col = col.trim().toLowerCase();
-            const numericVal = parseFloat(val.trim());
+            const parts = cleanCond.split('<');
+            const col = parts[0].trim().toLowerCase();
+            const val = parts[1].trim();
+            const numericVal = parseFloat(val);
             
             filteredRows = filteredRows.filter(row => {
               const rowVal = parseFloat((row as any)[col]);

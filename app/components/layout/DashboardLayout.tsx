@@ -67,7 +67,7 @@ interface SidebarItem {
 }
 
 const sidebarItems: SidebarItem[] = [
-  { name: 'Dashboard', href: '/', icon: 'Dashboard' },
+  { name: 'Dashboard', href: '/dashboard', icon: 'Dashboard' },
   { name: 'Courses', href: '/courses', icon: 'Courses' },
   { name: 'Practice Labs', href: '/practice', icon: 'Practice' },
   { name: 'Datasets', href: '/datasets', icon: 'Datasets' },
