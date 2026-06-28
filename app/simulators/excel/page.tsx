@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
 
@@ -55,7 +56,7 @@ export default function ExcelSimulator() {
   };
 
   // Evaluate single formula string
-  const evaluateFormulaStr = (formula: string, r: number, c: number, currentGrid: string[][]): number => {
+  const evaluateFormulaStr = (formula: string, _r: number, _c: number, currentGrid: string[][]): number => {
     try {
       const cleanForm = formula.substring(1).toUpperCase().trim();
 
@@ -351,7 +352,7 @@ export default function ExcelSimulator() {
               <thead>
                 <tr>
                   <th className="w-10 bg-slate-900 border border-white/5 py-2 text-center text-slate-500 text-[10px]"></th>
-                  {colHeaders.map((col, idx) => (
+                  {colHeaders.map((col) => (
                     <th key={col} className="bg-slate-900 border border-white/5 py-2 text-center text-slate-400 font-semibold">
                       {col}
                     </th>
@@ -366,7 +367,7 @@ export default function ExcelSimulator() {
                       {rIdx + 1}
                     </td>
                     
-                    {row.map((cellVal, cIdx) => {
+                    {row.map((_cellVal, cIdx) => {
                       const isSelected = selectedCell?.r === rIdx && selectedCell?.c === cIdx;
                       const isHeaderCol = cIdx === 0;
                       

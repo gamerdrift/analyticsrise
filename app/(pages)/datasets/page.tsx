@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
-import { motion } from 'framer-motion';
+
 
 const DATASETS_LIST = [
   {

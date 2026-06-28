@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -128,7 +129,7 @@ export default function AssessmentsPage() {
     }
   };
 
-  const handleFinishQuiz = (timeout = false, finalAnswers = answers) => {
+  const handleFinishQuiz = (_timeout = false, finalAnswers = answers) => {
     setQuizFinished(true);
 
     let correctCount = 0;

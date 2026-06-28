@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
-import { motion } from 'framer-motion';
 
 // Mock DB tables
 const MOCK_ORDERS = [
@@ -95,7 +95,7 @@ export default function SqlSimulator() {
               return String(rowVal).toLowerCase() === val.toLowerCase();
             });
           } else if (cleanCond.includes('>')) {
-            let [col, val] = cleanCond.split('>');
+            const [col, val] = cleanCond.split('>');
             col = col.trim().toLowerCase();
             const numericVal = parseFloat(val.trim());
             
@@ -104,7 +104,7 @@ export default function SqlSimulator() {
               return rowVal > numericVal;
             });
           } else if (cleanCond.includes('<')) {
-            let [col, val] = cleanCond.split('<');
+            const [col, val] = cleanCond.split('<');
             col = col.trim().toLowerCase();
             const numericVal = parseFloat(val.trim());
             
@@ -196,8 +196,8 @@ export default function SqlSimulator() {
             <div className="space-y-2">
               <span className="text-[10px] text-slate-500 font-mono uppercase block">Expected Outputs:</span>
               <ul className="text-[10px] text-slate-400 font-mono list-disc pl-4 space-y-1">
-                <li>segment = 'Enterprise'</li>
-                <li>quarter = 'Q4'</li>
+                <li>segment = &apos;Enterprise&apos;</li>
+                <li>quarter = &apos;Q4&apos;</li>
                 <li>revenue &gt; 50000</li>
               </ul>
             </div>
@@ -239,7 +239,7 @@ export default function SqlSimulator() {
                 onClick={() => handleApplyPreset('SELECT customer_name, segment, revenue FROM orders WHERE segment = \'SMB\';')}
                 className="w-full text-left p-2 bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] font-mono text-slate-300 rounded"
               >
-                SELECT segment FROM orders WHERE segment = 'SMB';
+                SELECT segment FROM orders WHERE segment = &apos;SMB&apos;;
               </button>
             </div>
           </div>
@@ -338,7 +338,7 @@ export default function SqlSimulator() {
                 <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
-                <span className="text-xs font-mono">Console Idle. Click "RUN QUERY" to fetch results.</span>
+                <span className="text-xs font-mono">Console Idle. Click &quot;RUN QUERY&quot; to fetch results.</span>
               </div>
             )}
           </div>

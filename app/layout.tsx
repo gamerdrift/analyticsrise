@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} antialiased bg-[#05070B] text-[#F5F7FA]`}>

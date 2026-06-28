@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
 
@@ -117,11 +118,11 @@ export default function PowerBiSimulator() {
             <div className="space-y-4">
               <div className={`p-3 rounded border text-xs ${activeStep === 1 ? 'border-[#F2C811] bg-[#F2C811]/5' : 'border-white/5 opacity-50'}`}>
                 <strong>1. Regional Sales Bar Chart</strong>
-                <p className="text-[10px] text-slate-400 mt-1">Map "Region" to Axis and "Sales" to Values.</p>
+                <p className="text-[10px] text-slate-400 mt-1">Map &quot;Region&quot; to Axis and &quot;Sales&quot; to Values.</p>
               </div>
               <div className={`p-3 rounded border text-xs ${activeStep === 2 ? 'border-[#F2C811] bg-[#F2C811]/5' : 'border-white/5 opacity-50'}`}>
                 <strong>2. Core KPI Card</strong>
-                <p className="text-[10px] text-slate-400 mt-1">Map "Sales" to the Card Value slot.</p>
+                <p className="text-[10px] text-slate-400 mt-1">Map &quot;Sales&quot; to the Card Value slot.</p>
               </div>
             </div>
 
@@ -305,7 +306,7 @@ export default function PowerBiSimulator() {
                   <svg className="w-10 h-10 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  <span className="text-xs">Drag "Region" to Axis and "Sales" to Values to generate bar chart.</span>
+                  <span className="text-xs">Drag &quot;Region&quot; to Axis and &quot;Sales&quot; to Values to generate bar chart.</span>
                 </div>
               )}
             </div>

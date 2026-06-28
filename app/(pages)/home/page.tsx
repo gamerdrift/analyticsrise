@@ -70,7 +70,7 @@ export default function HomePage() {
 
         {/* Tools Section */}
         <section className="mb-20">
-          <h2 className="text-4xl font-bold text-white mb-8 text-center">Tools You'll Master</h2>
+          <h2 className="text-4xl font-bold text-white mb-8 text-center">Tools You&apos;ll Master</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
               'Microsoft Excel',
