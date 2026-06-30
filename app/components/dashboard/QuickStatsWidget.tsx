@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { DashboardData } from '../../types/dashboard';
-import UserService from '../../services/user';
+import { DashboardData } from '@/app/types/dashboard';
+import UserService from '@/lib/services/user';
 
 const QuickStatsWidget: React.FC = () => {
   const [stats, setStats] = useState<DashboardData['quickStats'] | null>(null);

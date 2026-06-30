@@ -20,9 +20,10 @@ const TopNav: React.FC = () => {
         <button aria-label="Notifications" className="p-2 rounded hover:bg-white/10 transition">
           <Bell className="w-5 h-5 text-white" />
         </button>
-        {/* Theme toggle placeholder */}
-        <button aria-label="Toggle theme" className="p-2 rounded hover:bg-white/10 transition">
+        {/* Theme toggle */}
+        <button aria-label="Toggle theme" className="p-2 rounded hover:bg-white/10 transition flex items-center">
           <Moon className="w-5 h-5 text-white" />
+          <Sun className="w-5 h-5 text-white ml-2" />
         </button>
         <button onClick={signOut} className="p-2 rounded hover:bg-white/10 transition" aria-label="Logout">
           <span className="text-white">Logout</span>
