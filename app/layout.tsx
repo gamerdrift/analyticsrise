@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono, Orbitron } from 'next/font/google';
 import '@/styles/globals.css';
 import ThemeProvider from '@/app/components/ThemeProvider';
+import LoadingProvider from '@/lib/contexts/LoadingContext';
+import AuthProvider from '@/lib/contexts/AuthContext';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,13 +81,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} antialiased bg-[#05070B] text-[#F5F7FA]`}>
-        <ThemeProvider>
-          <div className="min-h-screen flex flex-col">
-            {/* Header/Navigation will go here */}
-            <main className="flex-1">{children}</main>
-            {/* Footer will go here */}
-          </div>
-        </ThemeProvider>
+        <LoadingProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <div className="min-h-screen flex flex-col">
+                {/* Header/Navigation will go here */}
+                <main className="flex-1">{children}</main>
+                {/* Footer will go here */}
+              </div>
+            </ThemeProvider>
+          </AuthProvider>
+        </LoadingProvider>
       </body>
     </html>
   );

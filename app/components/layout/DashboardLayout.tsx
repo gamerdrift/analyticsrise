@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/lib/hooks/useAuth';
+import { LoadingOverlay } from '@/app/components/ui/Loading';
 
 // SVG Icons for the Command Center sidebar
 const Icons = {
@@ -81,6 +83,8 @@ const sidebarItems: SidebarItem[] = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { userProfile, loading, isAuthenticated } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [systemTime, setSystemTime] = useState('');
@@ -95,6 +99,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Client-side route protection
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [loading, isAuthenticated, router]);
+
+  // Loading state overlay
+  if (loading || !isAuthenticated) {
+    return <LoadingOverlay message="Synchronizing secure telemetry..." />;
+  }
+
+  // Get user role display label
+  const getRoleLabel = (role: string = 'student') => {
+    const roles: Record<string, string> = {
+      student: 'Jr. Analyst',
+      instructor: 'Lead Instructor',
+      admin: 'System Admin',
+      recruiter: 'Hiring Partner',
+      enterprise: 'Enterprise User'
+    };
+    return roles[role] || 'Jr. Analyst';
+  };
 
   return (
     <div className="flex min-h-screen bg-[#05070B] text-[#F5F7FA] font-sans selection:bg-[#00E5FF]/20 selection:text-[#00E5FF]">
@@ -221,10 +249,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 AN
               </div>
               <div className="overflow-hidden">
-                <p className="text-sm font-semibold truncate text-white">Analyst Guest</p>
+                <p className="text-sm font-semibold truncate text-white">
+                  {userProfile?.displayName || 'Analyst Guest'}
+                </p>
                 <span className="text-xs text-emerald-400 flex items-center gap-1 font-mono uppercase">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Telemetry On
+                  Telemetry Active
                 </span>
               </div>
             </div>
@@ -297,10 +327,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     AN
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">Analyst Guest</p>
+                    <p className="text-sm font-semibold text-white">
+                      {userProfile?.displayName || 'Analyst Guest'}
+                    </p>
                     <span className="text-xs text-emerald-400 flex items-center gap-1 font-mono uppercase">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Telemetry On
+                      Telemetry Active
                     </span>
                   </div>
                 </div>
@@ -329,7 +361,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex flex-col items-end">
               <span className="text-slate-500 uppercase tracking-wider text-[10px]">Rank Level</span>
               <span className="text-white font-bold text-sm tracking-wide">
-                Lvl 04 <span className="text-[#00E5FF] text-xs">Jr. Architect</span>
+                Lvl {userProfile?.level || 1} <span className="text-[#00E5FF] text-xs">{getRoleLabel(userProfile?.role)}</span>
               </span>
             </div>
 
@@ -338,7 +370,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Platform Points */}
             <div className="flex flex-col items-end">
               <span className="text-slate-500 uppercase tracking-wider text-[10px]">Data Score</span>
-              <span className="text-[#00E5FF] font-bold text-sm tracking-wide font-mono">14,200 XP</span>
+              <span className="text-[#00E5FF] font-bold text-sm tracking-wide font-mono">{userProfile?.xp || 0} XP</span>
             </div>
 
             <div className="h-8 w-px bg-white/10" />
@@ -350,7 +382,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <svg className="w-4 h-4 text-[#4FC3F7]" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                 </svg>
-                12 Days
+                {userProfile?.streak || 0} Days
               </span>
             </div>
           </div>
