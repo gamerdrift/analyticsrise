@@ -93,6 +93,14 @@ export const UserService = {
     await FirestoreService.updateDocument(FIREBASE_COLLECTIONS.USERS, userId, {
       achievements: [...existingAchievements, newAchievement]
     });
-  }
+  },
+
+  /**
+   * Update arbitrary fields in the user profile (e.g., country, newsletter, etc.).
+   * Accepts a partial object matching the Firestore schema.
+   */
+  async updateUserProfile(userId: string, updates: Partial<UserFirestoreData>): Promise<void> {
+    await FirestoreService.updateDocument(FIREBASE_COLLECTIONS.USERS, userId, updates);
+  },
 };
 export default UserService;
