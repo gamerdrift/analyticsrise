@@ -9,8 +9,8 @@ const TopNav: React.FC = () => {
   return (
     <header className="topnav glass flex items-center justify-between p-4">
       <div className="flex items-center space-x-3">
-        {userProfile?.photoURL ? (
-          <Image src={userProfile.photoURL} alt="avatar" width={40} height={40} className="rounded-full" />
+        {userProfile?.avatarUrl ? (
+          <Image src={userProfile.avatarUrl} alt="avatar" width={40} height={40} className="rounded-full" />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gray-500" />
         )}
