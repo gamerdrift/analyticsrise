@@ -1,0 +1,42 @@
+feat(i18n): implement complete internationalization and localization framework
+
+Sprint 3.5 — Full i18n/L10n Implementation
+
+## Summary
+Complete client-side internationalization framework for AnalyticsRise supporting
+12 languages with RTL layout support, browser auto-detection, and Intl-based
+locale-aware formatting.
+
+## Languages Added
+- English (en) — base/source
+- Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt)
+- Hindi (hi), Arabic (ar) — RTL, Chinese Simplified (zh)
+- Japanese (ja), Korean (ko), Russian (ru)
+
+## New Files
+- lib/i18n/locales/*.json — 12 complete translation bundles (13 sections each)
+- lib/i18n/index.ts — barrel export
+- lib/contexts/LanguageContext.tsx — core provider with lazy-loading, cache, RTL
+- app/components/i18n/LanguageSwitcher.tsx — compact + full dropdown variants
+- app/components/i18n/BrowserLanguageBanner.tsx — auto-detect suggestion banner
+- docs/internationalization-architecture.md
+- docs/translation-guide.md
+- docs/rtl-support.md
+- docs/language-management.md
+
+## Modified Files
+- app/layout.tsx — LanguageProvider + BrowserLanguageBanner at root
+- app/components/layout/DashboardLayout.tsx — replaced old 5-lang dropdown with
+  full 12-lang LanguageSwitcher in topbar, sidebar footer (desktop + mobile)
+- app/(pages)/dashboard/page.tsx — all visible strings replaced with t() calls
+- styles/globals.css — RTL override rules + animation keyframes
+
+## Technical Details
+- Static-export compatible (no next-intl or server-side routing)
+- Lazy JSON imports with in-memory translation cache
+- Intl API for date, time, number, percent, currency formatting
+- RTL: html[dir=rtl] + CSS logical properties
+- localStorage persistence (ar_language key)
+- TypeScript strict-mode compliant
+
+BREAKING CHANGE: none — additive changes only

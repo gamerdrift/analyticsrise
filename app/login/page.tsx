@@ -9,7 +9,7 @@ import { LoadingOverlay } from '@/app/components/ui/Loading';
 import { AuthService } from '@/lib/services/auth';
 import { handleFirebaseError } from '@/lib/utils/error';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { IconBrandGoogle, IconBrandGithub } from 'lucide-react';
+import { Globe as IconBrandGoogle, GitBranch as IconBrandGithub } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();

@@ -100,7 +100,7 @@ export const UserService = {
    * Update arbitrary fields in the user profile (e.g., country, newsletter, etc.).
    * Accepts a partial object matching the Firestore schema.
    */
-  async updateUserProfile(userId: string, updates: Partial<UserFirestoreData>): Promise<void> {
+  async updateUserProfile(userId: string, updates: Partial<UserFirestoreData> | Record<string, any>): Promise<void> {
     await FirestoreService.updateDocument(FIREBASE_COLLECTIONS.USERS, userId, updates);
   },
   async fetchDashboardData(uid: string): Promise<DashboardData> {

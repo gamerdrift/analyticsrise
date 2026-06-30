@@ -41,7 +41,14 @@ export default function RegisterPage() {
       await UserService.createUserProfile(uid, email, fullName, 'student');
       // Store additional fields
       await UserService.updateUserProfile(uid, {
-        profile: { country, newsletter },
+        profile: {
+          displayName: fullName,
+          email,
+          avatarUrl: '',
+          role: 'student',
+          country,
+          newsletter,
+        },
       });
       await AuthService.logout(); // Ensure email verification required
       router.replace('/verify-email');

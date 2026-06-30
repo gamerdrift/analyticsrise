@@ -4,6 +4,8 @@ import '@/styles/globals.css';
 import ThemeProvider from '@/app/components/ThemeProvider';
 import LoadingProvider from '@/lib/contexts/LoadingContext';
 import AuthProvider from '@/lib/contexts/AuthContext';
+import LanguageProvider from '@/lib/contexts/LanguageContext';
+import BrowserLanguageBanner from '@/app/components/i18n/BrowserLanguageBanner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -83,13 +85,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} antialiased bg-[#05070B] text-[#F5F7FA]`}>
         <LoadingProvider>
           <AuthProvider>
-            <ThemeProvider>
-              <div className="min-h-screen flex flex-col">
-                {/* Header/Navigation will go here */}
-                <main className="flex-1">{children}</main>
-                {/* Footer will go here */}
-              </div>
-            </ThemeProvider>
+            <LanguageProvider>
+              <ThemeProvider>
+                <div className="min-h-screen flex flex-col">
+                  {/* Header/Navigation will go here */}
+                  <main className="flex-1">{children}</main>
+                  {/* Footer will go here */}
+                </div>
+                <BrowserLanguageBanner />
+              </ThemeProvider>
+            </LanguageProvider>
           </AuthProvider>
         </LoadingProvider>
       </body>

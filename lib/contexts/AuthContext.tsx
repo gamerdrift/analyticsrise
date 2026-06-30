@@ -70,10 +70,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 theme: 'dark',
                 notifications: true,
                 emailUpdates: false,
-                language: 'en'
+                language: profileDoc.profile.preferredLanguage || 'en'
               },
               createdAt: new Date(),
-              updatedAt: new Date()
+              updatedAt: new Date(),
+              // Extended fields
+              country: profileDoc.profile.country,
+              timezone: profileDoc.profile.timezone,
+              preferredLanguage: profileDoc.profile.preferredLanguage,
+              membershipLevel: profileDoc.profile.membershipLevel,
+              joinDate: profileDoc.profile.joinDate,
+              careerGoal: profileDoc.profile.careerGoal,
+              practiceHours: profileDoc.telemetry.practiceHours,
+              coursesCompleted: profileDoc.telemetry.coursesCompleted,
+              assessmentsPassed: profileDoc.telemetry.assessmentsPassed,
+              certificatesEarned: profileDoc.telemetry.certificatesEarned,
+              careerReadinessScore: profileDoc.telemetry.careerReadinessScore,
+              skills: profileDoc.telemetry.skills
             };
             setUserProfile(appUser);
 

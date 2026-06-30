@@ -38,6 +38,13 @@ export interface UserFirestoreData {
     email: string;
     avatarUrl: string;
     role: UserRole;
+    country?: string;
+    newsletter?: boolean;
+    timezone?: string;
+    preferredLanguage?: string;
+    membershipLevel?: string;
+    joinDate?: string;
+    careerGoal?: string;
   };
   telemetry: {
     xp: number;
@@ -45,6 +52,14 @@ export interface UserFirestoreData {
     level: number;
     streak: number;
     lastActiveDate: string;
+    practiceHours?: number;
+    coursesCompleted?: number;
+    assessmentsPassed?: number;
+    certificatesEarned?: number;
+    careerReadinessScore?: number;
+    skills?: {
+      [key: string]: number; // skill name -> rating (0-100)
+    };
   };
   achievements: UserAchievement[];
 }
@@ -68,6 +83,21 @@ export interface User {
   preferences: UserPreferences;
   createdAt: Date;
   updatedAt: Date;
+  // Extended fields flattened
+  country?: string;
+  timezone?: string;
+  preferredLanguage?: string;
+  membershipLevel?: string;
+  joinDate?: string;
+  careerGoal?: string;
+  practiceHours?: number;
+  coursesCompleted?: number;
+  assessmentsPassed?: number;
+  certificatesEarned?: number;
+  careerReadinessScore?: number;
+  skills?: {
+    [key: string]: number;
+  };
 }
 
 /**
