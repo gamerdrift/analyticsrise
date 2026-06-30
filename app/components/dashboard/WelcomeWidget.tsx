@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../guards/useAuth'; // custom hook to get user
+import { useAuth } from '@/lib/hooks/useAuth'; // custom hook to get user
 import { format } from 'date-fns';
 
 const WelcomeWidget: React.FC = () => {

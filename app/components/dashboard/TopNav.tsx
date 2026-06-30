@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Bell, Moon, Sun } from 'lucide-react';
-import { useAuth } from '../../guards/useAuth'; // assume hook exists
+import { useAuth } from '@/lib/hooks/useAuth'; // custom hook
 
 const TopNav: React.FC = () => {
   const { user, signOut } = useAuth();
