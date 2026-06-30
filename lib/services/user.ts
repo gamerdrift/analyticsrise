@@ -1,6 +1,7 @@
 import { FirestoreService } from './firestore';
 import { FIREBASE_COLLECTIONS, DEFAULT_TELEMETRY } from '../constants/firebase';
 import { UserFirestoreData, UserRole } from '../types';
+import { DashboardData } from '../types/dashboard';
 
 /**
  * User Service
@@ -101,6 +102,28 @@ export const UserService = {
    */
   async updateUserProfile(userId: string, updates: Partial<UserFirestoreData>): Promise<void> {
     await FirestoreService.updateDocument(FIREBASE_COLLECTIONS.USERS, userId, updates);
+  },
+  async fetchDashboardData(uid: string): Promise<DashboardData> {
+    const userProfile = await this.getUserProfile(uid);
+    if (!userProfile) throw new Error('User profile not found');
+
+    const widgetDoc = await FirestoreService.getDocument<any>('dashboardWidgets', uid);
+
+    return {
+      userId: uid,
+      displayName: userProfile.profile.displayName,
+      email: userProfile.profile.email,
+      avatarUrl: userProfile.profile.avatarUrl,
+      quickStats: {
+        progressPercent: userProfile.telemetry?.xp || 0,
+        completedModules: userProfile.telemetry?.points || 0,
+        streakDays: userProfile.telemetry?.streak || 0,
+        xpEarned: userProfile.telemetry?.xp || 0,
+      },
+      recentActivity: widgetDoc?.recentActivity || [],
+      achievements: userProfile.achievements || [],
+      recommendations: widgetDoc?.recommendations || [],
+    } as DashboardData;
   },
 };
 export default UserService;
