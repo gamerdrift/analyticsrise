@@ -4,17 +4,17 @@ import { Bell, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/lib/hooks/useAuth'; // custom hook
 
 const TopNav: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { userProfile, signOut } = useAuth();
 
   return (
     <header className="topnav glass flex items-center justify-between p-4">
       <div className="flex items-center space-x-3">
-        {user?.photoURL ? (
-          <Image src={user.photoURL} alt="avatar" width={40} height={40} className="rounded-full" />
+        {userProfile?.photoURL ? (
+          <Image src={userProfile.photoURL} alt="avatar" width={40} height={40} className="rounded-full" />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gray-500" />
         )}
-        <span className="font-medium text-white">{user?.displayName || 'User'}</span>
+        <span className="font-medium text-white">{userProfile?.displayName || 'User'}</span>
       </div>
       <div className="flex items-center space-x-4">
         <button aria-label="Notifications" className="p-2 rounded hover:bg-white/10 transition">
