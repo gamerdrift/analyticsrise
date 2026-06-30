@@ -45,3 +45,7 @@ logs
 *.log
 *.tsbuildinfo
 
+# Firebase
+.firebase/
+firebase-debug.log*
+

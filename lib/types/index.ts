@@ -2,6 +2,8 @@
  * Common type definitions used throughout the application
  */
 
+export type UserRole = 'student' | 'instructor' | 'admin' | 'recruiter' | 'enterprise';
+
 /**
  * User Profile Type
  * Represents a user in the system
@@ -11,10 +13,108 @@ export interface UserProfile {
   email: string;
   displayName: string;
   avatar?: string;
-  role: 'student' | 'instructor' | 'admin';
+  role: UserRole;
   createdAt: Date;
   updatedAt: Date;
   preferences: UserPreferences;
+}
+
+/**
+ * User Achievement Type
+ */
+export interface UserAchievement {
+  id: string;
+  name: string;
+  earnedAt: string;
+}
+
+/**
+ * User Firestore Data Schema
+ * Matches the structure stored in Firestore: /users/{userId}
+ */
+export interface UserFirestoreData {
+  profile: {
+    displayName: string;
+    email: string;
+    avatarUrl: string;
+    role: UserRole;
+  };
+  telemetry: {
+    xp: number;
+    points: number;
+    level: number;
+    streak: number;
+    lastActiveDate: string;
+  };
+  achievements: UserAchievement[];
+}
+
+/**
+ * User Type (App Level)
+ * Flattened structure for frontend convenience, combining auth and telemetry
+ */
+export interface User {
+  uid: string;
+  email: string;
+  displayName: string;
+  avatarUrl?: string;
+  role: UserRole;
+  xp: number;
+  points: number;
+  level: number;
+  streak: number;
+  lastActiveDate: string;
+  achievements: UserAchievement[];
+  preferences: UserPreferences;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/**
+ * Mission Type
+ */
+export interface Mission {
+  id: string;
+  title: string;
+  description: string;
+  type: 'excel' | 'sql' | 'powerbi' | 'tableau';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  xpReward: number;
+  pointsReward: number;
+  isCompleted: boolean;
+  order: number;
+}
+
+/**
+ * Company Type
+ */
+export interface Company {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  description: string;
+  website: string;
+  industry: string;
+  location: string;
+  createdAt: Date;
+}
+
+/**
+ * Job Type
+ */
+export interface Job {
+  id: string;
+  companyId: string;
+  companyName: string;
+  companyLogoUrl?: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  salaryRange?: string;
+  location: string;
+  type: 'full-time' | 'part-time' | 'contract' | 'remote' | 'internship';
+  postedAt: Date;
+  isActive: boolean;
 }
 
 /**

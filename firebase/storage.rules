@@ -1,0 +1,45 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // =========================================================================
+    // Core Helper Functions
+    // =========================================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // =========================================================================
+    // Storage Paths Rules
+    // =========================================================================
+
+    // 1. User Avatars
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    // 2. User Career Uploads (Resumes/PDFs)
+    match /resumes/{userId}/{allPaths=**} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+
+    // 3. Digital Certificates
+    match /certificates/{allPaths=**} {
+      allow read: if true; // Public validation access
+      allow write: if isAuthenticated(); // Restrict to secure backend actions or admins in production
+    }
+
+    // 4. Course Datasets
+    match /datasets/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated(); // Restrict to instructors/admins
+    }
+  }
+}

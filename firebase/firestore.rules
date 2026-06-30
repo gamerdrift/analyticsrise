@@ -1,0 +1,112 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =========================================================================
+    // Core Helper Functions
+    // =========================================================================
+    
+    // Check if user is logged in
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if the current user matches the document ID
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Safely retrieve the user profile data
+    function getUserProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    // Check if user profile exists in Firestore
+    function userProfileExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    
+    // Check if user has a specific role
+    function hasRole(role) {
+      return isAuthenticated() && 
+        userProfileExists() && 
+        getUserProfile().profile.role == role;
+    }
+    
+    // Role shortcuts
+    function isAdmin() {
+      return hasRole('admin');
+    }
+    
+    function isInstructor() {
+      return hasRole('instructor') || isAdmin();
+    }
+    
+    function isRecruiter() {
+      return hasRole('recruiter') || isAdmin();
+    }
+    
+    // =========================================================================
+    // Collection Access Rules
+    // =========================================================================
+
+    // 1. Users (/users/{userId})
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      // On create, allow if owner (since userProfileExists() is false during initial creation, hasRole fails)
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 2. Missions (/missions/{missionId})
+    match /missions/{missionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // 3. Courses (/courses/{courseId})
+    match /courses/{courseId} {
+      allow read: if true; // Publicly browsable
+      allow write: if isInstructor();
+    }
+
+    // 4. Datasets (/datasets/{datasetId})
+    match /datasets/{datasetId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // 5. Certificates (/certificates/{certificateId})
+    match /certificates/{certificateId} {
+      // Publicly readable to support cryptographic validation hashes
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+
+    // 6. Submissions & Assessments
+    match /submissions/{submissionId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /assessments/{assessmentId} {
+      allow read: if isAuthenticated();
+      allow write: if isInstructor();
+    }
+
+    // 7. Companies (/companies/{companyId})
+    match /companies/{companyId} {
+      allow read: if isAuthenticated();
+      allow write: if isRecruiter() || isAdmin();
+    }
+
+    // 8. Jobs (/jobs/{jobId})
+    match /jobs/{jobId} {
+      allow read: if isAuthenticated();
+      allow write: if isRecruiter() || isAdmin();
+    }
+  }
+}
