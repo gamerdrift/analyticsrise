@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import { PythonLabContext } from '../../contexts/PythonLabContext';
+import React from 'react';
+import { usePythonLab } from '../../contexts/PythonLabContext';
 
 export default function LeftPanel() {
-  const ctx = useContext(PythonLabContext);
-  const state = ctx?.state;
+  const { state, dispatch } = usePythonLab();
   const mission = state?.mission;
 
   return (

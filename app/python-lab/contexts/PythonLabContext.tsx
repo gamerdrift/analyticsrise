@@ -1,4 +1,6 @@
-import React, { createContext, useReducer, Dispatch, ReactNode } from 'react';
+import React, { createContext, useReducer, Dispatch, ReactNode, useEffect } from 'react';
+import { saveNotebook, loadNotebook } from '../services/firestore';
+import missionData from '../data/missions/exampleMission.json';
 
 // Types for cell and mission state
 export interface Cell {
@@ -16,6 +18,11 @@ export interface Mission {
   datasetId: string;
   xpReward: number;
   completed: boolean;
+  validation: {
+    type: string;
+    expectedOutput: Array<Record<string, any>>;
+  };
+  hints: string[];
 }
 
 export interface PythonLabState {
@@ -23,6 +30,8 @@ export interface PythonLabState {
   mission: Mission | null;
   xp: number;
   autosave: boolean;
+  validationPassed?: boolean;
+  saveInProgress?: boolean;
 }
 
 export type PythonLabAction =
@@ -34,13 +43,17 @@ export type PythonLabAction =
   | { type: 'SET_MISSION'; payload: Mission }
   | { type: 'MARK_MISSION_COMPLETED' }
   | { type: 'INCREMENT_XP'; payload: number }
-  | { type: 'SET_AUTOSAVE'; payload: boolean };
+  | { type: 'SET_AUTOSAVE'; payload: boolean }
+  | { type: 'SET_VALIDATION_PASSED'; payload: boolean }
+  | { type: 'SET_SAVE_IN_PROGRESS'; payload: boolean };
 
 const initialState: PythonLabState = {
   cells: [],
   mission: null,
   xp: 0,
-  autosave: false,
+  autosave: true, // enabled by default per user preference
+  validationPassed: false,
+  saveInProgress: false,
 };
 
 function pythonLabReducer(state: PythonLabState, action: PythonLabAction): PythonLabState {
@@ -76,6 +89,10 @@ function pythonLabReducer(state: PythonLabState, action: PythonLabAction): Pytho
       return { ...state, xp: state.xp + action.payload };
     case 'SET_AUTOSAVE':
       return { ...state, autosave: action.payload };
+    case 'SET_VALIDATION_PASSED':
+      return { ...state, validationPassed: action.payload };
+    case 'SET_SAVE_IN_PROGRESS':
+      return { ...state, saveInProgress: action.payload };
     default:
       return state;
   }
@@ -90,6 +107,50 @@ export const PythonLabContext = createContext<PythonLabContextProps | undefined>
 
 export const PythonLabProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(pythonLabReducer, initialState);
+
+  // Load mission on mount
+  useEffect(() => {
+    dispatch({ type: 'SET_MISSION', payload: missionData as any });
+  }, []);
+
+  // Autosave logic (5‑second interval as per user preference)
+  useEffect(() => {
+    if (!state.autosave) return;
+    const interval = setInterval(async () => {
+      if (!state.mission) return;
+      dispatch({ type: 'SET_SAVE_IN_PROGRESS', payload: true });
+      try {
+        // Assume user is authenticated and uid is available via Firebase auth
+        const uid = (globalThis as any).CURRENT_UID || 'anonymous';
+        await saveNotebook(uid, state.mission.id, {
+          cells: state.cells,
+          xp: state.xp,
+          validationPassed: state.validationPassed,
+        });
+      } finally {
+        dispatch({ type: 'SET_SAVE_IN_PROGRESS', payload: false });
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [state.autosave, state.cells, state.xp, state.validationPassed, state.mission]);
+
+  // Load existing notebook if any (run once on mount after mission is set)
+  useEffect(() => {
+    const load = async () => {
+      if (!state.mission) return;
+      const uid = (globalThis as any).CURRENT_UID || 'anonymous';
+      const data = await loadNotebook(uid, state.mission.id);
+      if (data) {
+        if (data.cells) {
+          data.cells.forEach((c: any) => dispatch({ type: 'ADD_CELL', payload: c }));
+        }
+        if (typeof data.xp === 'number') dispatch({ type: 'INCREMENT_XP', payload: data.xp });
+        if (typeof data.validationPassed === 'boolean')
+          dispatch({ type: 'SET_VALIDATION_PASSED', payload: data.validationPassed });
+      }
+    };
+    load();
+  }, [state.mission]);
 
   return (
     <PythonLabContext.Provider value={{ state, dispatch }}>

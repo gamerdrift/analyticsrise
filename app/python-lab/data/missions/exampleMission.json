@@ -1,0 +1,19 @@
+{
+  "id": "mission-01",
+  "title": "Revenue Insight",
+  "description": "Filter the Q4 Enterprise sales and compute total revenue.",
+  "datasetId": "sales-q4",
+  "xpReward": 150,
+  "validation": {
+    "type": "code",
+    "expectedOutput": [
+      {"customer_name": "TechCorp Enterprise", "revenue": 75000},
+      {"customer_name": "Hyperion Labs", "revenue": 58000},
+      {"customer_name": "Skyline Capital", "revenue": 120000}
+    ]
+  },
+  "hints": [
+    "Use SELECT with WHERE conditions.",
+    "Remember to filter by segment = 'Enterprise' and quarter = 'Q4'."
+  ]
+}
