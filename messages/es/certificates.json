@@ -1,0 +1,15 @@
+{
+  "title": "Certificados",
+  "subtitle": "Credenciales reconocidas por la industria",
+  "myCertificates": "Mis Certificados",
+  "available": "Certificados Disponibles",
+  "earn": "Obtener Certificado",
+  "download": "Descargar",
+  "share": "Compartir",
+  "verify": "Verificar",
+  "issuedOn": "Emitido el",
+  "expiresOn": "Vence el",
+  "validFor": "Válido por",
+  "credentialId": "ID de Credencial",
+  "noCertificates": "Aún no tienes certificados. ¡Completa evaluaciones para obtener tu primer certificado!"
+}

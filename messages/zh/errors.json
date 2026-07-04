@@ -1,0 +1,14 @@
+{
+  "general": "出现错误，请重试。",
+  "network": "网络错误，请检查您的连接。",
+  "notFound": "页面未找到",
+  "unauthorized": "未授权",
+  "forbidden": "访问被拒绝",
+  "serverError": "服务器错误。",
+  "sessionExpired": "您的会话已过期。",
+  "invalidInput": "请检查您的输入。",
+  "requiredField": "此字段为必填项",
+  "invalidEmail": "请输入有效的电子邮件地址",
+  "passwordMismatch": "密码不匹配",
+  "fileTooLarge": "文件超过限制"
+}

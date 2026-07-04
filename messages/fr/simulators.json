@@ -1,0 +1,19 @@
+{
+  "title": "Simulateurs",
+  "subtitle": "Pratiquez avec des outils standard de l'industrie",
+  "excel": "Simulateur Excel",
+  "sql": "Bac à Sable SQL",
+  "powerbi": "Simulateur Power BI",
+  "tableau": "Simulateur Tableau",
+  "python": "Environnement Python",
+  "r": "Simulateur R Studio",
+  "launch": "Lancer le Simulateur",
+  "reset": "Réinitialiser",
+  "run": "Exécuter",
+  "save": "Enregistrer le Travail",
+  "load": "Charger",
+  "output": "Sortie",
+  "console": "Console",
+  "editor": "Éditeur",
+  "visualization": "Visualisation"
+}

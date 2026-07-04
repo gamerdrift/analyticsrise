@@ -1,0 +1,23 @@
+{
+  "title": "Cours",
+  "subtitle": "Parcours d'apprentissage structurés",
+  "allCourses": "Tous les Cours",
+  "myCourses": "Mes Cours",
+  "featured": "En Vedette",
+  "beginner": "Débutant",
+  "intermediate": "Intermédiaire",
+  "advanced": "Avancé",
+  "duration": "Durée",
+  "lessons": "Leçons",
+  "enrolled": "Inscrit",
+  "enroll": "S'inscrire",
+  "continue": "Continuer",
+  "startCourse": "Commencer le Cours",
+  "completeCourse": "Cours Terminé",
+  "progress": "Progression",
+  "instructor": "Instructeur",
+  "rating": "Évaluation",
+  "students": "Étudiants",
+  "certificate": "Certificat",
+  "noCoursesFound": "Aucun cours trouvé"
+}

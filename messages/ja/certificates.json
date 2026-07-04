@@ -1,0 +1,15 @@
+{
+  "title": "証明書",
+  "subtitle": "業界認定の資格",
+  "myCertificates": "マイ証明書",
+  "available": "取得可能な証明書",
+  "earn": "証明書を取得",
+  "download": "ダウンロード",
+  "share": "共有",
+  "verify": "確認",
+  "issuedOn": "発行日",
+  "expiresOn": "有効期限",
+  "validFor": "有効期間",
+  "credentialId": "資格証明ID",
+  "noCertificates": "まだ証明書がありません。評価を完了して最初の証明書を取得しましょう！"
+}

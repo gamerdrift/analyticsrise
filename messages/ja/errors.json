@@ -1,0 +1,14 @@
+{
+  "general": "問題が発生しました。もう一度お試しください。",
+  "network": "ネットワークエラー。接続を確認してください。",
+  "notFound": "ページが見つかりません",
+  "unauthorized": "認証されていません",
+  "forbidden": "アクセスが拒否されました",
+  "serverError": "サーバーエラー。",
+  "sessionExpired": "セッションが期限切れです。",
+  "invalidInput": "入力を確認してください。",
+  "requiredField": "このフィールドは必須です",
+  "invalidEmail": "有効なメールアドレスを入力してください",
+  "passwordMismatch": "パスワードが一致しません",
+  "fileTooLarge": "ファイルが制限を超えています"
+}

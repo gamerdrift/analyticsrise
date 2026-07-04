@@ -1,0 +1,23 @@
+{
+  "title": "कोर्स",
+  "subtitle": "संरचित लर्निंग पथ",
+  "allCourses": "सभी कोर्स",
+  "myCourses": "मेरे कोर्स",
+  "featured": "फीचर्ड",
+  "beginner": "शुरुआती",
+  "intermediate": "मध्यवर्ती",
+  "advanced": "उन्नत",
+  "duration": "अवधि",
+  "lessons": "पाठ",
+  "enrolled": "नामांकित",
+  "enroll": "नामांकन करें",
+  "continue": "सीखते रहें",
+  "startCourse": "कोर्स शुरू करें",
+  "completeCourse": "कोर्स पूर्ण",
+  "progress": "प्रगति",
+  "instructor": "प्रशिक्षक",
+  "rating": "रेटिंग",
+  "students": "छात्र",
+  "certificate": "प्रमाणपत्र",
+  "noCoursesFound": "कोई कोर्स नहीं मिला"
+}

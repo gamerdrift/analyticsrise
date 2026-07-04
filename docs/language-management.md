@@ -1,162 +1,94 @@
 # Language Management Guide
 
-> AnalyticsRise i18n Framework | Sprint 3.5
+> AnalyticsRise i18n Framework | Sprint 3.4
 
 ## How Language Preferences Are Stored
 
 ### Guests (not logged in)
-- Stored in `localStorage` under key `ar_language`
-- Persists across sessions on the same browser
-- Cleared when the browser's storage is cleared
+- Stored in `localStorage` under the key `ar_language`.
+- Persists across sessions on the browser.
+- Cleared when browser data or storage is cleared.
 
 ### Authenticated Users
-- **Current (v1):** Same as guests — `localStorage['ar_language']`
-- **Planned (v2):** Sync to Firestore at `users/{uid}/profile.preferredLanguage` via `UserService.updateUserProfile()`
+- Synchronized dynamically inside the user's Firestore document.
+- Location: `/users/{userId}` at path `profile.preferredLanguage`.
+- Saved using `UserService.updateUserProfile(uid, { 'profile.preferredLanguage': code })`.
+- Synchronized automatically across all devices after the user logs in.
 
 ---
 
 ## Language Switching Flow
 
 ```
-User clicks language in LanguageSwitcher
+User selects language in LanguageSwitcher or Settings Page
          │
          ▼
-changeLanguage('fr') called
+changeLanguage('es') called
          │
-         ├─ loadTranslations('fr')    ← async JSON import (or cache hit)
+         ├─ loadTranslations('es')    ← async dynamic module import
          │
          ├─ setTranslations(data)     ← update React state
          │
-         ├─ setLanguage('fr')         ← update language code
+         ├─ setLanguage('es')         ← update active language code
          │
-         ├─ applyDocumentAttributes() ← sets html[lang] and html[dir]
+         ├─ applyDocumentAttributes() ← sets html[lang]="es" and html[dir]="ltr"
          │
-         └─ localStorage.setItem('ar_language', 'fr')
+         ├─ localStorage.setItem('ar_language', 'es')
+         │
+         └─ UserService.updateUserProfile(uid, { 'profile.preferredLanguage': 'es' })
 ```
 
-All updates happen atomically within the `changeLanguage` function. An `isLoading` flag is set during the switch to visually disable the switcher button.
+All updates occur atomically. During the loading state, the `isLoading` flag disables the switcher controls to prevent race conditions or double clicks.
 
 ---
 
-## Browser Auto-Detection
+## Browser Language Detection
 
-When no stored preference exists, the browser's preferred languages are checked:
-
-```typescript
-const langs = navigator.languages || [navigator.language];
-for (const lang of langs) {
-  const code = lang.split('-')[0]; // 'fr-FR' → 'fr'
-  if (SUPPORTED_CODES.includes(code)) return code;
-}
-```
-
-If a match is found that differs from the default (`en`), a `BrowserLanguageBanner` appears after a 1.5-second delay.
+When a user visits the platform for the first time without any stored preference in `localStorage` or Firestore:
+1. The navigator languages array is evaluated:
+   ```typescript
+   const langs = navigator.languages || [navigator.language];
+   ```
+2. If a supported language matches that differs from the default (`en`), the `BrowserLanguageBanner` is primed.
+3. A non-intrusive banner slides in from the bottom after 1.5 seconds, suggesting the switch.
+4. Users can choose to switch or permanently dismiss the suggestion. The dismissal is saved in `localStorage` as `ar_language_banner_dismissed: true`.
 
 ---
 
-## The LanguageSwitcher Component
+## Language Switcher Component
 
-Two visual variants are available:
+Exposes two visual layout variants:
 
-### Compact (for headers/navbars)
-```tsx
-import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
+### 1. Compact Variant (`variant="compact"`)
+- Rendered in headers, Navbars, and Sidebar footers.
+- Shows a concise flag icon + language code dropdown button.
 
-<LanguageSwitcher variant="compact" />
-// Shows: 🇺🇸 EN ▾
-```
-
-### Full (for settings pages)
-```tsx
-<LanguageSwitcher variant="full" />
-// Shows: full card with native name, English name, and search
-```
-
-Both include:
-- Search/filter
-- RTL badge for Arabic
-- Checkmark on selected language
-- Accessible `aria-haspopup`, `aria-expanded`, `role="listbox"` attributes
+### 2. Default Dropdown Variant (`variant="dropdown"`)
+- Rendered inside Settings layouts.
+- Shows flags, native names, English names, search filters, and favorite toggles.
+- Leverages mobile-responsive CSS: displays as a desktop dropdown and floats as an accessible slide-up bottom sheet on mobile devices.
 
 ---
 
-## Adding Language to Settings Page
+## Technical Logging & Debugging
 
-The `LanguageSwitcher` full variant is intended to be embedded directly in the Settings page under the Language & Region section:
-
-```tsx
-import { useLanguage } from '@/lib/i18n';
-import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
-
-export function LanguageSettings() {
-  const { t, languageInfo, formatDate } = useLanguage();
-
-  return (
-    <section>
-      <h2>{t('settings.languageSection')}</h2>
-      <p className="text-sm text-[#9AA5B1]">{t('settings.languageDescription')}</p>
-      <LanguageSwitcher variant="full" className="mt-4 max-w-xs" />
-      <p className="text-xs text-[#9AA5B1] mt-2">
-        {t('settings.languageSaved')}
-      </p>
-      <p className="mt-4 text-sm">
-        Preview: {formatDate(new Date())}
-      </p>
-    </section>
-  );
-}
-```
-
----
-
-## Future: Firestore Language Sync
-
-To sync language to Firestore when the user is authenticated:
-
-```typescript
-// In AuthContext or a dedicated settings action:
-import { useLanguage } from '@/lib/i18n';
-import { UserService } from '@/lib/services/user';
-
-const { language } = useLanguage();
-
-await UserService.updateUserProfile(uid, {
-  'profile.preferredLanguage': language,
-});
-```
-
-And on login, restore the saved language:
-
-```typescript
-// After loading user profile:
-const savedLang = profileDoc.profile.preferredLanguage;
-if (savedLang && SUPPORTED_CODES.includes(savedLang)) {
-  await changeLanguage(savedLang as LanguageCode, false); // don't overwrite localStorage
-}
-```
-
----
-
-## Diagnostics & Debugging
-
-Enable debug logging by setting `LOG_LEVEL=debug` in `.env.local`.
-
-The logger will print:
-- `[DEBUG] Language changed to: fr`
-- `[WARN] Missing translation key: "dashboard.newKey" for language "fr"`
+Telemetry logs can be reviewed in the console by enabling debug mode. The wrapper prints out language activity metrics:
+- `[DEBUG] Language changed to: ar`
+- `[WARN] Missing translation key: "dashboard.unresolvedKey" for language "ar"`
 - `[WARN] Failed to load translations for "xx", falling back to English.`
+- `[DEBUG] LanguageProvider initialized. Default locale set to: en-US`
 
 ---
 
 ## Cache Management
 
-Translations are cached in memory for the lifetime of the tab session. The cache is an object keyed by language code:
+Translations are cached in memory:
 
 ```typescript
 const translationCache: Record<string, Record<string, any>> = {
   'en': { ... },
-  'fr': { ... },
+  'es': { ... },
 };
 ```
 
-Switching back to a previously selected language is instant (no network round-trip). The cache is cleared automatically when the page is refreshed.
+Accessing a previously selected language does not make any network requests. The cache is refreshed on page reload, ensuring users receive updated translation files.

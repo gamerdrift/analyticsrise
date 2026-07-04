@@ -1,0 +1,11 @@
+{
+  "title": "通知",
+  "markAllRead": "全部标为已读",
+  "noNotifications": "暂无通知",
+  "newBadge": "您获得了新徽章：{badge}",
+  "courseComplete": "您完成了 {course}！",
+  "assessmentResult": "评估结果：{score}% — {status}",
+  "streakReminder": "保持您的连胜！今天登录以保持您的 {days} 天连胜。",
+  "newCourse": "新课程上线：{course}",
+  "systemUpdate": "系统更新：{message}"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Certificates",
+  "subtitle": "Industry-recognized credentials for your analytics skills",
+  "myCertificates": "My Certificates",
+  "available": "Available Certificates",
+  "earn": "Earn Certificate",
+  "download": "Download",
+  "share": "Share",
+  "verify": "Verify",
+  "issuedOn": "Issued On",
+  "expiresOn": "Expires On",
+  "validFor": "Valid For",
+  "credentialId": "Credential ID",
+  "noCertificates": "No certificates earned yet. Complete assessments to earn your first certificate!"
+}

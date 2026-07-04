@@ -1,0 +1,21 @@
+{
+  "title": "練習ラボ",
+  "subtitle": "実世界の分析シナリオ",
+  "allLabs": "すべてのラボ",
+  "myLabs": "マイラボ",
+  "startLab": "ラボを始める",
+  "continueLab": "ラボを続ける",
+  "difficulty": "難易度",
+  "easy": "易しい",
+  "medium": "普通",
+  "hard": "難しい",
+  "expert": "エキスパート",
+  "timeLimit": "制限時間",
+  "hints": "ヒント",
+  "solution": "解答を見る",
+  "submit": "回答を送信",
+  "correct": "正解！",
+  "incorrect": "不正解。もう一度試してください。",
+  "labComplete": "ラボ完了！",
+  "noLabsFound": "ラボが見つかりませんでした"
+}

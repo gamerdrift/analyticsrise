@@ -1,0 +1,19 @@
+{
+  "title": "시뮬레이터",
+  "subtitle": "업계 표준 도구로 연습",
+  "excel": "Excel 시뮬레이터",
+  "sql": "SQL 샌드박스",
+  "powerbi": "Power BI 시뮬레이터",
+  "tableau": "Tableau 시뮬레이터",
+  "python": "Python 환경",
+  "r": "R Studio 시뮬레이터",
+  "launch": "시뮬레이터 시작",
+  "reset": "재설정",
+  "run": "실행",
+  "save": "작업 저장",
+  "load": "불러오기",
+  "output": "출력",
+  "console": "콘솔",
+  "editor": "에디터",
+  "visualization": "시각화"
+}

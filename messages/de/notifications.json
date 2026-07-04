@@ -1,0 +1,11 @@
+{
+  "title": "Benachrichtigungen",
+  "markAllRead": "Alle als Gelesen Markieren",
+  "noNotifications": "Noch keine Benachrichtigungen",
+  "newBadge": "Sie haben ein neues Abzeichen erhalten: {badge}",
+  "courseComplete": "Sie haben {course} abgeschlossen!",
+  "assessmentResult": "Prüfungsergebnis: {score}% — {status}",
+  "streakReminder": "Halten Sie Ihren Streak aufrecht! Melden Sie sich heute an, um Ihren {days}-Tage-Streak zu erhalten.",
+  "newCourse": "Neuer Kurs verfügbar: {course}",
+  "systemUpdate": "Systemupdate: {message}"
+}

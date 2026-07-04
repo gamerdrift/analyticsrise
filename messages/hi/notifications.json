@@ -1,0 +1,11 @@
+{
+  "title": "सूचनाएं",
+  "markAllRead": "सभी को पढ़ा हुआ चिह्नित करें",
+  "noNotifications": "अभी कोई सूचना नहीं",
+  "newBadge": "आपने नया बैज अर्जित किया: {badge}",
+  "courseComplete": "आपने {course} पूर्ण किया!",
+  "assessmentResult": "मूल्यांकन परिणाम: {score}% — {status}",
+  "streakReminder": "अपनी स्ट्रीक बनाए रखें! {days} दिन की स्ट्रीक के लिए आज लॉगिन करें।",
+  "newCourse": "नया कोर्स उपलब्ध: {course}",
+  "systemUpdate": "सिस्टम अपडेट: {message}"
+}

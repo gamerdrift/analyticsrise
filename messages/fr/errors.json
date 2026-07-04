@@ -1,0 +1,14 @@
+{
+  "general": "Une erreur s'est produite. Veuillez réessayer.",
+  "network": "Erreur réseau. Vérifiez votre connexion.",
+  "notFound": "Page non trouvée",
+  "unauthorized": "Vous n'êtes pas autorisé",
+  "forbidden": "Accès refusé",
+  "serverError": "Erreur serveur.",
+  "sessionExpired": "Votre session a expiré.",
+  "invalidInput": "Vérifiez votre saisie.",
+  "requiredField": "Ce champ est requis",
+  "invalidEmail": "Entrez une adresse e-mail valide",
+  "passwordMismatch": "Les mots de passe ne correspondent pas",
+  "fileTooLarge": "Le fichier dépasse la limite"
+}

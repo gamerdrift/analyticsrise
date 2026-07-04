@@ -1,0 +1,15 @@
+{
+  "title": "证书",
+  "subtitle": "行业认可的凭证",
+  "myCertificates": "我的证书",
+  "available": "可用证书",
+  "earn": "获得证书",
+  "download": "下载",
+  "share": "分享",
+  "verify": "验证",
+  "issuedOn": "颁发日期",
+  "expiresOn": "到期日期",
+  "validFor": "有效期",
+  "credentialId": "凭证ID",
+  "noCertificates": "暂无证书。完成评估以获得您的第一个证书！"
+}

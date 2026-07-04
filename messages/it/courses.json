@@ -1,0 +1,23 @@
+{
+  "title": "Corsi",
+  "subtitle": "Percorsi di apprendimento strutturati",
+  "allCourses": "Tutti i Corsi",
+  "myCourses": "I Miei Corsi",
+  "featured": "In Evidenza",
+  "beginner": "Principiante",
+  "intermediate": "Intermedio",
+  "advanced": "Avanzato",
+  "duration": "Durata",
+  "lessons": "Lezioni",
+  "enrolled": "Iscritto",
+  "enroll": "Iscriviti",
+  "continue": "Continua ad Apprendere",
+  "startCourse": "Inizia il Corso",
+  "completeCourse": "Corso Completato",
+  "progress": "Progresso",
+  "instructor": "Istruttore",
+  "rating": "Valutazione",
+  "students": "Studenti",
+  "certificate": "Certificato",
+  "noCoursesFound": "Nessun corso trovato"
+}

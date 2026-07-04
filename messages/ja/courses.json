@@ -1,0 +1,23 @@
+{
+  "title": "コース",
+  "subtitle": "構造化された学習パス",
+  "allCourses": "すべてのコース",
+  "myCourses": "マイコース",
+  "featured": "注目",
+  "beginner": "初心者",
+  "intermediate": "中級",
+  "advanced": "上級",
+  "duration": "期間",
+  "lessons": "レッスン",
+  "enrolled": "受講中",
+  "enroll": "今すぐ登録",
+  "continue": "学習を続ける",
+  "startCourse": "コースを始める",
+  "completeCourse": "コース完了",
+  "progress": "進捗",
+  "instructor": "インストラクター",
+  "rating": "評価",
+  "students": "受講者",
+  "certificate": "証明書",
+  "noCoursesFound": "コースが見つかりませんでした"
+}

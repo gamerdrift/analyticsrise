@@ -1,0 +1,14 @@
+{
+  "general": "Qualcosa è andato storto. Riprova.",
+  "network": "Errore di rete. Controlla la tua connessione.",
+  "notFound": "Pagina non trovata",
+  "unauthorized": "Non autorizzato",
+  "forbidden": "Accesso negato",
+  "serverError": "Errore del server.",
+  "sessionExpired": "La tua sessione è scaduta.",
+  "invalidInput": "Controlla il tuo input.",
+  "requiredField": "Questo campo è obbligatorio",
+  "invalidEmail": "Inserisci un indirizzo email valido",
+  "passwordMismatch": "Le password non corrispondono",
+  "fileTooLarge": "Il file supera il limite"
+}

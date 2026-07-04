@@ -1,0 +1,23 @@
+{
+  "title": "课程",
+  "subtitle": "结构化学习路径",
+  "allCourses": "所有课程",
+  "myCourses": "我的课程",
+  "featured": "精选",
+  "beginner": "初级",
+  "intermediate": "中级",
+  "advanced": "高级",
+  "duration": "时长",
+  "lessons": "课时",
+  "enrolled": "已注册",
+  "enroll": "立即注册",
+  "continue": "继续学习",
+  "startCourse": "开始课程",
+  "completeCourse": "课程已完成",
+  "progress": "进度",
+  "instructor": "讲师",
+  "rating": "评分",
+  "students": "学员",
+  "certificate": "证书",
+  "noCoursesFound": "未找到课程"
+}

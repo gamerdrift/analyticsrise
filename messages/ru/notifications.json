@@ -1,0 +1,11 @@
+{
+  "title": "Уведомления",
+  "markAllRead": "Отметить всё прочитанным",
+  "noNotifications": "Уведомлений пока нет",
+  "newBadge": "Вы получили новый значок: {badge}",
+  "courseComplete": "Вы завершили {course}!",
+  "assessmentResult": "Результат теста: {score}% — {status}",
+  "streakReminder": "Поддерживайте серию! Войдите сегодня, чтобы сохранить серию {days} дней.",
+  "newCourse": "Доступен новый курс: {course}",
+  "systemUpdate": "Обновление системы: {message}"
+}

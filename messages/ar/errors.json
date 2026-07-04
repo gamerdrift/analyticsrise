@@ -1,0 +1,14 @@
+{
+  "general": "حدث خطأ ما. يرجى المحاولة مجدداً.",
+  "network": "خطأ في الشبكة. تحقق من اتصالك.",
+  "notFound": "الصفحة غير موجودة",
+  "unauthorized": "غير مصرح",
+  "forbidden": "تم رفض الوصول",
+  "serverError": "خطأ في الخادم.",
+  "sessionExpired": "انتهت جلستك.",
+  "invalidInput": "تحقق من مدخلاتك.",
+  "requiredField": "هذا الحقل مطلوب",
+  "invalidEmail": "أدخل عنوان بريد إلكتروني صحيح",
+  "passwordMismatch": "كلمتا المرور غير متطابقتين",
+  "fileTooLarge": "حجم الملف يتجاوز الحد"
+}

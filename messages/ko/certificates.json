@@ -1,0 +1,15 @@
+{
+  "title": "인증서",
+  "subtitle": "업계 인정 자격증",
+  "myCertificates": "내 인증서",
+  "available": "취득 가능한 인증서",
+  "earn": "인증서 취득",
+  "download": "다운로드",
+  "share": "공유",
+  "verify": "확인",
+  "issuedOn": "발급일",
+  "expiresOn": "만료일",
+  "validFor": "유효 기간",
+  "credentialId": "자격 증명 ID",
+  "noCertificates": "아직 인증서가 없습니다. 평가를 완료하여 첫 번째 인증서를 받으세요!"
+}

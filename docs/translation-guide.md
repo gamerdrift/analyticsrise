@@ -1,45 +1,47 @@
 # Translation Guide — AnalyticsRise
 
-> For contributors and translators | Sprint 3.5
+> For contributors and translators | Sprint 3.4
 
 ## File Structure
 
-All translation files live in `lib/i18n/locales/`. Each language has its own JSON file named by its [IETF language code](https://en.wikipedia.org/wiki/IETF_language_tag):
+To enable bundle-size optimization and lazy loading, all translation assets are split into separate modules per language and reside in the `/messages` directory in the root of the workspace.
 
 ```
-lib/i18n/locales/
-├── en.json  ← English (source of truth)
-├── es.json  ← Spanish
-├── fr.json  ← French
-├── de.json  ← German
-├── it.json  ← Italian
-├── pt.json  ← Portuguese
-├── hi.json  ← Hindi
-├── ar.json  ← Arabic
-├── zh.json  ← Chinese (Simplified)
-├── ja.json  ← Japanese
-├── ko.json  ← Korean
-└── ru.json  ← Russian
+messages/
+├── en/                   ← English (base source of truth)
+│   ├── common.json       ← Shared UI buttons, actions, and tags
+│   ├── auth.json         ← Login, registration, and password reset flows
+│   ├── dashboard.json    ← CC telemetry labels and widgets
+│   ├── courses.json      ← Course cards and syllabus navigation
+│   ├── practice.json     ← Lab environment labels
+│   ├── simulators.json   ← SQL sandboxes and Excel tool selectors
+│   ├── assessments.json  ← Test questions and results status
+│   ├── certificates.json ← Certification verification credentials
+│   ├── career.json       ← Resume scanning and jobs telemetry
+│   ├── settings.json     ← General profile configurations
+│   ├── notifications.json← Logs and telemetry triggers
+│   ├── footer.json       ← Copyright and legal pages
+│   ├── errors.json       ← Validation failures and connection issues
+│   └── missions.json     ← Empty placeholder (reserved for future tasks)
+├── es/                   ← Spanish
+│   └── ... (same json modules as en)
+└── ... (repeat for all supported language codes)
 ```
 
 ---
 
 ## Translation File Format
 
-Each file is a **nested JSON object** organized by module/section:
+Each module file contains key-value pairs representing localized UI strings. Keys can be nested JSON objects:
 
 ```json
+// messages/en/common.json
 {
-  "common": {
-    "save": "Save",
-    "cancel": "Cancel"
-  },
-  "dashboard": {
-    "title": "Command Center",
-    "welcomeMorning": "Good Morning"
-  },
-  "auth": {
-    "login": "Log In"
+  "save": "Save",
+  "cancel": "Cancel",
+  "status": {
+    "completed": "Completed",
+    "inProgress": "In Progress"
   }
 }
 ```
@@ -50,114 +52,63 @@ Each file is a **nested JSON object** organized by module/section:
 
 ### Basic Usage
 
+Use the `t()` function from `useLanguage()` by specifying the dot-separated path to the translation key:
+
 ```tsx
 import { useLanguage } from '@/lib/i18n';
 
-export function MyComponent() {
+export function SaveButton() {
   const { t } = useLanguage();
 
-  return <h1>{t('dashboard.title')}</h1>;
+  return <button>{t('common.save')}</button>;
 }
 ```
 
 ### With Parameters
 
-Use `{paramName}` placeholders in translation strings:
+Use `{parameterName}` placeholders inside the JSON strings:
 
 ```json
-// In en.json:
-"streakReminder": "Keep your streak! Log in today to maintain your {days}-day streak."
+// messages/en/notifications.json
+{
+  "streakReminder": "Keep your streak going! Log in today to maintain your {days}-day streak."
+}
 ```
 
 ```tsx
 const { t } = useLanguage();
-const message = t('notifications.streakReminder', { days: 7 });
-// Result: "Keep your streak! Log in today to maintain your 7-day streak."
+
+return <p>{t('notifications.streakReminder', { days: 5 })}</p>;
 ```
 
 ---
 
-## Sections & Keys
+## Translation Guidelines & Technical Terms
 
-| Section | Description |
-|---------|-------------|
-| `common` | Shared UI labels (buttons, status words) |
-| `auth` | Login, register, password reset flows |
-| `dashboard` | ARCC Command Center widgets |
-| `courses` | Course listings and player |
-| `practice` | Lab challenge UI |
-| `simulators` | Tool-specific simulator UI |
-| `assessments` | Quiz and test flows |
-| `certificates` | Certificate management |
-| `career` | Career Center hub |
-| `settings` | Account and preferences pages |
-| `notifications` | Notification messages |
-| `errors` | Error messages and validation |
-| `footer` | Footer navigation and legal |
+To maintain clarity and accuracy, do NOT translate technical names or vocabulary. Keep the following terms in English across all language files:
+
+- **Programming Languages**: `SQL`, `Python`, `R`
+- **Analytics Tools**: `Excel`, `Power BI`, `Tableau`, `Alteryx`
+- **Standard Abbreviations**: `CSV`, `JSON`, `API`, `ATS`, `XP`
+- **Brand Names**: `AnalyticsRise`, `GitHub`, `Firebase`, `Next.js`, `React`, `TypeScript`
 
 ---
 
 ## Adding a New Translation Key
 
-1. **Add to `en.json` first** — English is the source of truth.
-2. Add the same key to **all other language files**.
-3. Use the `t()` function in the component.
-4. Never use the key in JSX without `t()` — no hardcoded strings.
-
-### Example
-
-```json
-// en.json
-{
-  "dashboard": {
-    "myNewFeature": "Explore your analytics journey"
-  }
-}
-
-// es.json
-{
-  "dashboard": {
-    "myNewFeature": "Explora tu recorrido de análisis"
-  }
-}
-```
-
-```tsx
-// Component
-<p>{t('dashboard.myNewFeature')}</p>
-```
+1. **Add the key to the English base module** (e.g. `messages/en/dashboard.json`). English is the source of truth.
+2. Add the same key path to the corresponding files for all other 11 supported languages.
+3. Reference the translation path using `t('module.key')`.
+4. Ensure no raw text remains in your JSX.
 
 ---
 
-## What NOT to Translate
+## Verification & Key Audits
 
-The following must **remain in English** in all locale files:
+Use the translation validator utility script to check translation files for:
+- Missing keys in target languages compared to English.
+- Duplicate keys in JSON files.
+- Placeholder variable mismatches.
+- Unused keys.
 
-- Analytics tool names: `SQL`, `Power BI`, `Tableau`, `Excel`, `Python`, `R`, `Alteryx`
-- Brand names: `AnalyticsRise`, `Google`, `GitHub`, `Firebase`
-- Technical abbreviations: `ATS`, `XP`, `API`, `JSON`, `CSV`
-- Language codes: `en`, `es`, `fr`, etc.
-- Certification names used as proper nouns
-
----
-
-## Adding a New Language
-
-1. Create `lib/i18n/locales/<code>.json` (copy `en.json` as template)
-2. Add to the `SUPPORTED_LANGUAGES` array in `LanguageContext.tsx`:
-   ```typescript
-   { code: 'tr', nativeName: 'Türkçe', englishName: 'Turkish', flag: '🇹🇷', direction: 'ltr', currency: 'TRY', locale: 'tr-TR' }
-   ```
-3. Translate all keys in the new file
-4. Test the switcher and all pages
-
----
-
-## Missing Keys
-
-If a translation key is missing for the active language, the system:
-1. Logs a warning to the console: `Missing translation key: "key" for language "xx"`
-2. Returns the raw key string (e.g., `dashboard.title`) as a visible fallback
-3. Does **not** crash
-
-This makes it easy to spot untranslated content during QA.
+Run the test suite or compile checking before checking in changes.

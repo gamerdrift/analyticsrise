@@ -1,0 +1,23 @@
+{
+  "title": "الدورات",
+  "subtitle": "مسارات تعليمية منظمة",
+  "allCourses": "جميع الدورات",
+  "myCourses": "دوراتي",
+  "featured": "مميزة",
+  "beginner": "مبتدئ",
+  "intermediate": "متوسط",
+  "advanced": "متقدم",
+  "duration": "المدة",
+  "lessons": "الدروس",
+  "enrolled": "مسجل",
+  "enroll": "التسجيل",
+  "continue": "واصل التعلم",
+  "startCourse": "ابدأ الدورة",
+  "completeCourse": "اكتملت الدورة",
+  "progress": "التقدم",
+  "instructor": "المدرب",
+  "rating": "التقييم",
+  "students": "الطلاب",
+  "certificate": "الشهادة",
+  "noCoursesFound": "لم يتم العثور على دورات"
+}

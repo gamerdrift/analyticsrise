@@ -49,3 +49,7 @@ logs
 .firebase/
 firebase-debug.log*
 
+# Local Credentials
+Github_PAT.txt
+
+

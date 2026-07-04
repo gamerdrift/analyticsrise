@@ -1,0 +1,19 @@
+{
+  "title": "المحاكيات",
+  "subtitle": "تدرب باستخدام أدوات معيار الصناعة",
+  "excel": "محاكي Excel",
+  "sql": "بيئة تجريبية SQL",
+  "powerbi": "محاكي Power BI",
+  "tableau": "محاكي Tableau",
+  "python": "بيئة Python",
+  "r": "محاكي R Studio",
+  "launch": "تشغيل المحاكي",
+  "reset": "إعادة ضبط",
+  "run": "تشغيل",
+  "save": "حفظ العمل",
+  "load": "تحميل",
+  "output": "الإخراج",
+  "console": "الطرفية",
+  "editor": "المحرر",
+  "visualization": "التصور البياني"
+}

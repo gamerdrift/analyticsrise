@@ -1,6 +1,6 @@
 # Internationalization Architecture — AnalyticsRise
 
-> Sprint 3.5 | Last Updated: 2026-06-30
+> Sprint 3.4 | Last Updated: 2026-07-04
 
 ## Overview
 
@@ -10,20 +10,20 @@ AnalyticsRise uses a **client-side, lazy-loaded** internationalization (i18n) fr
 
 ## Supported Languages
 
-| Code | Language | Script | Direction | Currency |
-|------|----------|--------|-----------|----------|
-| `en` | English | Latin | LTR | USD |
-| `es` | Spanish | Latin | LTR | EUR |
-| `fr` | French | Latin | LTR | EUR |
-| `de` | German | Latin | LTR | EUR |
-| `it` | Italian | Latin | LTR | EUR |
-| `pt` | Portuguese | Latin | LTR | BRL |
-| `hi` | Hindi | Devanagari | LTR | INR |
-| `ar` | Arabic | Arabic | **RTL** | SAR |
-| `zh` | Chinese (Simplified) | Han | LTR | CNY |
-| `ja` | Japanese | Kanji/Kana | LTR | JPY |
-| `ko` | Korean | Hangul | LTR | KRW |
-| `ru` | Russian | Cyrillic | LTR | RUB |
+| Code | Language | Script | Direction | Currency | Locale |
+|------|----------|--------|-----------|----------|--------|
+| `en` | English | Latin | LTR | USD | `en-US` |
+| `es` | Spanish | Latin | LTR | EUR | `es-ES` |
+| `fr` | French | Latin | LTR | EUR | `fr-FR` |
+| `de` | German | Latin | LTR | EUR | `de-DE` |
+| `it` | Italian | Latin | LTR | EUR | `it-IT` |
+| `pt` | Portuguese | Latin | LTR | BRL | `pt-BR` |
+| `hi` | Hindi | Devanagari | LTR | INR | `hi-IN` |
+| `ar` | Arabic | Arabic | **RTL** | SAR | `ar-SA` |
+| `zh` | Chinese (Simplified) | Han | LTR | CNY | `zh-CN` |
+| `ja` | Japanese | Kanji/Kana | LTR | JPY | `ja-JP` |
+| `ko` | Korean | Hangul | LTR | KRW | `ko-KR` |
+| `ru` | Russian | Cyrillic | LTR | RUB | `ru-RU` |
 
 ---
 
@@ -57,78 +57,80 @@ formatCurrency()
 
 ## File Structure
 
-```
-lib/
-├── i18n/
-│   ├── index.ts              ← barrel export
-│   └── locales/
-│       ├── en.json           ← English (base)
-│       ├── es.json           ← Spanish
-│       ├── fr.json           ← French
-│       ├── de.json           ← German
-│       ├── it.json           ← Italian
-│       ├── pt.json           ← Portuguese
-│       ├── hi.json           ← Hindi
-│       ├── ar.json           ← Arabic (RTL)
-│       ├── zh.json           ← Chinese Simplified
-│       ├── ja.json           ← Japanese
-│       ├── ko.json           ← Korean
-│       └── ru.json           ← Russian
-└── contexts/
-    └── LanguageContext.tsx   ← Core provider + hooks
+The translation assets are split into granular modules per language and stored in the `/messages` directory in the root of the workspace. This layout enables Next.js to dynamically load only the required localization bundles for the active interface language:
 
-app/components/i18n/
-├── LanguageSwitcher.tsx      ← Dropdown UI (compact + full variants)
-└── BrowserLanguageBanner.tsx ← Auto-suggestion banner
+```
+messages/
+├── en/
+│   ├── common.json
+│   ├── auth.json
+│   ├── dashboard.json
+│   ├── courses.json
+│   ├── career.json
+│   ├── settings.json
+│   ├── notifications.json
+│   ├── footer.json
+│   ├── errors.json
+│   ├── practice.json
+│   ├── simulators.json
+│   ├── assessments.json
+│   └── certificates.json
+├── es/
+│   └── ... (same modules as en)
+└── ... (repeat for all supported codes)
 ```
 
 ---
 
 ## Language Detection Priority
 
-1. **LocalStorage** (`ar_language` key) — persisted user choice
-2. **Default** — falls back to `en` if nothing stored
-3. **Browser suggestion** — if `navigator.languages` matches a supported code that differs from the stored preference, a `BrowserLanguageBanner` appears after 1.5 s offering to switch
+1. **LocalStorage** (`ar_language` key) — persisted guest or user preference.
+2. **Authenticated User Profile** — on login, the preferred language stored in Firestore is synchronized to the client.
+3. **Browser auto-detection** — if no stored preference exists, `navigator.language` is evaluated. If a supported language is matched that differs from the default (`en`), the `BrowserLanguageBanner` slides in to offer a change.
 
 ---
 
 ## Translation Loading
 
-Translations are loaded via **dynamic `import()`** with an in-memory cache:
+Translations are loaded via dynamic React Webpack imports (`import()`) and cached in memory:
 
 ```typescript
-const translationCache: Record<string, Record<string, any>> = {};
-
-async function loadTranslations(lang: LanguageCode) {
-  if (translationCache[lang]) return translationCache[lang]; // cache hit
-  const mod = await import(`@/lib/i18n/locales/${lang}.json`);
-  translationCache[lang] = mod.default;
-  return translationCache[lang];
+async function loadTranslationModule(lang: LanguageCode, moduleName: string): Promise<Record<string, any>> {
+  try {
+    const mod = await import(`@/messages/${lang}/${moduleName}.json`);
+    return mod.default || mod;
+  } catch {
+    if (lang !== 'en') {
+      return loadTranslationModule('en', moduleName); // Fallback to English
+    }
+    return {};
+  }
 }
 ```
 
-- First load: ~1-3 KB JSON per language
-- Subsequent accesses: instant from memory cache
-- English fallback: if any translation file fails to load
+- Dynamic modules size: ~1-3 KB per module per language.
+- Loading is progressive: only active language modules are loaded.
+- Fallback support: missing keys or loading failures fallback to English translations gracefully without throwing runtime errors.
 
 ---
 
-## Key APIs
+## Key Hooks & APIs
 
 ### `useLanguage()` / `useTranslation()`
+
+Import standard translating and formatting utilities from the barrel module:
 
 ```tsx
 import { useLanguage } from '@/lib/i18n';
 
-function MyComponent() {
-  const { t, formatDate, formatCurrency, language, direction } = useLanguage();
+function CourseCard() {
+  const { t, formatDate, formatNumber } = useLanguage();
 
   return (
     <div>
-      <h1>{t('dashboard.title')}</h1>
-      <p>{t('notifications.streakReminder', { days: 7 })}</p>
+      <h3>{t('courses.title')}</h3>
       <p>{formatDate(new Date())}</p>
-      <p>{formatCurrency(29.99)}</p>
+      <span>{formatNumber(15000)} Students Enrolled</span>
     </div>
   );
 }
@@ -136,45 +138,34 @@ function MyComponent() {
 
 ### `changeLanguage(code, persist?)`
 
+Switch active language and trigger styling / formatting changes:
+
 ```tsx
 const { changeLanguage } = useLanguage();
 
-// Switch to French and save to localStorage
-await changeLanguage('fr');
-
-// Switch without saving (temporary)
-await changeLanguage('de', false);
+// Change language to Spanish and sync preference to Firestore & LocalStorage
+await changeLanguage('es');
 ```
 
 ---
 
-## Intl Formatters
+## Localized Formatters
 
-All formatters use the `Intl` Web API with the active locale:
+All formatters leverage the standard browser `Intl` APIs:
 
-| Function | Description | Example (en) | Example (ar) |
-|----------|-------------|--------------|--------------|
-| `formatDate(date)` | Long date | June 30, 2026 | ٣٠ يونيو ٢٠٢٦ |
-| `formatTime(date)` | Short time | 10:45 AM | ١٠:٤٥ ص |
-| `formatNumber(n)` | Locale number | 1,234,567 | ١٬٢٣٤٬٥٦٧ |
-| `formatPercent(n)` | Percentage | 87.5% | ٨٧٫٥٪ |
-| `formatCurrency(n)` | Currency | $29.99 | ﷼٢٩٫٩٩ |
+- `formatDate(date, options?)` - Localized calendar representations.
+- `formatTime(time, options?)` - Localized clock time representations.
+- `formatNumber(value, options?)` - Localized decimal separators.
+- `formatPercent(value)` - Localized completion rate calculations.
+- `formatCurrency(value, currencyOverride?)` - Region-appropriate price formatting.
 
 ---
 
-## Persistence
+## Persistence & Authentication Synchronization
 
-| User Type | Storage |
-|-----------|---------|
-| Guest | `localStorage['ar_language']` |
-| Authenticated | `localStorage['ar_language']` (Firestore sync planned for v2) |
+Guest language selections are persisted to `localStorage` under `ar_language`.
+For authenticated users, preferences are synced across devices. The language choice is stored inside the user's Firestore document:
+- Collection: `/users/{userId}`
+- Path: `profile.preferredLanguage`
 
----
-
-## Technical Notes
-
-- **No `next-intl`** — avoids incompatibility with `output: 'export'`
-- **No hardcoded strings** — all UI text must use `t('key')`
-- **Technical keywords** (SQL, Python, Power BI, etc.) stay English in all locales
-- **Code blocks** always render LTR regardless of locale
-- **SSR-safe** — context reads localStorage only in `useEffect` to avoid hydration mismatch
+Upon logging in, the platform retrieves `preferredLanguage` from the profile and updates the client interface language automatically, syncing it with the local cache.

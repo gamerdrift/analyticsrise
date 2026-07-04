@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useTheme } from '@/app/components/ThemeProvider';
 import { LoadingOverlay } from '@/app/components/ui/Loading';
 import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n';
 import {
   LayoutDashboard,
   Target,
@@ -82,6 +83,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const { userProfile, loading, isAuthenticated, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { direction } = useLanguage();
+  const xOffset = direction === 'rtl' ? '100%' : '-100%';
 
   // Responsive state
   const [collapsed, setCollapsed] = useState(false);
@@ -324,7 +327,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* LEFT SIDEBAR (Desktop & Tablet) */}
       <aside
-        className={`hidden lg:flex flex-col fixed top-0 bottom-0 left-0 pt-16 z-35 bg-[#0D1117]/90 border-r border-[#00E5FF]/10 backdrop-blur-md transition-all duration-300 ${
+        className={`hidden lg:flex flex-col fixed top-0 bottom-0 start-0 pt-16 z-35 bg-[#0D1117]/90 border-e border-[#00E5FF]/10 backdrop-blur-md transition-all duration-300 ${
           collapsed ? 'w-20' : 'w-64'
         }`}
       >
@@ -350,7 +353,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div
                   className={`flex items-center gap-4 px-4 py-3 rounded-lg font-medium transition-all group relative cursor-pointer focus-ring-cyber ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#00E5FF]/10 to-[#4FC3F7]/5 text-white border-l-2 border-[#00E5FF]'
+                      ? 'bg-gradient-to-r from-[#00E5FF]/10 to-[#4FC3F7]/5 text-white border-s-2 border-[#00E5FF]'
                       : 'text-slate-400 hover:text-[#00E5FF] hover:bg-white/5'
                   }`}
                   title={collapsed ? item.name : undefined}
@@ -365,7 +368,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                   {/* Tooltip in collapsed mode */}
                   {collapsed && (
-                    <div className="absolute left-20 bg-[#0D1117] border border-[#00E5FF]/20 text-[#00E5FF] text-[10px] font-display uppercase tracking-widest px-3 py-1.5 rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-xl">
+                    <div className="absolute ltr:left-20 rtl:right-20 bg-[#0D1117] border border-[#00E5FF]/20 text-[#00E5FF] text-[10px] font-display uppercase tracking-widest px-3 py-1.5 rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 shadow-xl">
                       {item.name}
                     </div>
                   )}
@@ -401,11 +404,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="fixed inset-0 bg-black/60 z-40 lg:hidden"
             />
             <motion.aside
-              initial={{ x: '-100%' }}
+              initial={{ x: xOffset }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: xOffset }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 bottom-0 left-0 w-72 bg-[#0D1117] border-r border-[#00E5FF]/10 z-50 flex flex-col pt-16 lg:hidden"
+              className="fixed top-0 bottom-0 start-0 w-72 bg-[#0D1117] border-e border-[#00E5FF]/10 z-50 flex flex-col pt-16 lg:hidden"
             >
               <div className="p-4 border-b border-white/5 flex items-center justify-between">
                 <span className="font-display font-bold text-white text-sm uppercase tracking-widest">Navigation Center</span>
@@ -427,7 +430,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       <div
                         className={`flex items-center gap-4 px-4 py-3 rounded-lg font-medium transition-all ${
                           isActive
-                            ? 'bg-[#00E5FF]/10 text-[#00E5FF] border-l-2 border-[#00E5FF]'
+                            ? 'bg-[#00E5FF]/10 text-[#00E5FF] border-s-2 border-[#00E5FF]'
                             : 'text-slate-400 hover:text-[#00E5FF] hover:bg-white/5'
                         }`}
                       >
@@ -544,7 +547,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* MAIN VIEWPORT */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 z-10 ${
-          collapsed ? 'lg:pl-20' : 'lg:pl-64'
+          collapsed ? 'lg:ps-20' : 'lg:ps-64'
         } pt-16 pb-16 lg:pb-0`}
       >
         <main className="flex-1 p-6 lg:p-8 overflow-y-auto bg-cyber-radial">

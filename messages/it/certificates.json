@@ -1,0 +1,15 @@
+{
+  "title": "Certificati",
+  "subtitle": "Credenziali riconosciute dal settore",
+  "myCertificates": "I Miei Certificati",
+  "available": "Certificati Disponibili",
+  "earn": "Ottieni Certificato",
+  "download": "Scarica",
+  "share": "Condividi",
+  "verify": "Verifica",
+  "issuedOn": "Rilasciato il",
+  "expiresOn": "Scade il",
+  "validFor": "Valido per",
+  "credentialId": "ID Credenziale",
+  "noCertificates": "Nessun certificato ancora. Completa le valutazioni!"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "सिमुलेटर",
+  "subtitle": "उद्योग-मानक टूल के साथ अभ्यास करें",
+  "excel": "Excel सिमुलेटर",
+  "sql": "SQL सैंडबॉक्स",
+  "powerbi": "Power BI सिमुलेटर",
+  "tableau": "Tableau सिमुलेटर",
+  "python": "Python वातावरण",
+  "r": "R Studio सिमुलेटर",
+  "launch": "सिमुलेटर लॉन्च करें",
+  "reset": "रीसेट",
+  "run": "चलाएं",
+  "save": "काम सहेजें",
+  "load": "लोड",
+  "output": "आउटपुट",
+  "console": "कंसोल",
+  "editor": "एडिटर",
+  "visualization": "विज़ुअलाइज़ेशन"
+}

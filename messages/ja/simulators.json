@@ -1,0 +1,19 @@
+{
+  "title": "シミュレーター",
+  "subtitle": "業界標準ツールで練習",
+  "excel": "Excelシミュレーター",
+  "sql": "SQLサンドボックス",
+  "powerbi": "Power BIシミュレーター",
+  "tableau": "Tableauシミュレーター",
+  "python": "Python環境",
+  "r": "R Studioシミュレーター",
+  "launch": "シミュレーターを起動",
+  "reset": "リセット",
+  "run": "実行",
+  "save": "作業を保存",
+  "load": "読み込む",
+  "output": "出力",
+  "console": "コンソール",
+  "editor": "エディター",
+  "visualization": "ビジュアライゼーション"
+}

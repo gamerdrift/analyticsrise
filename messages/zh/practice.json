@@ -1,0 +1,21 @@
+{
+  "title": "练习实验室",
+  "subtitle": "真实世界的分析场景",
+  "allLabs": "所有实验室",
+  "myLabs": "我的实验室",
+  "startLab": "开始实验室",
+  "continueLab": "继续实验室",
+  "difficulty": "难度",
+  "easy": "简单",
+  "medium": "中等",
+  "hard": "困难",
+  "expert": "专家",
+  "timeLimit": "时间限制",
+  "hints": "提示",
+  "solution": "查看解答",
+  "submit": "提交答案",
+  "correct": "正确！",
+  "incorrect": "错误，请重试。",
+  "labComplete": "实验室已完成！",
+  "noLabsFound": "未找到实验室"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Practice Labs",
+  "subtitle": "Real-world analytics scenarios and hands-on challenges",
+  "allLabs": "All Labs",
+  "myLabs": "My Labs",
+  "startLab": "Start Lab",
+  "continueLab": "Continue Lab",
+  "difficulty": "Difficulty",
+  "easy": "Easy",
+  "medium": "Medium",
+  "hard": "Hard",
+  "expert": "Expert",
+  "timeLimit": "Time Limit",
+  "hints": "Hints",
+  "solution": "View Solution",
+  "submit": "Submit Answer",
+  "correct": "Correct!",
+  "incorrect": "Incorrect. Try again.",
+  "labComplete": "Lab Complete!",
+  "noLabsFound": "No labs found matching your criteria"
+}

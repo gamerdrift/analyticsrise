@@ -1,0 +1,11 @@
+{
+  "title": "알림",
+  "markAllRead": "모두 읽음으로 표시",
+  "noNotifications": "아직 알림이 없습니다",
+  "newBadge": "새 배지를 획득했습니다: {badge}",
+  "courseComplete": "{course}를 완료했습니다!",
+  "assessmentResult": "평가 결과: {score}% — {status}",
+  "streakReminder": "스트릭을 유지하세요! {days}일 스트릭을 유지하려면 오늘 로그인하세요.",
+  "newCourse": "새 코스 이용 가능: {course}",
+  "systemUpdate": "시스템 업데이트: {message}"
+}

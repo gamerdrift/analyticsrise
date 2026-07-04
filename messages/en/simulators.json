@@ -1,0 +1,19 @@
+{
+  "title": "Simulators",
+  "subtitle": "Practice with industry-standard analytics tools",
+  "excel": "Excel Simulator",
+  "sql": "SQL Sandbox",
+  "powerbi": "Power BI Simulator",
+  "tableau": "Tableau Simulator",
+  "python": "Python Environment",
+  "r": "R Studio Simulator",
+  "launch": "Launch Simulator",
+  "reset": "Reset",
+  "run": "Run",
+  "save": "Save Work",
+  "load": "Load",
+  "output": "Output",
+  "console": "Console",
+  "editor": "Editor",
+  "visualization": "Visualization"
+}

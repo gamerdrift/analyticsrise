@@ -1,0 +1,19 @@
+{
+  "title": "Simuladores",
+  "subtitle": "Practica con herramientas estándar de la industria",
+  "excel": "Simulador de Excel",
+  "sql": "Sandbox SQL",
+  "powerbi": "Simulador de Power BI",
+  "tableau": "Simulador de Tableau",
+  "python": "Entorno Python",
+  "r": "Simulador R Studio",
+  "launch": "Lanzar Simulador",
+  "reset": "Reiniciar",
+  "run": "Ejecutar",
+  "save": "Guardar Trabajo",
+  "load": "Cargar",
+  "output": "Resultado",
+  "console": "Consola",
+  "editor": "Editor",
+  "visualization": "Visualización"
+}

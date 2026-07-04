@@ -122,7 +122,7 @@ export function ProfileMenu({ name, email, avatarSrc, onLogout }: ProfileMenuPro
                 </Link>
                 
                 <Link
-                  href="/dashboard"
+                  href="/dashboard?tab=settings"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 px-3 py-2 rounded text-slate-400 hover:text-[#00E5FF] hover:bg-white/5 transition-all"
                 >

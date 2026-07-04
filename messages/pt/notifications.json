@@ -1,0 +1,11 @@
+{
+  "title": "Notificações",
+  "markAllRead": "Marcar Tudo como Lido",
+  "noNotifications": "Sem notificações ainda",
+  "newBadge": "Você ganhou um novo badge: {badge}",
+  "courseComplete": "Você concluiu {course}!",
+  "assessmentResult": "Resultado da avaliação: {score}% — {status}",
+  "streakReminder": "Mantenha sua sequência! Faça login hoje para manter sua sequência de {days} dias.",
+  "newCourse": "Novo curso disponível: {course}",
+  "systemUpdate": "Atualização do sistema: {message}"
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Курсы",
+  "subtitle": "Структурированные учебные программы",
+  "allCourses": "Все курсы",
+  "myCourses": "Мои курсы",
+  "featured": "Рекомендуемые",
+  "beginner": "Начинающий",
+  "intermediate": "Средний",
+  "advanced": "Продвинутый",
+  "duration": "Продолжительность",
+  "lessons": "Уроки",
+  "enrolled": "Записан",
+  "enroll": "Записаться",
+  "continue": "Продолжить обучение",
+  "startCourse": "Начать курс",
+  "completeCourse": "Курс завершён",
+  "progress": "Прогресс",
+  "instructor": "Преподаватель",
+  "rating": "Рейтинг",
+  "students": "Студенты",
+  "certificate": "Сертификат",
+  "noCoursesFound": "Курсы не найдены"
+}

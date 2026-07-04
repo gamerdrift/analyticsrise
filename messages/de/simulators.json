@@ -1,0 +1,19 @@
+{
+  "title": "Simulatoren",
+  "subtitle": "Üben Sie mit Branchenstandardtools",
+  "excel": "Excel-Simulator",
+  "sql": "SQL-Sandbox",
+  "powerbi": "Power BI-Simulator",
+  "tableau": "Tableau-Simulator",
+  "python": "Python-Umgebung",
+  "r": "R Studio-Simulator",
+  "launch": "Simulator Starten",
+  "reset": "Zurücksetzen",
+  "run": "Ausführen",
+  "save": "Arbeit Speichern",
+  "load": "Laden",
+  "output": "Ausgabe",
+  "console": "Konsole",
+  "editor": "Editor",
+  "visualization": "Visualisierung"
+}

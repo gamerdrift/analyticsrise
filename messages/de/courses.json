@@ -1,0 +1,23 @@
+{
+  "title": "Kurse",
+  "subtitle": "Strukturierte Lernpfade für Analysten",
+  "allCourses": "Alle Kurse",
+  "myCourses": "Meine Kurse",
+  "featured": "Empfohlen",
+  "beginner": "Anfänger",
+  "intermediate": "Mittelstufe",
+  "advanced": "Fortgeschritten",
+  "duration": "Dauer",
+  "lessons": "Lektionen",
+  "enrolled": "Eingeschrieben",
+  "enroll": "Einschreiben",
+  "continue": "Weiter Lernen",
+  "startCourse": "Kurs Starten",
+  "completeCourse": "Kurs Abgeschlossen",
+  "progress": "Fortschritt",
+  "instructor": "Dozent",
+  "rating": "Bewertung",
+  "students": "Lernende",
+  "certificate": "Zertifikat",
+  "noCoursesFound": "Keine Kurse gefunden"
+}

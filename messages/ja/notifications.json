@@ -1,0 +1,11 @@
+{
+  "title": "通知",
+  "markAllRead": "すべて既読にする",
+  "noNotifications": "まだ通知はありません",
+  "newBadge": "新しいバッジを獲得しました：{badge}",
+  "courseComplete": "{course}を完了しました！",
+  "assessmentResult": "評価結果：{score}% — {status}",
+  "streakReminder": "ストリークを維持しましょう！{days}日ストリークを維持するために今日ログインしてください。",
+  "newCourse": "新しいコースが利用可能です：{course}",
+  "systemUpdate": "システムアップデート：{message}"
+}

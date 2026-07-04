@@ -1,0 +1,19 @@
+{
+  "title": "模拟器",
+  "subtitle": "使用行业标准工具练习",
+  "excel": "Excel 模拟器",
+  "sql": "SQL 沙盒",
+  "powerbi": "Power BI 模拟器",
+  "tableau": "Tableau 模拟器",
+  "python": "Python 环境",
+  "r": "R Studio 模拟器",
+  "launch": "启动模拟器",
+  "reset": "重置",
+  "run": "运行",
+  "save": "保存工作",
+  "load": "加载",
+  "output": "输出",
+  "console": "控制台",
+  "editor": "编辑器",
+  "visualization": "可视化"
+}

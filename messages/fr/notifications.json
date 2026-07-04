@@ -1,0 +1,11 @@
+{
+  "title": "Notifications",
+  "markAllRead": "Tout Marquer comme Lu",
+  "noNotifications": "Pas encore de notifications",
+  "newBadge": "Vous avez obtenu un nouveau badge : {badge}",
+  "courseComplete": "Vous avez terminé {course} !",
+  "assessmentResult": "Résultat d'évaluation : {score}% — {status}",
+  "streakReminder": "Maintenez votre série ! Connectez-vous aujourd'hui pour maintenir votre série de {days} jours.",
+  "newCourse": "Nouveau cours disponible : {course}",
+  "systemUpdate": "Mise à jour système : {message}"
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Cursos",
+  "subtitle": "Rutas de aprendizaje estructuradas para profesionales de análisis",
+  "allCourses": "Todos los Cursos",
+  "myCourses": "Mis Cursos",
+  "featured": "Destacados",
+  "beginner": "Principiante",
+  "intermediate": "Intermedio",
+  "advanced": "Avanzado",
+  "duration": "Duración",
+  "lessons": "Lecciones",
+  "enrolled": "Inscrito",
+  "enroll": "Inscribirme",
+  "continue": "Continuar Aprendiendo",
+  "startCourse": "Comenzar Curso",
+  "completeCourse": "Curso Completado",
+  "progress": "Progreso",
+  "instructor": "Instructor",
+  "rating": "Calificación",
+  "students": "Estudiantes",
+  "certificate": "Certificado",
+  "noCoursesFound": "No se encontraron cursos que coincidan con tus criterios"
+}

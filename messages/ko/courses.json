@@ -1,0 +1,23 @@
+{
+  "title": "코스",
+  "subtitle": "구조화된 학습 경로",
+  "allCourses": "모든 코스",
+  "myCourses": "내 코스",
+  "featured": "추천",
+  "beginner": "초급",
+  "intermediate": "중급",
+  "advanced": "고급",
+  "duration": "기간",
+  "lessons": "레슨",
+  "enrolled": "등록됨",
+  "enroll": "지금 등록",
+  "continue": "계속 학습",
+  "startCourse": "코스 시작",
+  "completeCourse": "코스 완료",
+  "progress": "진행률",
+  "instructor": "강사",
+  "rating": "평점",
+  "students": "수강생",
+  "certificate": "인증서",
+  "noCoursesFound": "코스를 찾을 수 없습니다"
+}

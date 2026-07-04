@@ -1,0 +1,14 @@
+{
+  "general": "Algo salió mal. Inténtalo de nuevo.",
+  "network": "Error de red. Verifica tu conexión.",
+  "notFound": "Página no encontrada",
+  "unauthorized": "No estás autorizado",
+  "forbidden": "Acceso denegado",
+  "serverError": "Error del servidor.",
+  "sessionExpired": "Tu sesión expiró.",
+  "invalidInput": "Verifica tu entrada.",
+  "requiredField": "Este campo es requerido",
+  "invalidEmail": "Ingresa un correo válido",
+  "passwordMismatch": "Las contraseñas no coinciden",
+  "fileTooLarge": "El archivo excede el límite"
+}

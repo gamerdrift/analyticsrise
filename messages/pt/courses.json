@@ -1,0 +1,23 @@
+{
+  "title": "Cursos",
+  "subtitle": "Trilhas de aprendizado estruturadas",
+  "allCourses": "Todos os Cursos",
+  "myCourses": "Meus Cursos",
+  "featured": "Destaques",
+  "beginner": "Iniciante",
+  "intermediate": "Intermediário",
+  "advanced": "Avançado",
+  "duration": "Duração",
+  "lessons": "Lições",
+  "enrolled": "Inscrito",
+  "enroll": "Inscrever-se",
+  "continue": "Continuar Aprendendo",
+  "startCourse": "Iniciar Curso",
+  "completeCourse": "Curso Concluído",
+  "progress": "Progresso",
+  "instructor": "Instrutor",
+  "rating": "Avaliação",
+  "students": "Alunos",
+  "certificate": "Certificado",
+  "noCoursesFound": "Nenhum curso encontrado"
+}

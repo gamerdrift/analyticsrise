@@ -1,0 +1,23 @@
+{
+  "title": "Courses",
+  "subtitle": "Structured learning paths for analytics professionals",
+  "allCourses": "All Courses",
+  "myCourses": "My Courses",
+  "featured": "Featured",
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+  "duration": "Duration",
+  "lessons": "Lessons",
+  "enrolled": "Enrolled",
+  "enroll": "Enroll Now",
+  "continue": "Continue Learning",
+  "startCourse": "Start Course",
+  "completeCourse": "Course Completed",
+  "progress": "Progress",
+  "instructor": "Instructor",
+  "rating": "Rating",
+  "students": "Students",
+  "certificate": "Certificate",
+  "noCoursesFound": "No courses found matching your criteria"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Übungslabore",
+  "subtitle": "Praxisnahe Analyseszenarien",
+  "allLabs": "Alle Labs",
+  "myLabs": "Meine Labs",
+  "startLab": "Labor Starten",
+  "continueLab": "Labor Fortsetzen",
+  "difficulty": "Schwierigkeit",
+  "easy": "Leicht",
+  "medium": "Mittel",
+  "hard": "Schwer",
+  "expert": "Experte",
+  "timeLimit": "Zeitlimit",
+  "hints": "Hinweise",
+  "solution": "Lösung Ansehen",
+  "submit": "Antwort Einreichen",
+  "correct": "Richtig!",
+  "incorrect": "Falsch. Versuchen Sie es erneut.",
+  "labComplete": "Labor Abgeschlossen!",
+  "noLabsFound": "Keine Labs gefunden"
+}

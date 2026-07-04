@@ -1,0 +1,11 @@
+{
+  "title": "الإشعارات",
+  "markAllRead": "تحديد الكل كمقروء",
+  "noNotifications": "لا توجد إشعارات حتى الآن",
+  "newBadge": "حصلت على شارة جديدة: {badge}",
+  "courseComplete": "أكملت {course}!",
+  "assessmentResult": "نتيجة الاختبار: {score}% — {status}",
+  "streakReminder": "حافظ على سلسلتك! سجل الدخول اليوم للحفاظ على سلسلة {days} أيام.",
+  "newCourse": "دورة جديدة متاحة: {course}",
+  "systemUpdate": "تحديث النظام: {message}"
+}

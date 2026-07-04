@@ -1,0 +1,21 @@
+{
+  "title": "Laboratoires de Pratique",
+  "subtitle": "Scénarios d'analyse du monde réel",
+  "allLabs": "Tous les Labs",
+  "myLabs": "Mes Labs",
+  "startLab": "Démarrer le Lab",
+  "continueLab": "Continuer le Lab",
+  "difficulty": "Difficulté",
+  "easy": "Facile",
+  "medium": "Moyen",
+  "hard": "Difficile",
+  "expert": "Expert",
+  "timeLimit": "Limite de Temps",
+  "hints": "Indices",
+  "solution": "Voir la Solution",
+  "submit": "Soumettre la Réponse",
+  "correct": "Correct !",
+  "incorrect": "Incorrect. Réessayez.",
+  "labComplete": "Lab Terminé !",
+  "noLabsFound": "Aucun lab trouvé"
+}
