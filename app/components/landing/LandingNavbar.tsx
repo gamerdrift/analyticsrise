@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -44,18 +45,19 @@ export default function LandingNavbar() {
 
         {/* Navigation Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/dashboard"
-            className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/dashboard"
-            className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
-          >
-            Launch Console
-          </Link>
+            <LanguageSwitcher variant="compact" className="mr-2" />
+            <Link
+              href="/dashboard"
+              className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/dashboard"
+              className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
+            >
+              Launch Console
+            </Link>
         </div>
 
         {/* Mobile Navigation Toggle */}
@@ -95,6 +97,7 @@ export default function LandingNavbar() {
             ))}
             <div className="h-px bg-white/5 my-2" />
             <div className="flex flex-col gap-4">
+              <LanguageSwitcher variant="compact" className="mb-2" />
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
