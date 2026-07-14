@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  swcMinify: true,
+  // swcMinify removed due to incompatibility
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -20,6 +20,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@/components'],
+    turbopack: { root: __dirname },
   },
 };
 

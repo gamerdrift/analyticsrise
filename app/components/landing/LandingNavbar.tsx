@@ -9,13 +9,12 @@ export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const menuItems = [
-    { name: 'Simulators', href: '#simulators' },
-    { name: 'Learning Paths', href: '#paths' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Certifications', href: '#certifications' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'FAQ', href: '#faq' },
-  ];
+  { name: 'Home', href: '/' },
+  { name: 'Learning Paths', href: '#paths' },
+  { name: 'Simulators', href: '#simulators' },
+  { name: 'Career Hub', href: '/career' },
+  { name: 'Pricing', href: '#pricing' },
+];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/70 backdrop-blur-md">
@@ -47,16 +46,16 @@ export default function LandingNavbar() {
         <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher variant="compact" className="mr-2" />
             <Link
-              href="/dashboard"
+              href="/login"
               className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2"
             >
-              Sign In
+              Login
             </Link>
             <Link
-              href="/dashboard"
+              href="/register"
               className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
             >
-              Launch Console
+              Register
             </Link>
         </div>
 
@@ -97,21 +96,21 @@ export default function LandingNavbar() {
             ))}
             <div className="h-px bg-white/5 my-2" />
             <div className="flex flex-col gap-4">
-              <LanguageSwitcher variant="compact" className="mb-2" />
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="text-center text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold py-2"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="w-full text-center py-3 rounded border border-[#00E5FF] text-[#00E5FF] text-xs font-bold tracking-widest uppercase bg-[#00E5FF]/5"
-              >
-                Launch Console
-              </Link>
+                <LanguageSwitcher variant="compact" className="mb-2" />
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-center text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold py-2"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMobileOpen(false)}
+                  className="w-full text-center py-3 rounded border border-[#00E5FF] text-[#00E5FF] text-xs font-bold tracking-widest uppercase bg-[#00E5FF]/5"
+                >
+                  Register
+                </Link>
             </div>
           </motion.div>
         )}
