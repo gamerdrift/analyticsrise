@@ -191,7 +191,7 @@ export function Navbar({ logoText, links, actions }: NavbarProps) {
         </nav>
 
         {/* Action button slots */}
-        <div className="hidden md:flex items-center gap-4">{actions}</div>
+        <div className="flex items-center gap-4 mr-2 z-50">{actions}</div>
 
         {/* Mobile menu toggle */}
         <button
@@ -211,7 +211,7 @@ export function Navbar({ logoText, links, actions }: NavbarProps) {
               {link.label}
             </Link>
           ))}
-          {actions && <div className="flex flex-col gap-2 pt-4 border-t border-white/5">{actions}</div>}
+          {actions && <div className="flex flex-col gap-2 pt-4 border-t border-white/5 z-50">{actions}</div>}
         </div>
       )}
     </header>

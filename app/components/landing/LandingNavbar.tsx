@@ -44,7 +44,7 @@ export default function LandingNavbar() {
 
         {/* Navigation Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-            <LanguageSwitcher variant="compact" className="mr-2" />
+            <LanguageSwitcher variant="compact" className="mr-2 z-50" />
             <Link
               href="/login"
               className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2"

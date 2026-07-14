@@ -2,15 +2,14 @@
 
 # Add the extracted Node 22.20 binaries to PATH
 $nodeDir = "$env:TEMP\node22-20"
-$env:PATH = "$nodeDir;$env:PATH"
+$env:PATH = "$nodeDir;$pwd\node_modules\.bin;$env:PATH"
 
 Write-Host "Node version:" (node -v)
 
 # Remove existing node_modules to avoid lock issues
-if (Test-Path "node_modules") {
-    Write-Host "Removing existing node_modules..."
-    Remove-Item -Recurse -Force "node_modules"
-}
+# NOTE: Skipping explicit node_modules removal on Windows.
+# npm ci will purge and reinstall a clean dependency tree.
+# This avoids long‑running filesystem deletions that can stall the script.
 
 # Clean npm cache
 npm cache clean --force
@@ -19,7 +18,7 @@ npm cache clean --force
 npm ci --no-bin-links
 
 # Build the Next.js app
-npm run build
+npm run build:fast
 
 # Deploy to Firebase Hosting (uses existing firebase.json/.firebaserc)
 firebase deploy --only hosting

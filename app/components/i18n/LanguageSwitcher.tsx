@@ -117,7 +117,7 @@ export default function LanguageSwitcher({ variant = 'dropdown', className = '',
           aria-label={t('common.language')}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
-          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-medium text-[#9AA5B1] hover:text-[#F5F7FA] hover:bg-white/5 transition-all duration-200"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-md bg-[#1E293B] border border-[#00E5FF] text-white hover:bg-[#00E5FF] hover:text-black shadow-lg hover:shadow-xl transition-all duration-200 group z-10"
           disabled={isLoading}
         >
           <span className="text-base">{languageInfo.flag}</span>
