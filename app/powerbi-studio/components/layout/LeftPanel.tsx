@@ -1,8 +1,9 @@
+"use client";
 import React from 'react';
-import MissionPanel from '@/app/powerbi-studio/components/mission/MissionPanel';
-import DatasetExplorer from '@/app/powerbi-studio/components/dataset/DatasetExplorer';
-import DataModelViewer from '@/app/powerbi-studio/components/model/DataModelViewer';
-import VisualGallery from '@/app/powerbi-studio/components/visuals/VisualGallery';
+import MissionPanel from '../mission/MissionPanel';
+import DatasetExplorer from '../dataset/DatasetExplorer';
+import DataModelViewer from '../model/DataModelViewer';
+import VisualGallery from '../visuals/VisualGallery';
 
 export default function LeftPanel() {
   return (

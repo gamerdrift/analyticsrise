@@ -1,3 +1,4 @@
+"use client";
 // app/excel-studio/components/FormulaBar.tsx
 import React, { useState, useEffect } from 'react';
 import { useExcelStudio, CellAddress } from '@/app/excel-studio/contexts/ExcelStudioContext';

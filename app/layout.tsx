@@ -5,7 +5,9 @@ import ThemeProvider from '@/app/components/ThemeProvider';
 import LoadingProvider from '@/lib/contexts/LoadingContext';
 import AuthProvider from '@/lib/contexts/AuthContext';
 import LanguageProvider from '@/lib/contexts/LanguageContext';
+import LearningProvider from '@/src/context/LearningContext';
 import BrowserLanguageBanner from '@/app/components/i18n/BrowserLanguageBanner';
+import AIMentor from '@/src/components/AIMentor';
 import { Navbar } from '@/app/components/navigation/NavControls';
 import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
 import Link from 'next/link';
@@ -89,9 +91,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LoadingProvider>
           <AuthProvider>
             <LanguageProvider>
-              <ThemeProvider>
-                <div className="min-h-screen flex flex-col">
-                  <Navbar
+              <LearningProvider>
+                <ThemeProvider>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar
                       logoText="AnalyticsRISE"
                        links={[
                          { label: 'Home', href: '/' },
@@ -108,11 +111,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                          </>
                        }
                     />
-                  <main className="flex-1">{children}</main>
-                  {/* Footer will go here */}
-                </div>
-                <BrowserLanguageBanner />
-              </ThemeProvider>
+                    <main className="flex-1">{children}</main>
+                    {/* Footer will go here */}
+                  </div>
+                  <BrowserLanguageBanner />
+                  <AIMentor />
+                </ThemeProvider>
+              </LearningProvider>
             </LanguageProvider>
           </AuthProvider>
         </LoadingProvider>

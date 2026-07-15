@@ -1,0 +1,101 @@
+/* src/styles/mentor.css */
+
+/* Glassmorphism background for the floating mentor */
+.ai-mentor {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  font-family: var(--font-sans);
+}
+
+/* Chat bubble container */
+.ai-mentor__chat {
+  width: 320px;
+  max-height: 480px;
+  background: rgba(5, 7, 11, 0.85); /* dark glass */
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-mentor__header {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f7fa;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ai-mentor__form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.ai-mentor__form input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #f5f7fa;
+  margin-bottom: 0.75rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ai-mentor__form input:focus {
+  border-color: #00e5ff;
+}
+
+.ai-mentor__form button {
+  align-self: flex-end;
+  padding: 0.4rem 1rem;
+  background: #00e5ff;
+  color: #05070b;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ai-mentor__form button:hover {
+  background: #00c4e0;
+}
+
+/* Floating Action Button for mobile */
+.ai-mentor__fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.ai-mentor__fab:hover {
+  transform: scale(1.08);
+  background: rgba(0, 229, 255, 1);
+}
+
+/* Simple fade‑in animation for the chat */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-mentor__chat {
+  animation: fadeIn 0.3s ease-out;
+}

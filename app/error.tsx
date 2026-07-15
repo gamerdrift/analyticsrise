@@ -1,3 +1,4 @@
+"use client";
 // app/error.tsx - Global error handling page for Next.js App Router
 import { NextPage } from 'next';
 import { ErrorProps } from 'next/dist/pages/_error';

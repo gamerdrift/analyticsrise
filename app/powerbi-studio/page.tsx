@@ -1,9 +1,10 @@
+"use client";
 import React from 'react';
-import PowerBIStudioProvider from '@/app/powerbi-studio/contexts/PowerBIStudioContext';
-import LeftPanel from '@/app/powerbi-studio/components/layout/LeftPanel';
-import CenterPanel from '@/app/powerbi-studio/components/layout/CenterPanel';
-import RightPanel from '@/app/powerbi-studio/components/layout/RightPanel';
-import BottomBar from '@/app/powerbi-studio/components/layout/BottomBar';
+import PowerBIStudioProvider from './contexts/PowerBIStudioContext';
+import LeftPanel from './components/layout/LeftPanel';
+import CenterPanel from './components/layout/CenterPanel';
+import RightPanel from './components/layout/RightPanel';
+import BottomBar from './components/layout/BottomBar';
 
 export default function PowerBIStudioPage() {
   return (

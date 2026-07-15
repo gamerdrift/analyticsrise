@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useReducer, Dispatch, ReactNode, useEffect } from 'react';
 import { saveNotebook, loadNotebook } from '../services/firestore';
 import missionData from '../data/missions/exampleMission.json';

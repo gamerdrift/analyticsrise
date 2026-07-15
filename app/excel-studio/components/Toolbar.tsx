@@ -1,3 +1,4 @@
+"use client";
 // app/excel-studio/components/Toolbar.tsx
 import React from 'react';
 import { useExcelStudio } from '@/app/excel-studio/contexts/ExcelStudioContext';

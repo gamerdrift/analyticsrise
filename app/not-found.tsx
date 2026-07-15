@@ -1,4 +1,5 @@
-import Link from 'next/link';
+'use client';
+// app/not-found.tsx
 import { useRouter } from 'next/navigation';
 
 export default function NotFound() {

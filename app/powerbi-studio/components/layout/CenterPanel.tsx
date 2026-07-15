@@ -1,5 +1,5 @@
 import React from 'react';
-import Canvas from '@/app/powerbi-studio/components/canvas/Canvas';
+import Canvas from '../canvas/Canvas';
 
 export default function CenterPanel() {
   return (

@@ -1,3 +1,4 @@
+"use client";
 // app/excel-studio/components/Grid.tsx
 import React, { useCallback } from 'react';
 import { FixedSizeGrid as GridVirtualizer } from 'react-window';

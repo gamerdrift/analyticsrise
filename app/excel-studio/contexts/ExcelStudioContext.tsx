@@ -1,3 +1,4 @@
+'use client';
 // app/excel-studio/contexts/ExcelStudioContext.tsx
 import React, { createContext, useReducer, useContext, ReactNode } from 'react';
 
