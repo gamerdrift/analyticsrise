@@ -108,5 +108,26 @@ service cloud.firestore {
       allow read: if isAuthenticated();
       allow write: if isRecruiter() || isAdmin();
     }
+    // 9. Resumes (/resumes/{resumeId})
+    match /resumes/{resumeId} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.ownerId;
+      allow create: if isAuthenticated() && request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if isOwner(resource.data.ownerId) || isAdmin();
+    }
+
+    // 10. Portfolio (/portfolio/{portfolioId})
+    match /portfolio/{portfolioId} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.ownerId;
+      allow create: if isAuthenticated() && request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if isOwner(resource.data.ownerId) || isAdmin();
+    }
+
+    // 11. Applications (/applications/{applicationId})
+    match /applications/{applicationId} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.ownerId;
+      allow create: if isAuthenticated() && request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if isOwner(resource.data.ownerId) || isAdmin();
+    }
+
   }
 }
