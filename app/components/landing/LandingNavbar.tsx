@@ -32,16 +32,18 @@ export default function LandingNavbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           {menuItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
-            >
-              {item.name}
-            </a>
+            <React.Fragment key={item.name}>
+              {item.name === 'Simulators' && (
+                <LanguageSwitcher variant="compact" className="mr-2 z-50" />
+              )}
+              <a
+                href={item.href}
+                className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
+              >
+                {item.name}
+              </a>
+            </React.Fragment>
           ))}
-          {/* Language selector visible to all users */}
-          <LanguageSwitcher variant="compact" className="mr-2 z-50" />
         </div>
 
         {/* Navigation Action Buttons */}

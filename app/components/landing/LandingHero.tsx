@@ -68,7 +68,7 @@ export default function LandingHero() {
             href="/dashboard"
             className="px-8 py-3.5 rounded border border-[#00E5FF] text-black bg-[#00E5FF] text-xs font-bold tracking-widest uppercase hover:bg-transparent hover:text-[#00E5FF] transition-all duration-300 shadow-lg shadow-[#00E5FF]/20 text-center"
           >
-            Launch Console
+            Console
           </Link>
           <a
             href="#simulators"
