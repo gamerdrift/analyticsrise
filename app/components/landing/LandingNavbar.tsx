@@ -9,15 +9,15 @@ export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const menuItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Learning Paths', href: '#paths' },
-  { name: 'Simulators', href: '#simulators' },
-  { name: 'Career Hub', href: '/career' },
-  { name: 'Pricing', href: '#pricing' },
-];
+    { name: 'Home', href: '/' },
+    { name: 'Learning Paths', href: '#paths' },
+    { name: 'Simulators', href: '#simulators' },
+    { name: 'Career Hub', href: '/career' },
+    { name: 'Pricing', href: '#pricing' },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/70 backdrop-blur-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3">
@@ -32,34 +32,31 @@ export default function LandingNavbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           {menuItems.map((item) => (
-            <React.Fragment key={item.name}>
-              {item.name === 'Simulators' && (
-                <LanguageSwitcher variant="compact" className="mr-2 z-50" />
-              )}
-              <a
-                href={item.href}
-                className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
-              >
-                {item.name}
-              </a>
-            </React.Fragment>
+            <a
+              key={item.name}
+              href={item.href}
+              className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
+            >
+              {item.name}
+            </a>
           ))}
         </div>
 
-        {/* Navigation Action Buttons */}
+        {/* Navigation Action Buttons + Language Selector */}
         <div className="hidden md:flex items-center gap-4">
-            <Link
-              href="/login"
-              className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
-            >
-              Register
-            </Link>
+          <LanguageSwitcher variant="compact" className="z-[100]" />
+          <Link
+            href="/login"
+            className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-3 py-2"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            className="px-5 py-2.5 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
+          >
+            Register
+          </Link>
         </div>
 
         {/* Mobile Navigation Toggle */}
@@ -99,21 +96,23 @@ export default function LandingNavbar() {
             ))}
             <div className="h-px bg-white/5 my-2" />
             <div className="flex flex-col gap-4">
-                <LanguageSwitcher variant="compact" className="mb-2" />
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-center text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold py-2"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full text-center py-3 rounded border border-[#00E5FF] text-[#00E5FF] text-xs font-bold tracking-widest uppercase bg-[#00E5FF]/5"
-                >
-                  Register
-                </Link>
+              <div className="w-full">
+                <LanguageSwitcher variant="compact" className="w-full" />
+              </div>
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="text-center text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold py-2"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => setMobileOpen(false)}
+                className="w-full text-center py-3 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-xs font-bold tracking-widest uppercase bg-[#00E5FF]/5"
+              >
+                Register
+              </Link>
             </div>
           </motion.div>
         )}

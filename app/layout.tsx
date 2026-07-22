@@ -106,9 +106,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                        ]}
                        actions={
                          <>
-                                                       <LanguageSwitcher variant="compact" className="mb-2 md:mr-2 z-50" />
-                           <Link href="/signin" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2">Login</Link>
-                           <Link href="/signup" className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20">Register</Link>
+                           <LanguageSwitcher variant="compact" className="mb-2 md:mr-2 z-50" />
+                           <Link href="/login" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2">Login</Link>
+                           <Link href="/register" className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20">Register</Link>
                          </>
                        }
                     />
