@@ -1,3 +1,5 @@
+'use client';
+
 // src/context/CommandCenterContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
@@ -58,7 +60,7 @@ export const CommandCenterProvider = ({ children }: { children: ReactNode }) => 
         setStateInternal({ ...defaultState, ...snap.data() } as CommandCenterState);
       }
       // Listen for realtime updates
-      const unsub = onSnapshot(ref, (docSnap) => {
+      const unsub = onSnapshot(ref, (docSnap: any) => {
         if (docSnap.exists()) {
           setStateInternal({ ...defaultState, ...docSnap.data() } as CommandCenterState);
         }

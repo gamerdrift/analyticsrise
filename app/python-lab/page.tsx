@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import PythonLabProvider from './contexts/PythonLabContext';
+import { PythonLabProvider } from './contexts/PythonLabContext';
 import LeftPanel from './components/layout/LeftPanel';
 import CenterPanel from './components/layout/CenterPanel';
 import RightPanel from './components/layout/RightPanel';

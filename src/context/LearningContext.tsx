@@ -1,3 +1,5 @@
+'use client';
+
 // src/context/LearningContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 

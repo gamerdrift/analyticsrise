@@ -30,9 +30,7 @@ const DEFAULT_SKILLS = {
 export default function DashboardClient() {
   const { userProfile, loading } = useAuth();
   const { toggleTheme } = useTheme();
-  const { t, formatNumber } = useLanguage();
-  const searchParams = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'overview';
+  const { t } = useLanguage();
 
   const [greeting, setGreeting] = useState('');
 
@@ -61,11 +59,7 @@ export default function DashboardClient() {
 
   const xp = userProfile?.xp ?? 0;
   const level = userProfile?.level ?? 1;
-  const streak = userProfile?.streak ?? 0;
-  const points = userProfile?.points ?? 0;
   const xpForNextLevel = (level + 1) * 1000;
-  const progress = Math.min(100, (xp / xpForNextLevel) * 100);
-  const userSkills = (userProfile as any)?.skills ?? DEFAULT_SKILLS;
 
   return (
     <DashboardLayout>

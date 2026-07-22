@@ -1,7 +1,7 @@
+'use client';
+
 import React from 'react';
-import Link from 'next/link';
 import { Sidebar } from '@/app/components/navigation/NavControls';
-import { SectionContainer } from '@/app/components/SectionContainer';
 
 const navigationItems = [
   { label: 'Dashboard', href: '/career-hub', icon: <span>📊</span> },

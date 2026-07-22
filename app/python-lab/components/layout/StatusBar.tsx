@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useContext } from 'react';
 import { PythonLabContext } from '../../contexts/PythonLabContext';

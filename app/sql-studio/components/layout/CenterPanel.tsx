@@ -12,7 +12,7 @@ export default function CenterPanel() {
     // For now we just simulate a delay
     const start = performance.now();
     setTimeout(() => {
-      const fakeRows = [];
+      const fakeRows: any[] = [];
       dispatch({ type: 'SET_RESULTS', payload: { rows: fakeRows, columns: [], validation: { passed: true, hints: [] } } });
       dispatch({ type: 'SET_STATUS', payload: { autosave: 'saved', execTimeMs: performance.now() - start, returnedRows: fakeRows.length } });
     }, 300);

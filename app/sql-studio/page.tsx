@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import SqlStudioProvider from '@/app/sql-studio/contexts/SqlStudioContext';
+import { SqlStudioProvider } from '@/app/sql-studio/contexts/SqlStudioContext';
 import LeftPanel from '@/app/sql-studio/components/layout/LeftPanel';
 import CenterPanel from '@/app/sql-studio/components/layout/CenterPanel';
 import RightPanel from '@/app/sql-studio/components/layout/RightPanel';

@@ -1,6 +1,3 @@
-import { Stripe } from 'stripe';
-import type { FirebaseApp } from 'firebase/app';
-
 /**
  * Common interface for payment provider implementations.
  */
@@ -33,7 +30,7 @@ export interface PaymentProvider {
  */
 export async function getPaymentProvider(
   name: 'stripe' | 'razorpay' | 'paypal',
-  firebaseApp: FirebaseApp,
+  firebaseApp: any,
 ): Promise<PaymentProvider> {
   switch (name) {
     case 'stripe':

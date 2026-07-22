@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import PowerBIStudioProvider from './contexts/PowerBIStudioContext';
+import { PowerBIStudioProvider } from './contexts/PowerBIStudioContext';
 import LeftPanel from './components/layout/LeftPanel';
 import CenterPanel from './components/layout/CenterPanel';
 import RightPanel from './components/layout/RightPanel';

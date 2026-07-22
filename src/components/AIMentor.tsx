@@ -1,3 +1,5 @@
+'use client';
+
 // src/components/AIMentor.tsx
 import React, { useState } from 'react';
 import { RiRobotLine } from 'react-icons/ri';

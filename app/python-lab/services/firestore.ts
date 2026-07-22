@@ -3,10 +3,10 @@
 // Assumes Firebase has been initialized elsewhere (e.g., in firebase.ts).
 
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../../firebase/config'; // adjust path if needed
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { firebaseConfig } from '@/app/firebase/config';
 
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /** Save notebook state for a user and mission */

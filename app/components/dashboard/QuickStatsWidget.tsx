@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { DashboardData } from '@/app/types/dashboard';
 import UserService from '@/lib/services/user';

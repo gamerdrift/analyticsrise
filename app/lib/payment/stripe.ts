@@ -1,5 +1,4 @@
 import { PaymentProvider } from './PaymentProvider';
-import type { FirebaseApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 /**
@@ -7,10 +6,10 @@ import { getFirestore, doc, setDoc } from 'firebase/firestore';
  * In a real implementation you would use the Stripe SDK server‑side.
  */
 export class StripeProvider implements PaymentProvider {
-  private app: FirebaseApp;
+  private app: any;
   private db = getFirestore();
 
-  constructor(app: FirebaseApp) {
+  constructor(app: any) {
     this.app = app;
   }
 

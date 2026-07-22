@@ -1,6 +1,7 @@
 'use client';
 // app/not-found.tsx
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function NotFound() {
   const router = useRouter();

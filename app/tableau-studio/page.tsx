@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import TableauStudioProvider from '@/app/tableau-studio/contexts/TableauStudioContext';
+import { TableauStudioProvider } from '@/app/tableau-studio/contexts/TableauStudioContext';
 import LeftPanel from '@/app/tableau-studio/components/layout/LeftPanel';
 import CenterPanel from '@/app/tableau-studio/components/layout/CenterPanel';
 import RightPanel from '@/app/tableau-studio/components/layout/RightPanel';

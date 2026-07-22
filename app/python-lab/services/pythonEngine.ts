@@ -16,10 +16,17 @@ export async function setExecutionMode(mode: 'pyodide' | 'cloud') {
 export async function executeCell(code: string): Promise<string> {
   const mode = (globalThis as any)._pyExecMode || execMode;
   if (mode === 'pyodide') {
-    if (!pyodide) {
-      // Load pyodide from CDN (version 0.24.1 as example)
-      const pyodidePkg = await import('https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js');
-      pyodide = await (pyodidePkg as any).loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' });
+    if (!pyodide && typeof window !== 'undefined') {
+      if (!(window as any).loadPyodide) {
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+          script.onload = () => resolve();
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+      pyodide = await (window as any).loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' });
     }
     try {
       const result = await pyodide.runPythonAsync(code);

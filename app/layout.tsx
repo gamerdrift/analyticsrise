@@ -5,7 +5,7 @@ import ThemeProvider from '@/app/components/ThemeProvider';
 import LoadingProvider from '@/lib/contexts/LoadingContext';
 import AuthProvider from '@/lib/contexts/AuthContext';
 import LanguageProvider from '@/lib/contexts/LanguageContext';
-import LearningProvider from '@/src/context/LearningContext';
+import { LearningProvider } from '@/src/context/LearningContext';
 import BrowserLanguageBanner from '@/app/components/i18n/BrowserLanguageBanner';
 import AIMentor from '@/src/components/AIMentor';
 import { Navbar } from '@/app/components/navigation/NavControls';

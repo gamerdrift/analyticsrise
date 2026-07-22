@@ -1,6 +1,8 @@
+'use client';
+
 // app/unified-workspace/page.tsx
 import React from 'react';
-import UnifiedWorkspaceProvider from './context/UnifiedWorkspaceContext';
+import { UnifiedWorkspaceProvider } from './context/UnifiedWorkspaceContext';
 import ProjectDashboard from './components/dashboard/ProjectDashboard';
 import ProjectTimeline from './components/timeline/ProjectTimeline';
 import PhaseManager from './components/phase/PhaseManager';

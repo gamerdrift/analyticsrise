@@ -159,3 +159,11 @@ export const PythonLabProvider = ({ children }: { children: ReactNode }) => {
     </PythonLabContext.Provider>
   );
 };
+
+export const usePythonLab = () => {
+  const context = React.useContext(PythonLabContext);
+  if (!context) {
+    throw new Error('usePythonLab must be used within a PythonLabProvider');
+  }
+  return context;
+};

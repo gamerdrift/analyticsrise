@@ -1,5 +1,5 @@
 // lib/engine/mission/missionEngine.ts
-import { Firestore, doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { User } from '@/lib/types';
 
 export interface Mission {
@@ -15,8 +15,10 @@ export interface Mission {
 }
 
 export class MissionEngine {
-  private missionsCol = collection(this.db, 'missions');
-  constructor(private db: Firestore) {}
+  private missionsCol;
+  constructor(private db: any) {
+    this.missionsCol = collection(this.db, 'missions');
+  }
 
   async getMission(id: string): Promise<Mission | null> {
     const snap = await getDoc(doc(this.missionsCol, id));
@@ -25,10 +27,10 @@ export class MissionEngine {
 
   async listAllMissions(): Promise<Mission[]> {
     const snap = await getDocs(this.missionsCol);
-    return snap.docs.map(d => d.data() as Mission);
+    return snap.docs.map((d: any) => d.data() as Mission);
   }
 
-  async listAvailableMissions(uid: string): Promise<Mission[]> {
+  async listAvailableMissions(_uid: string): Promise<Mission[]> {
     // For now, return all missions; client can filter by unlockLogic later.
     return this.listAllMissions();
   }

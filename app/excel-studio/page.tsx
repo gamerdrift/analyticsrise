@@ -1,5 +1,7 @@
+'use client';
+
 // app/excel-studio/page.tsx
-import ExcelStudioProvider from '@/app/excel-studio/contexts/ExcelStudioContext';
+import { ExcelStudioProvider } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import Toolbar from '@/app/excel-studio/components/Toolbar';
 import WorkbookTabs from '@/app/excel-studio/components/WorkbookTabs';
 import FormulaBar from '@/app/excel-studio/components/FormulaBar';

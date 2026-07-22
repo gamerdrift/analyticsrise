@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { getRemoteConfig, fetchAndActivate, getValue } from 'firebase/remote-config';
 import { initializeApp } from 'firebase/app';
@@ -27,6 +29,7 @@ export const FeatureFlagProvider = ({ children }: { children: ReactNode }) => {
     // Optional: set minimum fetch interval for dev
     remoteConfig.settings = {
       minimumFetchIntervalMillis: 3600000,
+      fetchTimeoutMillis: 60000,
     };
     fetchAndActivate(remoteConfig)
       .then(() => {

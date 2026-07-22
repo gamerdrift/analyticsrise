@@ -30,7 +30,7 @@ export default function LandingHero() {
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
           <span className="text-[10px] font-mono uppercase tracking-widest font-bold">
-            Practice. Master. Get Certified.
+            Practice. Master. Get Certified. • DEPLOYMENT VERIFIED
           </span>
         </motion.div>
 

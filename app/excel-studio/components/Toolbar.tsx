@@ -2,7 +2,7 @@
 // app/excel-studio/components/Toolbar.tsx
 import React from 'react';
 import { useExcelStudio } from '@/app/excel-studio/contexts/ExcelStudioContext';
-import { FiSave, FiUpload, FiDownload, FiUndo, FiRedo } from 'react-icons/fi';
+import { FiSave, FiRotateCcw, FiRotateCw } from 'react-icons/fi';
 
 export default function Toolbar() {
   const { dispatch } = useExcelStudio();
@@ -26,10 +26,10 @@ export default function Toolbar() {
         <FiSave size={18} />
       </button>
       <button onClick={handleUndo} className="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded" aria-label="Undo">
-        <FiUndo size={18} />
+        <FiRotateCcw size={18} />
       </button>
       <button onClick={handleRedo} className="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded" aria-label="Redo">
-        <FiRedo size={18} />
+        <FiRotateCw size={18} />
       </button>
     </header>
   );

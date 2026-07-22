@@ -1,7 +1,9 @@
+'use client';
+
 // app/unified-workspace/context/UnifiedWorkspaceContext.tsx
 import React, { createContext, useReducer, Dispatch, ReactNode, useEffect } from 'react';
-import { collection, doc, getDoc, setDoc, onSnapshot, Timestamp } from 'firebase/firestore';
-import { db } from '../../firebase'; // assume firebase init exports db
+import { collection, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase/config';
 
 /** Types **/
 export type PhaseStatus = 'locked' | 'active' | 'completed';
@@ -29,8 +31,8 @@ export interface Project {
   estimatedHours: number;
   thumbnailUrl?: string;
   summary: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export type Action =
@@ -84,13 +86,13 @@ export const UnifiedWorkspaceProvider: React.FC<{ children: ReactNode }> = ({ ch
   useEffect(() => {
     const projectId = 'demo-project';
     const docRef = doc(collection(db, 'projects'), projectId);
-    getDoc(docRef).then(snap => {
+    getDoc(docRef).then((snap: any) => {
       if (snap.exists()) {
         dispatch({ type: 'SET_PROJECT', payload: snap.data() as Project });
       }
     });
     // Real‑time updates
-    const unsub = onSnapshot(docRef, snap => {
+    const unsub = onSnapshot(docRef, (snap: any) => {
       if (snap.exists()) dispatch({ type: 'SET_PROJECT', payload: snap.data() as Project });
     });
     return () => unsub();

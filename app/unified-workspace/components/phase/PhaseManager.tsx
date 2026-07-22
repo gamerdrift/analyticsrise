@@ -1,3 +1,5 @@
+'use client';
+
 // app/unified-workspace/components/phase/PhaseManager.tsx
 import React, { useEffect } from 'react';
 import { useUnifiedWorkspace } from '../../context/UnifiedWorkspaceContext';
