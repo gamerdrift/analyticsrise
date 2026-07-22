@@ -36,25 +36,23 @@ export default function RegisterPage() {
     setSubmitting(true);
     setErrorMsg(null);
     try {
+      console.log('[Registration Workflow] Step 1: Creating Firebase Auth Account for:', email);
       const cred = await AuthService.signUpWithEmail(email, password);
       const uid = cred.user.uid;
-      await UserService.createUserProfile(uid, email, fullName, 'student');
-      // Store additional fields
-      await UserService.updateUserProfile(uid, {
-        profile: {
-          displayName: fullName,
-          email,
-          avatarUrl: '',
-          role: 'student',
-          country,
-          newsletter,
-        },
-      });
-      await AuthService.logout(); // Ensure email verification required
-      router.replace('/verify-email');
-    } catch (err) {
+      console.log('[Registration Workflow] Step 2: Account Created. UID:', uid);
+
+      console.log('[Registration Workflow] Step 3: Writing Firestore Profile Document...');
+      await UserService.createUserProfile(uid, email, fullName, 'student', { country, newsletter });
+
+      console.log('[Registration Workflow] Step 4: Profile Created. Redirecting to /dashboard...');
+      router.replace('/dashboard');
+    } catch (err: any) {
+      console.error('[Registration Workflow Error Captured]:', err);
       const appErr = handleFirebaseError(err);
-      setErrorMsg(appErr.message);
+      const errorDetail = err?.code 
+        ? `[${err.code}] ${err.message || appErr.message}` 
+        : (appErr.message || 'Registration failed.');
+      setErrorMsg(errorDetail);
     } finally {
       setSubmitting(false);
     }

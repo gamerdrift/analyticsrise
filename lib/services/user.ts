@@ -23,14 +23,18 @@ export const UserService = {
     userId: string, 
     email: string, 
     displayName: string, 
-    role: UserRole = 'student'
+    role: UserRole = 'student',
+    extraData?: { country?: string; newsletter?: boolean }
   ): Promise<void> {
     const defaultData = {
       profile: {
         displayName,
         email,
         avatarUrl: '',
-        role
+        role,
+        country: extraData?.country || '',
+        newsletter: extraData?.newsletter || false,
+        joinDate: new Date().toISOString().split('T')[0],
       },
       telemetry: {
         xp: DEFAULT_TELEMETRY.XP,

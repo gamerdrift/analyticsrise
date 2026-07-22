@@ -24,9 +24,7 @@ function isFirebaseError(err: unknown): err is FirebaseErrorLike {
     typeof err === 'object' &&
     err !== null &&
     'code' in err &&
-    'message' in err &&
-    'name' in err &&
-    (err as any).name === 'FirebaseError'
+    'message' in err
   );
 }
 
@@ -37,9 +35,11 @@ function isFirebaseError(err: unknown): err is FirebaseErrorLike {
  * @returns An AppError with a human-readable message and error code
  */
 export function handleFirebaseError(err: unknown): AppError {
+  console.error('[Firebase Diagnostic Error Captured]:', err);
+
   if (isFirebaseError(err)) {
-    let message = 'An unexpected system error occurred.';
     const code = err.code;
+    let message = err.message || 'Firebase error occurred.';
 
     switch (code) {
       // Firebase Authentication Errors
@@ -66,6 +66,13 @@ export function handleFirebaseError(err: unknown): AppError {
         break;
       case 'auth/requires-recent-login':
         message = 'Security requirement: please log out and log back in to perform this action.';
+        break;
+      case 'auth/operation-not-allowed':
+        message = 'Email/Password authentication is disabled in the Firebase console.';
+        break;
+      case 'auth/invalid-api-key':
+      case 'auth/api-key-not-valid':
+        message = 'Invalid Firebase API Key configuration.';
         break;
       
       // Cloud Firestore Errors
@@ -97,6 +104,10 @@ export function handleFirebaseError(err: unknown): AppError {
         break;
       case 'storage/unknown':
         message = 'An unknown file upload error occurred.';
+        break;
+      default:
+        // Always include code and message for unhandled errors
+        message = `[${code}] ${err.message || 'Operation failed.'}`;
         break;
     }
 
