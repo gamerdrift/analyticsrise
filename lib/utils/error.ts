@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 /**
  * Custom application-level error class
  */
@@ -29,94 +31,95 @@ function isFirebaseError(err: unknown): err is FirebaseErrorLike {
 }
 
 /**
- * Map Firebase Auth, Firestore, and Storage errors to user-friendly messages
+ * Environment-Aware Firebase Error Handling (Module 1)
  * 
- * @param err - Unknown caught error
- * @returns An AppError with a human-readable message and error code
+ * Development:
+ *  - Displays raw Firebase error codes and detailed messages in the UI.
+ *  - Emits verbose console stack traces for developer debugging.
+ * 
+ * Production:
+ *  - Displays friendly user-facing messages without exposing stack traces or implementation details.
+ *  - Logs full error diagnostics to internal operational loggers.
  */
 export function handleFirebaseError(err: unknown): AppError {
-  console.error('[Firebase Diagnostic Error Captured]:', err);
+  const isDev = process.env.NODE_ENV !== 'production';
+
+  // Always log detailed diagnostic error to operational logger
+  logger.error('AUTH', 'Captured Firebase Error:', err);
 
   if (isFirebaseError(err)) {
     const code = err.code;
-    let message = err.message || 'Firebase error occurred.';
+    let friendlyMessage = 'An unexpected error occurred. Please try again or contact support.';
 
     switch (code) {
       // Firebase Authentication Errors
       case 'auth/user-not-found':
-        message = 'No account matches this email address.';
+        friendlyMessage = 'No account matches this email address.';
         break;
       case 'auth/wrong-password':
-        message = 'Incorrect password. Please try again.';
+      case 'auth/invalid-credential':
+        friendlyMessage = 'Incorrect email or password. Please check your credentials.';
         break;
       case 'auth/email-already-in-use':
-        message = 'An account already exists with this email address.';
+        friendlyMessage = 'An account already exists with this email address.';
         break;
       case 'auth/invalid-email':
-        message = 'Please enter a valid email address.';
+        friendlyMessage = 'Please enter a valid email address.';
         break;
       case 'auth/weak-password':
-        message = 'Your password is too weak. Please use a stronger password.';
+        friendlyMessage = 'Your password is too weak. Please use at least 6 characters.';
         break;
       case 'auth/user-disabled':
-        message = 'This account has been disabled. Please contact support.';
+        friendlyMessage = 'This account has been disabled. Please contact support.';
         break;
       case 'auth/popup-closed-by-user':
-        message = 'The login window was closed before completion.';
+        friendlyMessage = 'The authentication window was closed before completing.';
         break;
       case 'auth/requires-recent-login':
-        message = 'Security requirement: please log out and log back in to perform this action.';
+        friendlyMessage = 'For security reasons, please log out and log back in to perform this action.';
         break;
       case 'auth/operation-not-allowed':
-        message = 'Email/Password authentication is disabled in the Firebase console.';
+        friendlyMessage = 'This authentication method is currently unavailable.';
         break;
-      case 'auth/invalid-api-key':
-      case 'auth/api-key-not-valid':
-        message = 'Invalid Firebase API Key configuration.';
-        break;
-      
+
       // Cloud Firestore Errors
       case 'permission-denied':
-        message = 'Access Denied: You do not have permission to read or write this record.';
+        friendlyMessage = 'Access Denied: You do not have permission to access or modify this resource.';
         break;
       case 'not-found':
-        message = 'Resource not found: The database document could not be located.';
+        friendlyMessage = 'Resource not found: The requested item could not be located.';
         break;
       case 'already-exists':
-        message = 'Conflict: The record you are trying to write already exists.';
+        friendlyMessage = 'Conflict: The record you are trying to create already exists.';
         break;
       case 'unavailable':
-        message = 'Database offline: Connection lost. Check your network link.';
+        friendlyMessage = 'Service temporarily offline. Please check your network connection.';
         break;
       case 'cancelled':
-        message = 'The transaction was cancelled.';
+        friendlyMessage = 'The operation was cancelled.';
         break;
-      
-      // Firebase Storage Errors
-      case 'storage/unauthorized':
-        message = 'Access Denied: You are not authorized to upload to this location.';
-        break;
-      case 'storage/canceled':
-        message = 'Upload aborted by the client.';
-        break;
-      case 'storage/quota-exceeded':
-        message = 'System quota exceeded. Please contact administrator.';
-        break;
-      case 'storage/unknown':
-        message = 'An unknown file upload error occurred.';
-        break;
+
       default:
-        // Always include code and message for unhandled errors
-        message = `[${code}] ${err.message || 'Operation failed.'}`;
+        // In Development, include raw code and message
+        if (isDev) {
+          friendlyMessage = `[${code}] ${err.message || 'Firebase Operation Failed'}`;
+        }
         break;
     }
 
-    return new AppError(message, code, err);
+    // In Development, append code if not already formatted
+    const finalMessage = isDev && !friendlyMessage.startsWith('[')
+      ? `[${code}] ${friendlyMessage}`
+      : friendlyMessage;
+
+    return new AppError(finalMessage, code, err);
   }
 
   if (err instanceof Error) {
-    return new AppError(err.message, 'system_error', err);
+    const devMessage = isDev ? `[SystemError] ${err.message}` : 'An unexpected system error occurred.';
+    return new AppError(devMessage, 'system_error', err);
   }
 
-  return new AppError('An unexpected error occurred.', 'unknown', err);
+  const fallbackMsg = isDev ? '[UnknownError] Non-Error object thrown.' : 'An unexpected error occurred.';
+  return new AppError(fallbackMsg, 'unknown', err);
 }

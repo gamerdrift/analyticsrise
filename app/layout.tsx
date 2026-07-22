@@ -8,6 +8,7 @@ import LanguageProvider from '@/lib/contexts/LanguageContext';
 import { LearningProvider } from '@/src/context/LearningContext';
 import BrowserLanguageBanner from '@/app/components/i18n/BrowserLanguageBanner';
 import AIMentor from '@/src/components/AIMentor';
+import BetaFeedbackModal from '@/app/components/feedback/BetaFeedbackModal';
 import { Navbar } from '@/app/components/navigation/NavControls';
 import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
 import Link from 'next/link';
@@ -116,6 +117,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </div>
                   <BrowserLanguageBanner />
                   <AIMentor />
+                  <BetaFeedbackModal />
                 </ThemeProvider>
               </LearningProvider>
             </LanguageProvider>
