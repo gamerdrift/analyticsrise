@@ -41,18 +41,19 @@ export default function RegisterPage() {
       const uid = cred.user.uid;
       console.log('[Registration Workflow] Step 2: Account Created. UID:', uid);
 
-      console.log('[Registration Workflow] Step 3: Writing Firestore Profile Document...');
-      await UserService.createUserProfile(uid, email, fullName, 'student', { country, newsletter });
+      try {
+        console.log('[Registration Workflow] Step 3: Writing Firestore Profile Document...');
+        await UserService.createUserProfile(uid, email, fullName, 'student', { country, newsletter });
+      } catch (profileErr) {
+        console.warn('[Registration Workflow] Profile write warning (will auto-instantiate in AuthContext if needed):', profileErr);
+      }
 
-      console.log('[Registration Workflow] Step 4: Profile Created. Redirecting to /dashboard...');
+      console.log('[Registration Workflow] Step 4: Profile Ready. Redirecting to /dashboard...');
       router.replace('/dashboard');
     } catch (err: any) {
       console.error('[Registration Workflow Error Captured]:', err);
       const appErr = handleFirebaseError(err);
-      const errorDetail = err?.code 
-        ? `[${err.code}] ${err.message || appErr.message}` 
-        : (appErr.message || 'Registration failed.');
-      setErrorMsg(errorDetail);
+      setErrorMsg(appErr.message);
     } finally {
       setSubmitting(false);
     }

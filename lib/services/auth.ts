@@ -2,6 +2,7 @@ import { auth } from '../firebase/config';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
@@ -16,7 +17,7 @@ type FirebaseUserCredential = Awaited<ReturnType<typeof signInWithEmailAndPasswo
 /**
  * Authentication Service
  * 
- * Exposes methods to log in, register, and sign out using Firebase Auth.
+ * Exposes methods to log in, register, reset password, and sign out using Firebase Auth.
  */
 export const AuthService = {
   /**
@@ -31,6 +32,13 @@ export const AuthService = {
    */
   async signUpWithEmail(email: string, pass: string): Promise<FirebaseUserCredential> {
     return createUserWithEmailAndPassword(auth, email, pass);
+  },
+
+  /**
+   * Send Password Reset Email
+   */
+  async resetPassword(email: string): Promise<void> {
+    return sendPasswordResetEmail(auth, email);
   },
 
   /**
@@ -65,4 +73,5 @@ export const AuthService = {
     return null;
   }
 };
+
 export default AuthService;

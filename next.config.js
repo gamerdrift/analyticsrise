@@ -2,10 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  // swcMinify removed due to incompatibility
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
+  staticPageGenerationTimeout: 300,
   images: {
     unoptimized: true,
     remotePatterns: [
