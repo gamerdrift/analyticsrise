@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Input, PasswordInput, Checkbox } from '@/app/components/forms/FormControls';
 import { Button } from '@/app/components/ui/Button';
 import { LoadingOverlay } from '@/app/components/ui/Loading';
@@ -91,12 +92,12 @@ export default function LoginPage() {
             </Button>
           </div>
           <div className="flex justify-between text-xs text-slate-400">
-            <a href="/forgot-password" className="hover:underline">
+            <Link href="/forgot-password" className="hover:underline">
               Forgot Password?
-            </a>
-            <a href="/register" className="hover:underline">
+            </Link>
+            <Link href="/register" className="hover:underline">
               Register Instead
-            </a>
+            </Link>
           </div>
           <footer className="mt-6 text-center text-xs text-slate-500">
             <a href="/privacy" className="mx-2 hover:underline">Privacy</a>

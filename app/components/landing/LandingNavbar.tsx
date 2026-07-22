@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AUTH_NAV_ROUTES } from '@/lib/config/navigation';
 
 export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function LandingNavbar() {
     { name: 'Home', href: '/' },
     { name: 'Learning Paths', href: '#paths' },
     { name: 'Simulators', href: '#simulators' },
-    { name: 'Career Hub', href: '/career' },
+    { name: 'Career Hub', href: '/career-hub' },
     { name: 'Pricing', href: '#pricing' },
   ];
 
@@ -46,13 +47,13 @@ export default function LandingNavbar() {
         <div className="hidden md:flex items-center gap-4">
           <LanguageSwitcher variant="compact" className="z-[100]" />
           <Link
-            href="/login"
+            href={AUTH_NAV_ROUTES.login}
             className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-3 py-2"
           >
             Login
           </Link>
           <Link
-            href="/register"
+            href={AUTH_NAV_ROUTES.register}
             className="px-5 py-2.5 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
           >
             Register
@@ -62,7 +63,7 @@ export default function LandingNavbar() {
         {/* Mobile Navigation Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-slate-400 hover:text-white focus:outline-none p-2"
+          className="md:hidden text-slate-400 hover:text-white focus:outline-none p-2 cursor-pointer"
           aria-label="Toggle menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,14 +101,14 @@ export default function LandingNavbar() {
                 <LanguageSwitcher variant="compact" className="w-full" />
               </div>
               <Link
-                href="/login"
+                href={AUTH_NAV_ROUTES.login}
                 onClick={() => setMobileOpen(false)}
                 className="text-center text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold py-2"
               >
                 Login
               </Link>
               <Link
-                href="/register"
+                href={AUTH_NAV_ROUTES.register}
                 onClick={() => setMobileOpen(false)}
                 className="w-full text-center py-3 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-xs font-bold tracking-widest uppercase bg-[#00E5FF]/5"
               >

@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Input, PasswordInput, Checkbox, Select } from '@/app/components/forms/FormControls';
 import { Button } from '@/app/components/ui/Button';
 import { LoadingOverlay } from '@/app/components/ui/Loading';
@@ -86,7 +87,7 @@ export default function RegisterPage() {
             </Button>
           </form>
           <div className="flex justify-between text-xs text-slate-400">
-            <a href="/login" className="hover:underline">Already have an account? Login</a>
+            <Link href="/login" className="hover:underline">Already have an account? Login</Link>
           </div>
         </div>
       </section>

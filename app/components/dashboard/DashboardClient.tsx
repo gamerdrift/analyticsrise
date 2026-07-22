@@ -7,7 +7,6 @@ import { SkeletonLoader } from '@/app/components/feedback/FeedbackControls';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { useLanguage } from '@/lib/i18n';
 import CareerRoadmap from '@/app/components/roadmap/CareerRoadmap';
-import AIMentor from '@/src/components/AIMentor';
 import { useGamification } from '@/lib/contexts/GamificationContext';
 
 import {
@@ -457,9 +456,6 @@ export default function DashboardClient() {
             </div>
           </div>
         </div>
-
-        {/* Embedded AI Mentor Drawer at bottom of dashboard */}
-        <AIMentor mode="floating" title="AI Analytics Mentor" />
       </div>
     </DashboardLayout>
   );
