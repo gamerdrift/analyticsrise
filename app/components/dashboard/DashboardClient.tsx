@@ -238,6 +238,48 @@ export default function DashboardClient() {
           </div>
         </section>
 
+        {/* ─── CAREER INTELLIGENCE DASHBOARD TELEMETRY (MODULE G) ────────────────── */}
+        <section className="p-6 rounded-2xl border border-white/10 bg-[#0D1117]/90 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded bg-[#00E5FF]/10 text-[#00E5FF] font-mono font-bold text-[10px] uppercase border border-[#00E5FF]/20">
+                MODULE G • CAREER INTELLIGENCE
+              </span>
+              <h3 className="text-sm font-bold font-display text-white uppercase tracking-wider">
+                Career Growth & Job Readiness Telemetry
+              </h3>
+            </div>
+            <Link href="/career-hub">
+              <button className="text-xs font-mono text-[#00E5FF] font-bold hover:underline">
+                Open Career Hub →
+              </button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+            <div className="p-4 rounded-xl bg-[#05070B] border border-white/5 space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase block">ATS Resume Score</span>
+              <span className="text-2xl font-bold font-display text-[#00E5FF]">85 / 100</span>
+              <span className="text-[9px] text-emerald-400 block">Enterprise Template</span>
+            </div>
+            <div className="p-4 rounded-xl bg-[#05070B] border border-white/5 space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase block">Public Portfolio</span>
+              <span className="text-2xl font-bold font-display text-white">92% COMPLETE</span>
+              <span className="text-[9px] text-[#00E5FF] block">Live at /portfolio/alex-rivera</span>
+            </div>
+            <div className="p-4 rounded-xl bg-[#05070B] border border-white/5 space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase block">Target Role Readiness</span>
+              <span className="text-2xl font-bold font-display text-emerald-400">88% MATCH</span>
+              <span className="text-[9px] text-slate-400 block">Target: Data Analyst</span>
+            </div>
+            <div className="p-4 rounded-xl bg-[#05070B] border border-white/5 space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase block">Applications & Interviews</span>
+              <span className="text-2xl font-bold font-display text-amber-400">3 APPLIED</span>
+              <span className="text-[9px] text-amber-400 block">1 Technical Interview</span>
+            </div>
+          </div>
+        </section>
+
         {/* ─── 3. CONTINUE LEARNING HERO CARD ────────────────────────────────────── */}
         <section className="glass-panel p-6 rounded-2xl border border-[#00E5FF]/30 bg-[#0D1117]/90 relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
