@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useExcelStudio } from '@/app/excel-studio/contexts/ExcelStudioContext';
+import React from 'react';
+import { useExcelStudio, CellFormatting } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { exportToCSV, exportToTSV, exportToPDF } from '@/lib/utils/excel/exportManager';
 import {
   Bold,
@@ -10,30 +10,23 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  Plus,
-  Trash2,
-  Lock,
-  EyeOff,
   Combine,
   Search,
   Palette,
   Database,
   BarChart2,
-  FileSpreadsheet,
   Download,
-  Bot,
   Undo2,
   Redo2,
   Keyboard,
-  Sparkles,
 } from 'lucide-react';
 
 interface Props {
-  onOpenSearch: () => void;
-  onOpenCondFormat: () => void;
-  onOpenDatasets: () => void;
-  onOpenCharts: () => void;
-  onOpenShortcuts: () => void;
+  onOpenSearch?: () => void;
+  onOpenCondFormat?: () => void;
+  onOpenDatasets?: () => void;
+  onOpenCharts?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
 export default function Toolbar({
@@ -44,12 +37,12 @@ export default function Toolbar({
   onOpenShortcuts,
 }: Props) {
   const { state, dispatch } = useExcelStudio();
-  const { activeSheetId, sheets, selectedCell, selectionRange } = state;
+  const { activeSheetId, sheets, selectedCell } = state;
   const sheet = sheets[activeSheetId];
 
   const activeCellObj = selectedCell && sheet ? sheet.cells[`${selectedCell.row},${selectedCell.col}`] : null;
 
-  const handleApplyFormatting = (formatting: Parameters<typeof dispatch>[0] extends { type: 'APPLY_FORMATTING'; payload: { formatting: infer F } } ? F : never) => {
+  const handleApplyFormatting = (formatting: Partial<CellFormatting>) => {
     dispatch({ type: 'APPLY_FORMATTING', payload: { formatting } });
   };
 
@@ -224,7 +217,6 @@ export default function Toolbar({
 
         {/* Colors */}
         <div className="flex items-center gap-2">
-          {/* Fill Color */}
           <label className="flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white text-[11px]">
             <span>Fill:</span>
             <input
@@ -235,7 +227,6 @@ export default function Toolbar({
             />
           </label>
 
-          {/* Text Color */}
           <label className="flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white text-[11px]">
             <span>Text:</span>
             <input
