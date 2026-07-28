@@ -1,4 +1,3 @@
-// app/login/page.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -10,7 +9,7 @@ import { LoadingOverlay } from '@/app/components/ui/Loading';
 import { AuthService } from '@/lib/services/auth';
 import { handleFirebaseError } from '@/lib/utils/error';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { Globe as IconBrandGoogle, GitBranch as IconBrandGithub } from 'lucide-react';
+import { Globe as IconBrandGoogle, GitBranch as IconBrandGithub, Mail } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,7 +27,6 @@ export default function LoginPage() {
     setErrorMsg(null);
     try {
       await AuthService.loginWithEmail(email, password);
-      // Remember Me is handled by AuthContext cookie default (7 days). No extra work.
       router.replace('/dashboard');
     } catch (err) {
       const appErr = handleFirebaseError(err);
@@ -61,18 +59,25 @@ export default function LoginPage() {
   return (
     <>
       {(authLoading || submitting) && <LoadingOverlay message="Logging in..." />}
-      <section className="flex min-h-screen items-center justify-center bg-[#05070B] p-4">
-        <div className="w-full max-w-md space-y-6 rounded-xl bg-[#0D1117] p-8 shadow-2xl backdrop-blur-md">
-          <h1 className="text-center text-2xl font-display uppercase tracking-widest text-[#00E5FF]">
-            AnalyticsRise Login
-          </h1>
+      <section className="flex min-h-screen items-center justify-center bg-[#05070B] p-4 font-mono">
+        <div className="w-full max-w-md space-y-6 rounded-2xl bg-[#0D1117] p-8 shadow-2xl border border-white/10 backdrop-blur-md">
+          <div className="text-center space-y-2">
+            <h1 className="text-2xl font-bold font-display uppercase tracking-widest text-[#00E5FF]">
+              AnalyticsRise Login
+            </h1>
+            <p className="text-xs text-slate-400">
+              Access your personal data learning workspace
+            </p>
+          </div>
+
           {errorMsg && (
-            <div className="rounded bg-[#FF1744]/20 p-3 text-[#FF1744] text-sm">
+            <div className="rounded-xl bg-rose-500/10 border border-rose-500/30 p-3 text-rose-400 text-xs">
               {errorMsg}
             </div>
           )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <PasswordInput label="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <Checkbox
               label="Remember Me"
@@ -83,7 +88,8 @@ export default function LoginPage() {
               Login
             </Button>
           </form>
-          <div className="flex flex-col space-y-3">
+
+          <div className="flex flex-col space-y-3 pt-2 border-t border-white/5">
             <Button variant="secondary" size="md" onClick={handleGoogle} icon={<IconBrandGoogle size={16} />} iconPosition="left">
               Continue with Google
             </Button>
@@ -91,19 +97,25 @@ export default function LoginPage() {
               Continue with GitHub
             </Button>
           </div>
-          <div className="flex justify-between text-xs text-slate-400">
-            <Link href="/forgot-password" className="hover:underline">
+
+          <div className="flex justify-between text-xs text-slate-400 pt-2">
+            <Link href="/forgot-password" className="hover:text-white transition-colors">
               Forgot Password?
             </Link>
-            <Link href="/register" className="hover:underline">
-              Register Instead
+            <Link href="/register" className="hover:text-[#00E5FF] transition-colors">
+              Create Account
             </Link>
           </div>
-          <footer className="mt-6 text-center text-xs text-slate-500">
-            <a href="/privacy" className="mx-2 hover:underline">Privacy</a>
-            <a href="/terms" className="mx-2 hover:underline">Terms</a>
-            <a href="/support" className="mx-2 hover:underline">Support</a>
-          </footer>
+
+          <div className="pt-4 border-t border-white/5 text-center text-xs text-slate-500 space-y-2">
+            <p>Need support? Contact our help desk:</p>
+            <a
+              href="mailto:support@analyticsrise.com"
+              className="inline-flex items-center gap-1.5 text-[#00E5FF] font-mono font-bold hover:underline"
+            >
+              <Mail className="w-3.5 h-3.5" /> support@analyticsrise.com
+            </a>
+          </div>
         </div>
       </section>
     </>

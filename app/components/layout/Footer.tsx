@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Mail, ShieldCheck, Lock, Sparkles, Code, Cpu, Award } from 'lucide-react';
+import { Mail, ShieldCheck, Lock, Sparkles, Cpu, Clock, CheckCircle2 } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -10,131 +10,128 @@ export default function Footer() {
       {/* Background Neon Accent Glow */}
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#00E5FF]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 relative z-10">
-        {/* Column 1: Brand & Overview */}
-        <div className="space-y-4 md:col-span-1">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-lg font-display tracking-tighter shadow-md shadow-[#00E5FF]/20">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 relative z-10">
+        {/* Column 1: AnalyticsRise Brand */}
+        <div className="space-y-4 sm:col-span-2 md:col-span-1">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-base font-display tracking-tighter shadow-md shadow-[#00E5FF]/20">
               AR
             </div>
             <span className="font-display font-black text-white text-base tracking-wider uppercase">
               Analytics<span className="text-[#00E5FF]">Rise</span>
             </span>
           </Link>
-          <p className="text-slate-400 text-xs leading-relaxed">
-            The premier enterprise-grade, browser-based data analytics simulator platform. Master SQL, Excel, Python, Power BI, and Tableau through hands-on practice.
+          <p className="text-slate-400 text-[11px] leading-relaxed">
+            The premier enterprise-grade, browser-native software simulator platform. Practice SQL, Excel Studio Pro, Python, Power BI, and Tableau in interactive replica interfaces.
           </p>
-          <div className="flex items-center gap-2 text-[#00E5FF] text-[10px] font-bold uppercase tracking-widest pt-1">
-            <ShieldCheck className="w-4 h-4" /> SSL Protection Verified
-          </div>
-        </div>
-
-        {/* Column 2: Navigation & Simulators */}
-        <div>
-          <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
-            Navigation & Simulators
-          </h3>
-          <ul className="space-y-2 text-xs">
+          <ul className="space-y-1.5 text-xs">
             <li>
-              <Link href="/about" className="hover:text-[#00E5FF] transition-colors">
-                About Us
-              </Link>
+              <Link href="/about" className="hover:text-[#00E5FF] transition-colors">About AnalyticsRise</Link>
             </li>
             <li>
-              <Link href="/courses" className="hover:text-[#00E5FF] transition-colors">
-                Courses & Paths
-              </Link>
+              <Link href="/contact" className="hover:text-[#00E5FF] transition-colors">Contact Support</Link>
             </li>
-            <li>
-              <Link href="/simulators" className="hover:text-[#00E5FF] transition-colors">
-                All Simulators
-              </Link>
+            <li className="text-slate-500 flex items-center gap-1.5">
+              <span>Careers</span> <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-amber-400 font-bold uppercase">Coming Soon</span>
             </li>
-            <li>
-              <Link href="/excel-studio" className="hover:text-[#00E5FF] transition-colors">
-                Excel Studio Pro
-              </Link>
-            </li>
-            <li>
-              <Link href="/career-hub" className="hover:text-[#00E5FF] transition-colors">
-                Career Hub
-              </Link>
-            </li>
-            <li>
-              <Link href="/assessments" className="hover:text-[#00E5FF] transition-colors">
-                Skill Assessments
-              </Link>
-            </li>
-            <li>
-              <Link href="/certifications" className="hover:text-[#00E5FF] transition-colors">
-                Certifications
-              </Link>
+            <li className="text-slate-500 flex items-center gap-1.5">
+              <span>Engineering Blog</span> <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-amber-400 font-bold uppercase">Coming Soon</span>
             </li>
           </ul>
         </div>
 
-        {/* Column 3: Trust & Platform */}
+        {/* Column 2: Learning Tracks */}
         <div>
           <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
-            Support & Resources
+            Learning
           </h3>
           <ul className="space-y-2 text-xs">
             <li>
-              <Link href="/contact" className="hover:text-[#00E5FF] transition-colors">
-                Contact Us
-              </Link>
+              <Link href="/courses" className="hover:text-[#00E5FF] transition-colors">All Courses</Link>
             </li>
             <li>
-              <Link href="/help" className="hover:text-[#00E5FF] transition-colors">
-                Help & Documentation
-              </Link>
+              <Link href="/practice" className="hover:text-[#00E5FF] transition-colors">Practice Labs</Link>
             </li>
             <li>
-              <Link href="/faq" className="hover:text-[#00E5FF] transition-colors">
-                Frequently Asked Questions (FAQ)
-              </Link>
+              <Link href="/simulators" className="hover:text-[#00E5FF] transition-colors">Software Simulators</Link>
             </li>
             <li>
-              <Link href="/community" className="hover:text-[#00E5FF] transition-colors">
-                Community Forum
-              </Link>
+              <Link href="/excel-studio" className="hover:text-[#00E5FF] transition-colors">Excel Studio Pro</Link>
             </li>
             <li>
-              <Link href="/privacy" className="hover:text-[#00E5FF] transition-colors">
-                Privacy Policy
-              </Link>
+              <Link href="/certifications" className="hover:text-[#00E5FF] transition-colors">Certifications</Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-[#00E5FF] transition-colors">
-                Terms of Service
-              </Link>
-            </li>
-            <li>
-              <Link href="/cookies" className="hover:text-[#00E5FF] transition-colors">
-                Cookie Policy
-              </Link>
+              <Link href="/career-hub" className="hover:text-[#00E5FF] transition-colors">Career Roadmaps</Link>
             </li>
           </ul>
         </div>
 
-        {/* Column 4: Contact & Support Email */}
+        {/* Column 3: Learner Support */}
         <div>
           <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
-            Official Support
+            Support
+          </h3>
+          <ul className="space-y-2 text-xs">
+            <li>
+              <Link href="/help" className="hover:text-[#00E5FF] transition-colors">Help Center</Link>
+            </li>
+            <li>
+              <Link href="/faq" className="hover:text-[#00E5FF] transition-colors">FAQ & Solutions</Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-[#00E5FF] transition-colors">Report a Bug</Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-[#00E5FF] transition-colors">Beta Feedback</Link>
+            </li>
+            <li>
+              <Link href="/community" className="hover:text-[#00E5FF] transition-colors">Community Forum</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 4: Legal & Policies */}
+        <div>
+          <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
+            Legal & Compliance
+          </h3>
+          <ul className="space-y-2 text-xs">
+            <li>
+              <Link href="/privacy" className="hover:text-[#00E5FF] transition-colors">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link href="/terms" className="hover:text-[#00E5FF] transition-colors">Terms of Service</Link>
+            </li>
+            <li>
+              <Link href="/cookies" className="hover:text-[#00E5FF] transition-colors">Cookie Policy</Link>
+            </li>
+            <li className="pt-2 text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> SSL Encrypted
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 5: Official Support Desk */}
+        <div>
+          <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
+            Official Desk
           </h3>
           <div className="space-y-3">
-            <p className="text-slate-400 text-xs">
-              Have questions or need assistance? Reach out to our dedicated support team:
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Official Learner & Technical Support Email:
             </p>
             <a
               href="mailto:support@analyticsrise.com"
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-bold hover:bg-[#00E5FF]/20 transition-all text-xs"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-bold hover:bg-[#00E5FF]/20 transition-all text-xs break-all"
             >
-              <Mail className="w-4 h-4" /> support@analyticsrise.com
+              <Mail className="w-4 h-4 shrink-0" /> support@analyticsrise.com
             </a>
-            <div className="text-[10px] text-slate-500 space-y-1 pt-2">
-              <p>⚡ Typical response time: &lt; 24 hours</p>
-              <p>🌐 Business hours: 9:00 AM – 6:00 PM EST</p>
+            <div className="text-[10px] text-slate-500 space-y-1 pt-1">
+              <p className="flex items-center gap-1">
+                <Clock className="w-3 h-3 text-[#00E5FF]" /> SLA: &lt; 24 Hours
+              </p>
+              <p>🌐 Mon – Fri: 9 AM – 6 PM EST</p>
             </div>
           </div>
         </div>
@@ -147,10 +144,13 @@ export default function Footer() {
             <Lock className="w-3 h-3 text-[#00E5FF]" /> Secure Authentication
           </span>
           <span className="flex items-center gap-1 text-slate-400">
-            <Sparkles className="w-3 h-3 text-amber-400" /> AI Powered Mentorship
+            <Sparkles className="w-3 h-3 text-amber-400" /> AI-Powered Learning
           </span>
           <span className="flex items-center gap-1 text-slate-400">
             <Cpu className="w-3 h-3 text-emerald-400" /> Real Business Datasets
+          </span>
+          <span className="flex items-center gap-1 text-slate-400">
+            <CheckCircle2 className="w-3 h-3 text-[#00E5FF]" /> Continuous Updates
           </span>
         </div>
         <div>

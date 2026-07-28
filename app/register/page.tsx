@@ -1,4 +1,3 @@
-// app/register/page.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -12,6 +11,7 @@ import { UserService } from '@/lib/services/user';
 import { handleFirebaseError } from '@/lib/utils/error';
 import { evaluatePasswordStrength } from '@/lib/utils/password';
 import { PasswordStrengthMeter } from '@/app/components/ui/PasswordStrengthMeter';
+import { Mail } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -37,22 +37,17 @@ export default function RegisterPage() {
     setSubmitting(true);
     setErrorMsg(null);
     try {
-      console.log('[Registration Workflow] Step 1: Creating Firebase Auth Account for:', email);
       const cred = await AuthService.signUpWithEmail(email, password);
       const uid = cred.user.uid;
-      console.log('[Registration Workflow] Step 2: Account Created. UID:', uid);
 
       try {
-        console.log('[Registration Workflow] Step 3: Writing Firestore Profile Document...');
         await UserService.createUserProfile(uid, email, fullName, 'student', { country, newsletter });
       } catch (profileErr) {
-        console.warn('[Registration Workflow] Profile write warning (will auto-instantiate in AuthContext if needed):', profileErr);
+        console.warn('[Registration Workflow] Profile write warning:', profileErr);
       }
 
-      console.log('[Registration Workflow] Step 4: Profile Ready. Redirecting to /dashboard...');
       router.replace('/dashboard');
     } catch (err: any) {
-      console.error('[Registration Workflow Error Captured]:', err);
       const appErr = handleFirebaseError(err);
       setErrorMsg(appErr.message);
     } finally {
@@ -62,32 +57,63 @@ export default function RegisterPage() {
 
   return (
     <>
-      {(submitting) && <LoadingOverlay message="Creating account..." />}
-      <section className="flex min-h-screen items-center justify-center bg-[#05070B] p-4">
-        <div className="w-full max-w-lg space-y-6 rounded-xl bg-[#0D1117] p-8 shadow-2xl backdrop-blur-md">
-          <h1 className="text-center text-2xl font-display uppercase tracking-widest text-[#00E5FF]">
-            Create Your AnalyticsRise Account
-          </h1>
+      {submitting && <LoadingOverlay message="Creating account..." />}
+      <section className="flex min-h-screen items-center justify-center bg-[#05070B] p-4 font-mono">
+        <div className="w-full max-w-lg space-y-6 rounded-2xl bg-[#0D1117] p-8 shadow-2xl border border-white/10 backdrop-blur-md">
+          <div className="text-center space-y-2">
+            <h1 className="text-2xl font-bold font-display uppercase tracking-widest text-[#00E5FF]">
+              Create Your AnalyticsRise Account
+            </h1>
+            <p className="text-xs text-slate-400">
+              Join thousands of learners mastering data software in-browser
+            </p>
+          </div>
+
           {errorMsg && (
-            <div className="rounded bg-[#FF1744]/20 p-3 text-[#FF1744] text-sm">
+            <div className="rounded-xl bg-rose-500/10 border border-rose-500/30 p-3 text-rose-400 text-xs">
               {errorMsg}
             </div>
           )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input label="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-            <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input label="Email Address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <PasswordInput label="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <PasswordStrengthMeter strength={passwordStrength} />
             <PasswordInput label="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-            <Select label="Country" options={[{value:'', label:'Select country'}, {value:'US', label:'United States'}, {value:'IN', label:'India'}]} value={country} onChange={(e) => setCountry(e.target.value)} required />
+            <Select
+              label="Country"
+              options={[
+                { value: '', label: 'Select country' },
+                { value: 'US', label: 'United States' },
+                { value: 'IN', label: 'India' },
+                { value: 'CA', label: 'Canada' },
+                { value: 'UK', label: 'United Kingdom' },
+                { value: 'AU', label: 'Australia' },
+              ]}
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+            />
             <Checkbox label="Subscribe to Newsletter (optional)" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
-            <Checkbox label="I accept the Terms and Conditions" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} required />
+            <Checkbox label="I accept the Terms and Privacy Policy" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} required />
             <Button type="submit" variant="primary" size="md" loading={submitting} disabled={!acceptTerms}>
-              Register
+              Register Account
             </Button>
           </form>
-          <div className="flex justify-between text-xs text-slate-400">
-            <Link href="/login" className="hover:underline">Already have an account? Login</Link>
+
+          <div className="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-white/5">
+            <Link href="/login" className="hover:text-[#00E5FF] transition-colors">Already have an account? Login</Link>
+          </div>
+
+          <div className="pt-4 border-t border-white/5 text-center text-xs text-slate-500 space-y-2">
+            <p>Questions before signing up? Reach out:</p>
+            <a
+              href="mailto:support@analyticsrise.com"
+              className="inline-flex items-center gap-1.5 text-[#00E5FF] font-mono font-bold hover:underline"
+            >
+              <Mail className="w-3.5 h-3.5" /> support@analyticsrise.com
+            </a>
           </div>
         </div>
       </section>

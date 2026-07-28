@@ -81,12 +81,33 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'AnalyticsRise',
+  url: 'https://analyticsrise.com',
+  logo: 'https://analyticsrise.com/public/favicon.ico',
+  sameAs: ['https://analyticsrise-56655.web.app'],
+  description:
+    'The premier enterprise-grade, browser-based data analytics simulator platform for SQL, Excel Studio Pro, Python, Power BI, and Tableau.',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'support@analyticsrise.com',
+    contactType: 'customer support',
+    availableLanguage: ['English', 'Spanish', 'French', 'German', 'Hindi'],
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} antialiased bg-[#05070B] text-[#F5F7FA]`}>
         <LoadingProvider>

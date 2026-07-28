@@ -7,7 +7,7 @@ import { Button } from '@/app/components/ui/Button';
 import { LoadingOverlay } from '@/app/components/ui/Loading';
 import { AuthService } from '@/lib/services/auth';
 import { handleFirebaseError } from '@/lib/utils/error';
-import { KeyRound, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { KeyRound, ArrowLeft, CheckCircle2, Mail } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -22,12 +22,9 @@ export default function ForgotPasswordPage() {
     setSubmitting(true);
     setErrorMsg(null);
     try {
-      console.log('[Forgot Password] Requesting password reset email for:', email);
       await AuthService.resetPassword(email.trim());
-      console.log('[Forgot Password] Reset email sent successfully to:', email);
       setSubmitted(true);
     } catch (err: any) {
-      console.error('[Forgot Password Error]', err);
       const appErr = handleFirebaseError(err);
       setErrorMsg(appErr.message);
     } finally {
@@ -97,6 +94,16 @@ export default function ForgotPasswordPage() {
             <Link href="/register" className="hover:text-[#00E5FF] transition-colors">
               Create Account
             </Link>
+          </div>
+
+          <div className="pt-4 border-t border-white/5 text-center text-xs text-slate-500 space-y-2">
+            <p>Need support resetting password? Contact desk:</p>
+            <a
+              href="mailto:support@analyticsrise.com"
+              className="inline-flex items-center gap-1.5 text-[#00E5FF] font-mono font-bold hover:underline"
+            >
+              <Mail className="w-3.5 h-3.5" /> support@analyticsrise.com
+            </a>
           </div>
         </div>
       </section>
