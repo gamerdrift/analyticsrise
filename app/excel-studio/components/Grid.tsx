@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, KeyboardEvent, MouseEvent } from 'react';
-import { FixedSizeGrid as GridVirt, GridChildComponentProps } from 'react-window';
+import { Grid as GridVirt } from 'react-window';
 import { useExcelStudio, CellAddress, SelectionRange } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { evaluateFormula, colIndexToLetter, formatCellReference } from '@/lib/utils/excel/formulaEvaluator';
 import { Copy, Scissors, Clipboard, Plus, Trash2, EyeOff, Combine } from 'lucide-react';
@@ -244,8 +244,7 @@ export default function Grid() {
   const cols = sheet.cols;
   const rows = sheet.rows;
 
-  const CellRenderer: React.FC<GridChildComponentProps> = ({ columnIndex, rowIndex, style }) => {
-    // If first column is row header
+  const renderCell = ({ columnIndex, rowIndex, style }: { columnIndex: number; rowIndex: number; style: React.CSSProperties }) => {
     if (columnIndex === 0) {
       const isRowSelected = selectedCell?.row === rowIndex;
       return (
@@ -265,7 +264,7 @@ export default function Grid() {
     const colIdx = columnIndex - 1;
 
     if (sheet.hiddenRows?.includes(rowIndex) || sheet.hiddenCols?.includes(colIdx)) {
-      return null;
+      return <div style={style} />;
     }
 
     const key = cellKey(rowIndex, colIdx);
@@ -395,7 +394,7 @@ export default function Grid() {
         width={ROW_HEADER_WIDTH + cols * CELL_WIDTH}
         style={{ overflow: 'visible' }}
       >
-        {CellRenderer}
+        {({ columnIndex, rowIndex, style }: any) => renderCell({ columnIndex, rowIndex, style })}
       </GridVirt>
 
       {/* Right-Click Context Menu */}
