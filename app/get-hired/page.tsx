@@ -2,12 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { careerService, Job, Company, CareerFilter } from '@/lib/services/careerService';
+import { careerService, Job, Company, CareerFilter, Application, ApplicationStatus } from '@/lib/services/careerService';
+import { jobAggregatorEngine } from '@/lib/services/jobAggregator';
 import EnterpriseJobGrid from './components/EnterpriseJobGrid';
 import CompanyCardGrid from './components/CompanyCardGrid';
 import AICareerMatchCard from './components/AICareerMatchCard';
 import CareerInsightsDashboard from './components/CareerInsightsDashboard';
 import RecruiterDashboard from './components/RecruiterDashboard';
+import JobDetailDrawer from './components/JobDetailDrawer';
+import ApplicationTracker from './components/ApplicationTracker';
+import ResumeAnalyzer from './components/ResumeAnalyzer';
+import EmployerProfileModal from './components/EmployerProfileModal';
+import AICareerAdvisorModal from './components/AICareerAdvisorModal';
 import {
   Briefcase,
   Search,
@@ -24,9 +30,12 @@ import {
   X,
   Send,
   Mail,
+  Award,
+  Crown,
+  Brain,
 } from 'lucide-react';
 
-type Tab = 'jobs' | 'companies' | 'insights' | 'recruiter' | 'saved';
+type Tab = 'jobs' | 'companies' | 'tracker' | 'insights' | 'recruiter';
 
 export default function GetHiredPage() {
   const [activeTab, setActiveTab] = useState<Tab>('jobs');
@@ -35,14 +44,25 @@ export default function GetHiredPage() {
   const [selectedWorkType, setSelectedWorkType] = useState('All');
   const [selectedExperience, setSelectedExperience] = useState('All');
   const [selectedSkill, setSelectedSkill] = useState('All');
+  const [selectedSource, setSelectedSource] = useState('All');
+  const [visaSponsorshipOnly, setVisaSponsorshipOnly] = useState(false);
 
   const [savedJobIds, setSavedJobIds] = useState<string[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [activeDrawerJob, setActiveDrawerJob] = useState<Job | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [applyingJob, setApplyingJob] = useState<Job | null>(null);
   const [applySuccess, setApplySuccess] = useState(false);
   const [applyNotes, setApplyNotes] = useState('');
 
+  const [isResumeAnalyzerOpen, setIsResumeAnalyzerOpen] = useState(false);
+  const [isAiAdvisorOpen, setIsAiAdvisorOpen] = useState(false);
+
   useEffect(() => {
     setSavedJobIds(careerService.getSavedJobIds());
+    setApplications(careerService.getApplications());
   }, []);
 
   const filter: CareerFilter = {
@@ -51,6 +71,8 @@ export default function GetHiredPage() {
     workType: selectedWorkType,
     experience: selectedExperience,
     skill: selectedSkill,
+    source: selectedSource,
+    visaSponsorshipOnly,
   };
 
   const jobs = careerService.getJobs(filter);
@@ -65,17 +87,25 @@ export default function GetHiredPage() {
     setApplyingJob(job);
     setApplySuccess(false);
     setApplyNotes('');
+    setIsApplyModalOpen(true);
   };
 
   const handleConfirmSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!applyingJob) return;
     careerService.applyToJob(applyingJob.id, applyNotes);
+    setApplications(careerService.getApplications());
     setApplySuccess(true);
     setTimeout(() => {
+      setIsApplyModalOpen(false);
       setApplyingJob(null);
       setApplySuccess(false);
-    }, 2000);
+    }, 1800);
+  };
+
+  const handleUpdateAppStatus = (appId: string, status: ApplicationStatus, note?: string) => {
+    const updated = careerService.updateApplicationStatus(appId, status, note);
+    setApplications(updated);
   };
 
   return (
@@ -83,12 +113,16 @@ export default function GetHiredPage() {
       <div className="max-w-7xl mx-auto space-y-10">
         {/* ─── PHASE 2: HERO SECTION ──────────────────────────────────────────────── */}
         <section className="relative rounded-3xl border border-[#00E5FF]/30 bg-gradient-to-r from-[#0D1117] via-slate-900 to-[#07090E] p-8 sm:p-12 overflow-hidden shadow-2xl">
-          {/* Background Ambient Glow */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E5FF]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 space-y-6 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-mono text-xs font-bold uppercase tracking-widest">
-              <Sparkles className="w-4 h-4" /> Global AI Career Intelligence Platform
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-mono text-xs font-bold uppercase tracking-widest">
+                <Sparkles className="w-4 h-4" /> Global Universal Job Aggregator
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 font-mono text-[10px] font-bold uppercase">
+                <Crown className="w-3 h-3" /> Premium Intelligence Active
+              </span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black font-display text-white uppercase tracking-tight leading-tight">
@@ -96,7 +130,7 @@ export default function GetHiredPage() {
             </h1>
 
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              Explore analytics, business intelligence, data engineering, AI and data science opportunities from leading tech companies and enterprises around the world.
+              Explore analytics, business intelligence, data engineering, AI and data science opportunities aggregated live from 10 global channels (LinkedIn, Greenhouse, Lever, Workday, Remote.com, USAJobs).
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs font-bold">
@@ -104,14 +138,21 @@ export default function GetHiredPage() {
                 onClick={() => setActiveTab('jobs')}
                 className="px-6 py-3.5 rounded-xl bg-[#00E5FF] text-black font-bold uppercase tracking-wider hover:bg-[#4FC3F7] transition-all shadow-xl shadow-[#00E5FF]/20 flex items-center gap-2"
               >
-                <Search className="w-4 h-4" /> Search Jobs
+                <Search className="w-4 h-4" /> Search Global Jobs
               </button>
 
               <button
-                disabled
-                className="px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 text-slate-400 cursor-not-allowed uppercase tracking-wider flex items-center gap-2"
+                onClick={() => setIsResumeAnalyzerOpen(true)}
+                className="px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white hover:border-[#00E5FF]/40 transition-all uppercase tracking-wider flex items-center gap-2"
               >
-                <FileText className="w-4 h-4 text-amber-400" /> Upload Resume (Coming Soon)
+                <FileText className="w-4 h-4 text-[#00E5FF]" /> AI ATS Resume Scanner
+              </button>
+
+              <button
+                onClick={() => setIsAiAdvisorOpen(true)}
+                className="px-6 py-3.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 transition-all uppercase tracking-wider flex items-center gap-2"
+              >
+                <Brain className="w-4 h-4 text-purple-400" /> AI Interview Simulator
               </button>
             </div>
           </div>
@@ -121,18 +162,18 @@ export default function GetHiredPage() {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-mono">
           <div className="p-6 rounded-2xl border border-white/10 bg-[#0D1117]/80 backdrop-blur-md space-y-2">
             <div className="flex items-center justify-between text-slate-400 text-xs">
-              <span>Global Open Jobs</span>
+              <span>Aggregated Global Jobs</span>
               <Briefcase className="w-4 h-4 text-[#00E5FF]" />
             </div>
             <div className="text-3xl font-black font-display text-white">14,280+</div>
             <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-              <TrendingUp className="w-3 h-3" /> +12% from last week
+              <TrendingUp className="w-3 h-3" /> 10 Aggregated Channels
             </div>
           </div>
 
           <div className="p-6 rounded-2xl border border-white/10 bg-[#0D1117]/80 backdrop-blur-md space-y-2">
             <div className="flex items-center justify-between text-slate-400 text-xs">
-              <span>Remote Jobs</span>
+              <span>Remote Worldwide Jobs</span>
               <Globe2 className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-3xl font-black font-display text-[#00E5FF]">6,420+</div>
@@ -141,31 +182,31 @@ export default function GetHiredPage() {
 
           <div className="p-6 rounded-2xl border border-white/10 bg-[#0D1117]/80 backdrop-blur-md space-y-2">
             <div className="flex items-center justify-between text-slate-400 text-xs">
-              <span>Hiring Companies</span>
+              <span>Verified Employers</span>
               <Building2 className="w-4 h-4 text-amber-400" />
             </div>
             <div className="text-3xl font-black font-display text-white">1,850+</div>
-            <div className="text-[10px] text-slate-400">Verified Enterprise Partners</div>
+            <div className="text-[10px] text-slate-400">Glassdoor Rated Partners</div>
           </div>
 
           <div className="p-6 rounded-2xl border border-white/10 bg-[#0D1117]/80 backdrop-blur-md space-y-2">
             <div className="flex items-center justify-between text-slate-400 text-xs">
-              <span>New Jobs Today</span>
+              <span>Tracked Applications</span>
               <Clock className="w-4 h-4 text-purple-400" />
             </div>
-            <div className="text-3xl font-black font-display text-purple-400">340+</div>
-            <div className="text-[10px] text-slate-400">Fresh daily listings</div>
+            <div className="text-3xl font-black font-display text-purple-400">{applications.length}</div>
+            <div className="text-[10px] text-slate-400">8-Stage Pipeline Active</div>
           </div>
         </section>
 
         {/* ─── PHASE 7: AI CAREER MATCH CARD ─────────────────────────────────────── */}
         <AICareerMatchCard score={92} />
 
-        {/* ─── SEARCH & FILTER CONTROLS BAR ─────────────────────────────────────── */}
+        {/* ─── PHASE 3: ADVANCED SEARCH & FILTER CONTROLS ───────────────────────── */}
         <section className="p-6 rounded-2xl border border-white/10 bg-[#0D1117] space-y-4 font-mono text-xs shadow-xl">
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2 font-bold text-white uppercase text-xs">
-              <Filter className="w-4 h-4 text-[#00E5FF]" /> Quick Search & Filter Controls
+              <Filter className="w-4 h-4 text-[#00E5FF]" /> Universal Multi-Tier Search Engine
             </div>
             <button
               onClick={() => {
@@ -174,14 +215,15 @@ export default function GetHiredPage() {
                 setSelectedWorkType('All');
                 setSelectedExperience('All');
                 setSelectedSkill('All');
+                setSelectedSource('All');
+                setVisaSponsorshipOnly(false);
               }}
               className="text-[10px] text-slate-400 hover:text-[#00E5FF] underline"
             >
-              Reset Filters
+              Reset All Filters
             </button>
           </div>
 
-          {/* Search Inputs */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Search Keywords</label>
@@ -225,8 +267,7 @@ export default function GetHiredPage() {
             </div>
           </div>
 
-          {/* Secondary Filters */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-white/5">
             <div>
               <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Experience Level</label>
               <select
@@ -260,14 +301,43 @@ export default function GetHiredPage() {
                 <option value="AWS">AWS</option>
               </select>
             </div>
+
+            <div>
+              <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Provider Source Channel</label>
+              <select
+                value={selectedSource}
+                onChange={(e) => setSelectedSource(e.target.value)}
+                className="w-full bg-[#05070B] border border-white/10 rounded-lg p-2.5 text-white focus:outline-none focus:border-[#00E5FF]"
+              >
+                <option value="All">All Ingestion Providers (10)</option>
+                <option value="LinkedIn">LinkedIn Jobs API</option>
+                <option value="Greenhouse">Greenhouse ATS</option>
+                <option value="Lever">Lever ATS</option>
+                <option value="Workday">Workday Enterprise</option>
+                <option value="Remote">Remote.com Feed</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+            <input
+              type="checkbox"
+              id="visaCheck"
+              checked={visaSponsorshipOnly}
+              onChange={(e) => setVisaSponsorshipOnly(e.target.checked)}
+              className="accent-[#00E5FF] w-4 h-4 rounded cursor-pointer"
+            />
+            <label htmlFor="visaCheck" className="text-xs text-slate-300 font-bold cursor-pointer">
+              Show Visa Sponsorship Available Jobs Only
+            </label>
           </div>
         </section>
 
         {/* ─── TAB NAVIGATION BAR ─────────────────────────────────────────────────── */}
-        <div className="flex items-center gap-3 border-b border-white/10 pb-4 font-mono text-xs">
+        <div className="flex items-center gap-3 border-b border-white/10 pb-4 font-mono text-xs overflow-x-auto">
           <button
             onClick={() => setActiveTab('jobs')}
-            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'jobs'
                 ? 'bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/20'
                 : 'bg-[#0D1117] text-slate-400 border border-white/5 hover:text-white'
@@ -277,8 +347,19 @@ export default function GetHiredPage() {
           </button>
 
           <button
+            onClick={() => setActiveTab('tracker')}
+            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === 'tracker'
+                ? 'bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/20'
+                : 'bg-[#0D1117] text-slate-400 border border-white/5 hover:text-white'
+            }`}
+          >
+            <Clock className="w-4 h-4" /> Application Tracker ({applications.length})
+          </button>
+
+          <button
             onClick={() => setActiveTab('companies')}
-            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'companies'
                 ? 'bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/20'
                 : 'bg-[#0D1117] text-slate-400 border border-white/5 hover:text-white'
@@ -289,7 +370,7 @@ export default function GetHiredPage() {
 
           <button
             onClick={() => setActiveTab('insights')}
-            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'insights'
                 ? 'bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/20'
                 : 'bg-[#0D1117] text-slate-400 border border-white/5 hover:text-white'
@@ -300,13 +381,13 @@ export default function GetHiredPage() {
 
           <button
             onClick={() => setActiveTab('recruiter')}
-            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 ${
+            className={`px-5 py-2.5 rounded-xl font-bold uppercase transition-all flex items-center gap-2 shrink-0 ${
               activeTab === 'recruiter'
                 ? 'bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/20'
                 : 'bg-[#0D1117] text-slate-400 border border-white/5 hover:text-white'
             }`}
           >
-            <ShieldCheck className="w-4 h-4" /> Recruiter Suite
+            <ShieldCheck className="w-4 h-4" /> Recruiter Portal
           </button>
         </div>
 
@@ -316,7 +397,14 @@ export default function GetHiredPage() {
             jobs={jobs}
             savedJobIds={savedJobIds}
             onToggleSave={handleToggleSave}
-            onApply={handleOpenApplyModal}
+            onApply={(j) => setActiveDrawerJob(j)}
+          />
+        )}
+
+        {activeTab === 'tracker' && (
+          <ApplicationTracker
+            applications={applications}
+            onUpdateStatus={handleUpdateAppStatus}
           />
         )}
 
@@ -326,19 +414,48 @@ export default function GetHiredPage() {
 
         {activeTab === 'recruiter' && <RecruiterDashboard />}
 
+        {/* ─── PHASE 5: JOB DETAIL SIDE-DRAWER ───────────────────────────────────── */}
+        <JobDetailDrawer
+          job={activeDrawerJob}
+          isOpen={!!activeDrawerJob}
+          isSaved={activeDrawerJob ? savedJobIds.includes(activeDrawerJob.id) : false}
+          onClose={() => setActiveDrawerJob(null)}
+          onToggleSave={handleToggleSave}
+          onApply={handleOpenApplyModal}
+        />
+
+        {/* ─── PHASE 8: AI RESUME ANALYZER MODAL ──────────────────────────────────── */}
+        <ResumeAnalyzer
+          isOpen={isResumeAnalyzerOpen}
+          onClose={() => setIsResumeAnalyzerOpen(false)}
+        />
+
+        {/* ─── PHASE 12: AI CAREER ADVISOR MODAL ──────────────────────────────────── */}
+        <AICareerAdvisorModal
+          isOpen={isAiAdvisorOpen}
+          onClose={() => setIsAiAdvisorOpen(false)}
+        />
+
+        {/* ─── PHASE 10: EMPLOYER PROFILE MODAL ──────────────────────────────────── */}
+        <EmployerProfileModal
+          company={selectedCompany}
+          isOpen={!!selectedCompany}
+          onClose={() => setSelectedCompany(null)}
+        />
+
         {/* ─── APPLICATION SUBMISSION MODAL ─────────────────────────────────────── */}
-        {applyingJob && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 font-mono">
+        {isApplyModalOpen && applyingJob && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4 font-mono">
             <div className="bg-[#0D1117] border border-[#00E5FF]/40 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
               <button
-                onClick={() => setApplyingJob(null)}
+                onClick={() => setIsApplyModalOpen(false)}
                 className="absolute top-4 right-4 text-slate-400 hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
 
               <div className="space-y-1">
-                <span className="text-[10px] text-[#00E5FF] uppercase tracking-widest font-bold">1-Click Job Application</span>
+                <span className="text-[10px] text-[#00E5FF] uppercase tracking-widest font-bold">Universal Application Submission</span>
                 <h3 className="text-xl font-bold font-display text-white">{applyingJob.title}</h3>
                 <p className="text-xs text-slate-400">{applyingJob.companyName} • {applyingJob.location}</p>
               </div>
@@ -348,7 +465,7 @@ export default function GetHiredPage() {
                   <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
                   <h4 className="text-base font-bold text-white uppercase">Application Tracked & Submitted!</h4>
                   <p className="text-xs text-slate-400">
-                    Your profile and verified simulation scorecards have been queued for {applyingJob.companyName}.
+                    Your profile and verified simulation scorecards have been queued for {applyingJob.companyName}. Added to Application Tracker.
                   </p>
                 </div>
               ) : (
@@ -365,7 +482,7 @@ export default function GetHiredPage() {
                     <label className="text-slate-400 uppercase text-[10px] block mb-1">Cover Note / Highlights (Optional)</label>
                     <textarea
                       rows={3}
-                      placeholder="Mention your simulation scorecards or projects..."
+                      placeholder="Mention your simulation scorecards or project links..."
                       value={applyNotes}
                       onChange={(e) => setApplyNotes(e.target.value)}
                       className="w-full bg-[#05070B] border border-white/10 rounded-lg p-2.5 text-white"
@@ -375,7 +492,7 @@ export default function GetHiredPage() {
                     type="submit"
                     className="w-full py-3 rounded-xl bg-[#00E5FF] text-black font-bold uppercase tracking-wider hover:bg-[#4FC3F7] transition-all flex items-center justify-center gap-2 text-xs"
                   >
-                    <Send className="w-4 h-4" /> Submit Application
+                    <Send className="w-4 h-4" /> Confirm & Submit Application
                   </button>
                 </form>
               )}

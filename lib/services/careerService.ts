@@ -7,6 +7,8 @@ export interface Job {
   companyLogo: string;
   title: string;
   location: string;
+  city?: string;
+  state?: string;
   country: string;
   workType: 'Remote' | 'Hybrid' | 'Onsite';
   experience: 'Entry' | 'Mid' | 'Senior' | 'Executive';
@@ -16,9 +18,17 @@ export interface Job {
   openings: number;
   postedDate: string;
   description: string;
+  responsibilities?: string[];
+  requirements?: string[];
+  benefits?: string[];
+  techStack?: string[];
   requiredSkills: string[];
   department: string;
   applyUrl: string;
+  source: string;
+  visaSponsorship?: boolean;
+  recruiterName?: string;
+  recruiterEmail?: string;
   isFeatured?: boolean;
   matchScore?: number;
 }
@@ -36,12 +46,25 @@ export interface Company {
   totalOpenJobs: number;
   technologies: string[];
   benefits: string[];
+  rating?: number;
+  overview?: string;
 }
 
 export interface SavedJob {
   jobId: string;
   savedAt: string;
+  notes?: string;
 }
+
+export type ApplicationStatus =
+  | 'Saved'
+  | 'Applied'
+  | 'Interview'
+  | 'Technical Round'
+  | 'HR Round'
+  | 'Offer'
+  | 'Rejected'
+  | 'Accepted';
 
 export interface Application {
   id: string;
@@ -49,19 +72,25 @@ export interface Application {
   jobTitle: string;
   companyName: string;
   appliedDate: string;
-  status: 'Applied' | 'Screening' | 'Interview Scheduled' | 'Offer Extended' | 'Rejected';
+  status: ApplicationStatus;
   notes?: string;
+  timeline?: Array<{ status: ApplicationStatus; date: string; note?: string }>;
 }
 
 export interface CareerFilter {
   query?: string;
   country?: string;
+  state?: string;
+  city?: string;
   workType?: string;
   experience?: string;
   skill?: string;
+  source?: string;
+  visaSponsorshipOnly?: boolean;
+  minSalary?: number;
 }
 
-// Sample Enterprise Analytics Jobs Dataset
+// Extended Sample Analytics Jobs
 export const MOCK_JOBS: Job[] = [
   {
     id: 'job-101',
@@ -70,6 +99,8 @@ export const MOCK_JOBS: Job[] = [
     companyLogo: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=100&auto=format&fit=crop&q=80',
     title: 'Senior Data Analyst, Business Intelligence',
     location: 'Mountain View, CA',
+    city: 'Mountain View',
+    state: 'California',
     country: 'United States',
     workType: 'Hybrid',
     experience: 'Senior',
@@ -79,9 +110,25 @@ export const MOCK_JOBS: Job[] = [
     openings: 3,
     postedDate: '2026-07-27',
     description: 'Lead business intelligence reporting, SQL data modeling, and executive dashboard delivery across cloud operations.',
+    responsibilities: [
+      'Architect enterprise SQL data pipelines in BigQuery',
+      'Design interactive Looker and Tableau executive dashboards',
+      'Collaborate with product and finance leaders on quarterly forecasts',
+    ],
+    requirements: [
+      '5+ years experience in Business Intelligence or Data Analytics',
+      'Advanced proficiency in SQL, Python, and Excel financial modeling',
+      'Strong communication skills with executive stakeholders',
+    ],
+    benefits: ['Health, Dental, Vision', '401(k) 5% Match', 'Remote Choice', 'Gym & Wellness Allowance'],
+    techStack: ['SQL', 'BigQuery', 'Looker', 'Python', 'Excel Studio'],
     requiredSkills: ['SQL', 'Excel', 'Python', 'Tableau', 'BigQuery'],
     department: 'Business Intelligence',
     applyUrl: 'https://careers.google.com',
+    source: 'LinkedIn Jobs API',
+    visaSponsorship: true,
+    recruiterName: 'Sarah Jenkins',
+    recruiterEmail: 'recruitment@google.com',
     isFeatured: true,
     matchScore: 95,
   },
@@ -92,6 +139,8 @@ export const MOCK_JOBS: Job[] = [
     companyLogo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80',
     title: 'Analytics Engineer, Data Warehouse Architecture',
     location: 'Remote - US',
+    city: 'Remote',
+    state: 'Remote',
     country: 'United States',
     workType: 'Remote',
     experience: 'Mid',
@@ -101,9 +150,23 @@ export const MOCK_JOBS: Job[] = [
     openings: 5,
     postedDate: '2026-07-28',
     description: 'Design and optimize data transformation models using SQL, dbt, and Snowflake data warehouses.',
+    responsibilities: [
+      'Build scalable dbt data transformations for Snowflake cloud data platform',
+      'Manage data warehouse schemas and automated testing suits',
+    ],
+    requirements: [
+      '3+ years with SQL and modern data stack (dbt, Snowflake, Fivetran)',
+      'Experience with Python automation scripts',
+    ],
+    benefits: ['100% Remote Choice', 'Equity Grant Options', 'Unlimited PTO'],
+    techStack: ['Snowflake', 'SQL', 'dbt', 'Python', 'AWS'],
     requiredSkills: ['SQL', 'Snowflake', 'Python', 'dbt', 'AWS'],
     department: 'Data Engineering',
     applyUrl: 'https://snowflake.com/careers',
+    source: 'Greenhouse API',
+    visaSponsorship: true,
+    recruiterName: 'David Vance',
+    recruiterEmail: 'talent@snowflake.com',
     isFeatured: true,
     matchScore: 92,
   },
@@ -114,6 +177,8 @@ export const MOCK_JOBS: Job[] = [
     companyLogo: 'https://images.unsplash.com/photo-1642132652806-695029a1a6f3?w=100&auto=format&fit=crop&q=80',
     title: 'Power BI & Financial Analytics Lead',
     location: 'Redmond, WA',
+    city: 'Redmond',
+    state: 'Washington',
     country: 'United States',
     workType: 'Hybrid',
     experience: 'Senior',
@@ -123,9 +188,20 @@ export const MOCK_JOBS: Job[] = [
     openings: 2,
     postedDate: '2026-07-26',
     description: 'Build enterprise Power BI financial models, DAX measures, and interactive sales reporting suites.',
+    responsibilities: [
+      'Develop complex DAX calculations and Power BI tabular models',
+      'Automate monthly revenue variance reporting for CFO org',
+    ],
+    requirements: [
+      'Deep expertise in Power BI, DAX, SQL, and Excel Studio Pro',
+    ],
+    benefits: ['Hybrid Work Model', 'Healthcare', 'Parental Leave'],
+    techStack: ['Power BI', 'DAX', 'Excel', 'SQL', 'Azure'],
     requiredSkills: ['Power BI', 'Excel', 'SQL', 'DAX', 'Azure'],
     department: 'Finance Analytics',
     applyUrl: 'https://careers.microsoft.com',
+    source: 'Workday API',
+    visaSponsorship: false,
     isFeatured: true,
     matchScore: 89,
   },
@@ -136,6 +212,8 @@ export const MOCK_JOBS: Job[] = [
     companyLogo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&auto=format&fit=crop&q=80',
     title: 'Data Scientist, Machine Learning Solutions',
     location: 'London',
+    city: 'London',
+    state: 'Greater London',
     country: 'United Kingdom',
     workType: 'Hybrid',
     experience: 'Mid',
@@ -145,98 +223,22 @@ export const MOCK_JOBS: Job[] = [
     openings: 4,
     postedDate: '2026-07-25',
     description: 'Deploy PySpark ML models, predictive customer churn algorithms, and real-time data pipelines.',
+    responsibilities: [
+      'Train and evaluate machine learning models in MLflow',
+      'Optimize PySpark data pipelines on lakehouse architecture',
+    ],
+    requirements: ['M.Sc in Computer Science or Quantitative discipline', 'Proficiency in Python and PySpark'],
+    benefits: ['Stock Options', 'Global Team Offsites', 'Health Perks'],
+    techStack: ['Python', 'Databricks', 'PySpark', 'SQL', 'Machine Learning'],
     requiredSkills: ['Python', 'Databricks', 'SQL', 'Machine Learning', 'PySpark'],
     department: 'AI & Data Science',
     applyUrl: 'https://databricks.com/careers',
+    source: 'Lever API',
+    visaSponsorship: true,
     matchScore: 91,
-  },
-  {
-    id: 'job-105',
-    companyId: 'comp-stripe',
-    companyName: 'Stripe',
-    companyLogo: 'https://images.unsplash.com/photo-1556742049-0a67e0e7a2b9?w=100&auto=format&fit=crop&q=80',
-    title: 'Financial Data Analyst, Risk & Fraud',
-    location: 'Remote - Worldwide',
-    country: 'Remote',
-    workType: 'Remote',
-    experience: 'Entry',
-    salaryMin: 95000,
-    salaryMax: 120000,
-    currency: 'USD',
-    openings: 6,
-    postedDate: '2026-07-28',
-    description: 'Analyze payment transaction flows using SQL queries, Python data analysis scripts, and risk anomaly detection.',
-    requiredSkills: ['SQL', 'Excel', 'Python', 'Tableau'],
-    department: 'Risk & Compliance',
-    applyUrl: 'https://stripe.com/jobs',
-    matchScore: 88,
-  },
-  {
-    id: 'job-106',
-    companyId: 'comp-amazon',
-    companyName: 'Amazon',
-    companyLogo: 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=100&auto=format&fit=crop&q=80',
-    title: 'Supply Chain Business Intelligence Engineer',
-    location: 'Bengaluru',
-    country: 'India',
-    workType: 'Onsite',
-    experience: 'Mid',
-    salaryMin: 2400000,
-    salaryMax: 3200000,
-    currency: 'INR',
-    openings: 8,
-    postedDate: '2026-07-27',
-    description: 'Optimize fulfillment center operations using QuickSight dashboards, Redshift SQL queries, and Python scripting.',
-    requiredSkills: ['SQL', 'Excel', 'Python', 'AWS', 'Redshift'],
-    department: 'Supply Chain Analytics',
-    applyUrl: 'https://amazon.jobs',
-    matchScore: 87,
-  },
-  {
-    id: 'job-107',
-    companyId: 'comp-jpmorgan',
-    companyName: 'JPMorgan Chase',
-    companyLogo: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&auto=format&fit=crop&q=80',
-    title: 'Quantitative Risk Analyst',
-    location: 'New York, NY',
-    country: 'United States',
-    workType: 'Onsite',
-    experience: 'Senior',
-    salaryMin: 155000,
-    salaryMax: 195000,
-    currency: 'USD',
-    openings: 2,
-    postedDate: '2026-07-24',
-    description: 'Perform Monte Carlo simulations, complex Excel financial modeling, and Python portfolio stress testing.',
-    requiredSkills: ['Excel', 'Python', 'SQL', 'R', 'Finance'],
-    department: 'Quantitative Research',
-    applyUrl: 'https://jpmorgan.com/careers',
-    matchScore: 84,
-  },
-  {
-    id: 'job-108',
-    companyId: 'comp-spotify',
-    companyName: 'Spotify',
-    companyLogo: 'https://images.unsplash.com/photo-1614680376593-902f749f7cfc?w=100&auto=format&fit=crop&q=80',
-    title: 'Product Data Analyst, Creator Growth',
-    location: 'Stockholm / Remote',
-    country: 'Germany',
-    workType: 'Remote',
-    experience: 'Mid',
-    salaryMin: 75000,
-    salaryMax: 95000,
-    currency: 'EUR',
-    openings: 3,
-    postedDate: '2026-07-27',
-    description: 'Design A/B tests, measure podcast creator engagement, and build automated Tableau performance dashboards.',
-    requiredSkills: ['SQL', 'Tableau', 'Python', 'A/B Testing'],
-    department: 'Product Analytics',
-    applyUrl: 'https://lifeatspotify.com',
-    matchScore: 90,
   },
 ];
 
-// Sample Companies Dataset
 export const MOCK_COMPANIES: Company[] = [
   {
     id: 'comp-google',
@@ -251,6 +253,8 @@ export const MOCK_COMPANIES: Company[] = [
     totalOpenJobs: 42,
     technologies: ['SQL', 'Python', 'BigQuery', 'TensorFlow', 'Looker'],
     benefits: ['Remote Work Options', 'Health Care', '401k Matching', 'Learning Stipend'],
+    rating: 4.6,
+    overview: 'Google is a global technology leader focusing on search, cloud infrastructure, AI research, and consumer hardware.',
   },
   {
     id: 'comp-snowflake',
@@ -265,34 +269,8 @@ export const MOCK_COMPANIES: Company[] = [
     totalOpenJobs: 28,
     technologies: ['Snowflake', 'SQL', 'dbt', 'Python', 'AWS'],
     benefits: ['100% Remote Choice', 'Equity Grants', 'Unlimited PTO', 'Wellness Budget'],
-  },
-  {
-    id: 'comp-microsoft',
-    name: 'Microsoft',
-    logo: 'https://images.unsplash.com/photo-1642132652806-695029a1a6f3?w=100&auto=format&fit=crop&q=80',
-    industry: 'Software & Cloud',
-    headquarters: 'Redmond, WA',
-    country: 'United States',
-    size: '100,000+ employees',
-    website: 'https://careers.microsoft.com',
-    hiringStatus: 'Active Hiring',
-    totalOpenJobs: 56,
-    technologies: ['Power BI', 'Azure', 'SQL', 'DAX', 'Excel'],
-    benefits: ['Hybrid Schedule', 'Healthcare', 'Parental Leave', 'Tuition Reimbursement'],
-  },
-  {
-    id: 'comp-databricks',
-    name: 'Databricks',
-    logo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&auto=format&fit=crop&q=80',
-    industry: 'AI & Data Intelligence',
-    headquarters: 'San Francisco, CA',
-    country: 'United States',
-    size: '5,000 - 10,000 employees',
-    website: 'https://databricks.com',
-    hiringStatus: 'High Demand',
-    totalOpenJobs: 34,
-    technologies: ['Databricks', 'PySpark', 'Python', 'SQL', 'Machine Learning'],
-    benefits: ['Flexible Work', 'Stock Options', 'Global Offsites', 'Health Perks'],
+    rating: 4.5,
+    overview: 'Snowflake enables organizations to mobilize data across cloud data warehouses.',
   },
 ];
 
@@ -302,7 +280,6 @@ class CareerService {
 
   public getJobs(filter?: CareerFilter): Job[] {
     let result = [...MOCK_JOBS];
-
     if (!filter) return result;
 
     if (filter.query) {
@@ -330,6 +307,10 @@ class CareerService {
 
     if (filter.skill && filter.skill !== 'All') {
       result = result.filter((j) => j.requiredSkills.includes(filter.skill!));
+    }
+
+    if (filter.visaSponsorshipOnly) {
+      result = result.filter((j) => j.visaSponsorship === true);
     }
 
     return result;
@@ -379,10 +360,59 @@ class CareerService {
     if (typeof window === 'undefined') return [];
     try {
       const data = localStorage.getItem(this.applicationsKey);
-      return data ? JSON.parse(data) : [];
+      if (data) {
+        return JSON.parse(data);
+      }
     } catch {
-      return [];
+      // fallback
     }
+
+    // Default sample applications if empty
+    return [
+      {
+        id: 'app-001',
+        jobId: 'job-101',
+        jobTitle: 'Senior Data Analyst, Business Intelligence',
+        companyName: 'Google',
+        appliedDate: '2026-07-25',
+        status: 'Interview Scheduled',
+        notes: 'Technical SQL rounds scheduled for Thursday',
+        timeline: [
+          { status: 'Applied', date: '2026-07-25' },
+          { status: 'Screening', date: '2026-07-26' },
+          { status: 'Interview Scheduled', date: '2026-07-27' },
+        ],
+      },
+      {
+        id: 'app-002',
+        jobId: 'job-102',
+        jobTitle: 'Analytics Engineer',
+        companyName: 'Snowflake',
+        appliedDate: '2026-07-26',
+        status: 'Applied',
+        notes: 'Submitted resume and Excel simulation scorecard',
+      },
+    ];
+  }
+
+  public updateApplicationStatus(appId: string, newStatus: ApplicationStatus, note?: string): Application[] {
+    if (typeof window === 'undefined') return [];
+    const apps = this.getApplications();
+    const updated = apps.map((app) => {
+      if (app.id === appId) {
+        const history = app.timeline || [{ status: app.status, date: app.appliedDate }];
+        return {
+          ...app,
+          status: newStatus,
+          notes: note || app.notes,
+          timeline: [...history, { status: newStatus, date: new Date().toISOString().split('T')[0], note }],
+        };
+      }
+      return app;
+    });
+
+    localStorage.setItem(this.applicationsKey, JSON.stringify(updated));
+    return updated;
   }
 
   public applyToJob(jobId: string, notes?: string): Application {
@@ -395,11 +425,13 @@ class CareerService {
       appliedDate: new Date().toISOString().split('T')[0],
       status: 'Applied',
       notes,
+      timeline: [{ status: 'Applied', date: new Date().toISOString().split('T')[0], note: notes }],
     };
 
     if (typeof window !== 'undefined') {
       const apps = this.getApplications();
-      localStorage.setItem(this.applicationsKey, JSON.stringify([newApp, ...apps]));
+      const updated = [newApp, ...apps];
+      localStorage.setItem(this.applicationsKey, JSON.stringify(updated));
     }
 
     return newApp;
@@ -422,7 +454,7 @@ class CareerService {
   public exportJobsToCSV(jobs: Job[]): void {
     if (typeof window === 'undefined') return;
 
-    const headers = ['Company', 'Job Title', 'Location', 'Country', 'Work Type', 'Experience', 'Salary Range', 'Openings', 'Posted Date', 'Apply URL'];
+    const headers = ['Company', 'Job Title', 'Location', 'Country', 'Work Type', 'Experience', 'Salary Range', 'Openings', 'Posted Date', 'Source', 'Visa Sponsorship', 'Apply URL'];
     const rows = jobs.map((j) => [
       `"${j.companyName}"`,
       `"${j.title}"`,
@@ -433,6 +465,8 @@ class CareerService {
       `"${j.currency} ${j.salaryMin.toLocaleString()} - ${j.salaryMax.toLocaleString()}"`,
       j.openings,
       `"${j.postedDate}"`,
+      `"${j.source}"`,
+      j.visaSponsorship ? 'Yes' : 'No',
       `"${j.applyUrl}"`,
     ]);
 
