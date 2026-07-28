@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Mail, ShieldCheck, Lock, Sparkles, Cpu, Clock, CheckCircle2 } from 'lucide-react';
+import { Mail, ShieldCheck, Lock, Sparkles, Cpu, Clock, CheckCircle2, Briefcase } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -22,7 +22,7 @@ export default function Footer() {
             </span>
           </Link>
           <p className="text-slate-400 text-[11px] leading-relaxed">
-            The premier enterprise-grade, browser-native software simulator platform. Practice SQL, Excel Studio Pro, Python, Power BI, and Tableau in interactive replica interfaces.
+            The premier enterprise-grade, browser-native software simulator and AI career intelligence platform.
           </p>
           <ul className="space-y-1.5 text-xs">
             <li>
@@ -34,18 +34,20 @@ export default function Footer() {
             <li className="text-slate-500 flex items-center gap-1.5">
               <span>Careers</span> <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-amber-400 font-bold uppercase">Coming Soon</span>
             </li>
-            <li className="text-slate-500 flex items-center gap-1.5">
-              <span>Engineering Blog</span> <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-amber-400 font-bold uppercase">Coming Soon</span>
-            </li>
           </ul>
         </div>
 
-        {/* Column 2: Learning Tracks */}
+        {/* Column 2: Learning & Career */}
         <div>
-          <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
-            Learning
+          <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2 flex items-center gap-1.5">
+            <Briefcase className="w-3.5 h-3.5 text-[#00E5FF]" /> Learning & Career
           </h3>
           <ul className="space-y-2 text-xs">
+            <li>
+              <Link href="/get-hired" className="text-[#00E5FF] font-bold hover:underline transition-all">
+                🎯 Get Hired (Jobs Hub)
+              </Link>
+            </li>
             <li>
               <Link href="/courses" className="hover:text-[#00E5FF] transition-colors">All Courses</Link>
             </li>
@@ -62,7 +64,7 @@ export default function Footer() {
               <Link href="/certifications" className="hover:text-[#00E5FF] transition-colors">Certifications</Link>
             </li>
             <li>
-              <Link href="/career-hub" className="hover:text-[#00E5FF] transition-colors">Career Roadmaps</Link>
+              <Link href="/career-hub" className="hover:text-[#00E5FF] transition-colors">Career Hub & AI Resume</Link>
             </li>
           </ul>
         </div>
@@ -91,7 +93,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 4: Legal & Policies */}
+        {/* Column 4: Legal & Compliance */}
         <div>
           <h3 className="text-white font-bold text-xs uppercase tracking-widest mb-4 border-b border-[#00E5FF]/20 pb-2">
             Legal & Compliance
@@ -144,13 +146,13 @@ export default function Footer() {
             <Lock className="w-3 h-3 text-[#00E5FF]" /> Secure Authentication
           </span>
           <span className="flex items-center gap-1 text-slate-400">
-            <Sparkles className="w-3 h-3 text-amber-400" /> AI-Powered Learning
+            <Sparkles className="w-3 h-3 text-amber-400" /> AI Career Match
           </span>
           <span className="flex items-center gap-1 text-slate-400">
             <Cpu className="w-3 h-3 text-emerald-400" /> Real Business Datasets
           </span>
           <span className="flex items-center gap-1 text-slate-400">
-            <CheckCircle2 className="w-3 h-3 text-[#00E5FF]" /> Continuous Updates
+            <CheckCircle2 className="w-3 h-3 text-[#00E5FF]" /> Enterprise Job Hub
           </span>
         </div>
         <div>

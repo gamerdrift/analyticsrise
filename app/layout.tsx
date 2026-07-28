@@ -32,19 +32,19 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  title: 'AnalyticsRise - Practice. Master. Get Certified.',
+  title: 'AnalyticsRise - Practice. Master. Get Hired.',
   description:
-    'Master data analytics with real business projects. Learn SQL, Power BI, Tableau, Excel, Python, and more through hands-on practice. Official support: support@analyticsrise.com',
+    'Master data analytics with real business projects and land top jobs. Learn SQL, Power BI, Tableau, Excel, Python, and more through hands-on practice. Official support: support@analyticsrise.com',
   keywords: [
     'analytics',
-    'data analytics',
-    'learning platform',
-    'certification',
-    'SQL',
-    'Power BI',
-    'Tableau',
-    'Excel',
-    'Python',
+    'data analytics jobs',
+    'get hired',
+    'career intelligence',
+    'SQL jobs',
+    'Power BI jobs',
+    'Tableau jobs',
+    'Excel jobs',
+    'Python jobs',
   ],
   authors: [{ name: 'AnalyticsRise Team' }],
   creator: 'AnalyticsRise',
@@ -59,14 +59,14 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://analyticsrise.com',
     siteName: 'AnalyticsRise',
-    title: 'AnalyticsRise - Practice. Master. Get Certified.',
+    title: 'AnalyticsRise - Practice. Master. Get Hired.',
     description:
-      'Master data analytics with real business projects. Learn SQL, Power BI, Tableau, Excel, Python, and more.',
+      'Master data analytics with real business projects and land top analytics jobs globally.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AnalyticsRise - Practice. Master. Get Certified.',
-    description: 'Master data analytics through hands-on projects and real business scenarios.',
+    title: 'AnalyticsRise - Practice. Master. Get Hired.',
+    description: 'Master data analytics through hands-on projects and discover global analytics careers.',
   },
   robots: {
     index: true,
@@ -89,7 +89,7 @@ const jsonLd = {
   logo: 'https://analyticsrise.com/public/favicon.ico',
   sameAs: ['https://analyticsrise-56655.web.app'],
   description:
-    'The premier enterprise-grade, browser-based data analytics simulator platform for SQL, Excel Studio Pro, Python, Power BI, and Tableau.',
+    'The premier enterprise-grade, browser-based data analytics simulator and AI career intelligence platform.',
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'support@analyticsrise.com',
@@ -120,6 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       logoText="AnalyticsRISE"
                       links={[
                         { label: 'Home', href: '/' },
+                        { label: 'Get Hired', href: '/get-hired' },
                         { label: 'About', href: '/about' },
                         { label: 'Courses', href: '/courses' },
                         { label: 'Simulators', href: '/simulators' },
