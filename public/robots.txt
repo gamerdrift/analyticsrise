@@ -1,0 +1,7 @@
+# Robots.txt for AnalyticsRise
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://analyticsrise.com/sitemap.xml

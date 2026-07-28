@@ -10,6 +10,7 @@ import BrowserLanguageBanner from '@/app/components/i18n/BrowserLanguageBanner';
 import FloatingActionManager from '@/app/components/floating/FloatingActionManager';
 import { Navbar } from '@/app/components/navigation/NavControls';
 import LanguageSwitcher from '@/app/components/i18n/LanguageSwitcher';
+import Footer from '@/app/components/layout/Footer';
 import Link from 'next/link';
 
 const inter = Inter({
@@ -33,7 +34,7 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
   title: 'AnalyticsRise - Practice. Master. Get Certified.',
   description:
-    'Master data analytics with real business projects. Learn SQL, Power BI, Tableau, Excel, Python, and more through hands-on practice.',
+    'Master data analytics with real business projects. Learn SQL, Power BI, Tableau, Excel, Python, and more through hands-on practice. Official support: support@analyticsrise.com',
   keywords: [
     'analytics',
     'data analytics',
@@ -96,23 +97,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <div className="min-h-screen flex flex-col">
                     <Navbar
                       logoText="AnalyticsRISE"
-                       links={[
-                         { label: 'Home', href: '/' },
-                         { label: 'Learning Paths', href: '/learning-paths' },
-                         { label: 'Simulators', href: '/simulators' },
-                         { label: 'Career Hub', href: '/career-hub' },
-                         { label: 'Pricing', href: '/pricing' },
-                       ]}
-                       actions={
-                         <>
-                           <LanguageSwitcher variant="compact" className="mb-2 md:mr-2 z-50" />
-                           <Link href="/login" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-4 py-2">Login</Link>
-                           <Link href="/register" className="px-5 py-2.5 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20">Register</Link>
-                         </>
-                       }
+                      links={[
+                        { label: 'Home', href: '/' },
+                        { label: 'About', href: '/about' },
+                        { label: 'Courses', href: '/courses' },
+                        { label: 'Simulators', href: '/simulators' },
+                        { label: 'Career Hub', href: '/career-hub' },
+                        { label: 'Contact', href: '/contact' },
+                        { label: 'Support', href: '/help' },
+                      ]}
+                      actions={
+                        <>
+                          <LanguageSwitcher variant="compact" className="mb-2 md:mr-2 z-50" />
+                          <Link href="/login" className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-3 py-2">Login</Link>
+                          <Link href="/register" className="px-4 py-2 rounded border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20">Register</Link>
+                        </>
+                      }
                     />
-                    <main className="flex-1">{children}</main>
-                    {/* Footer will go here */}
+                    <main className="flex-1 pt-16">{children}</main>
+                    <Footer />
                   </div>
                   <BrowserLanguageBanner />
                   <FloatingActionManager />
