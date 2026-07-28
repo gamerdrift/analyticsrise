@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, KeyboardEvent, MouseEvent } from 'react';
-import { Grid as GridVirt } from 'react-window';
+import { FixedSizeGrid as GridVirt, GridChildComponentProps } from 'react-window';
 import { useExcelStudio, CellAddress, SelectionRange } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { evaluateFormula, colIndexToLetter, formatCellReference } from '@/lib/utils/excel/formulaEvaluator';
 import { Copy, Scissors, Clipboard, Plus, Trash2, EyeOff, Combine } from 'lucide-react';
@@ -244,23 +244,45 @@ export default function Grid() {
   const cols = sheet.cols;
   const rows = sheet.rows;
 
-  const renderCell = (props: { columnIndex: number; rowIndex: number; style: React.CSSProperties }) => {
-    const { columnIndex, rowIndex, style } = props;
-    if (sheet.hiddenRows?.includes(rowIndex) || sheet.hiddenCols?.includes(columnIndex)) {
+  const CellRenderer: React.FC<GridChildComponentProps> = ({ columnIndex, rowIndex, style }) => {
+    // If first column is row header
+    if (columnIndex === 0) {
+      const isRowSelected = selectedCell?.row === rowIndex;
+      return (
+        <div
+          style={{
+            ...style,
+            backgroundColor: isRowSelected ? '#00E5FF' : '#0D1117',
+            color: isRowSelected ? '#000' : '#888',
+          }}
+          className="sticky left-0 z-10 flex items-center justify-center font-bold text-[10px] border-r border-b border-[#00E5FF]/10 select-none"
+        >
+          {rowIndex + 1}
+        </div>
+      );
+    }
+
+    const colIdx = columnIndex - 1;
+
+    if (sheet.hiddenRows?.includes(rowIndex) || sheet.hiddenCols?.includes(colIdx)) {
       return null;
     }
 
-    const key = cellKey(rowIndex, columnIndex);
+    const key = cellKey(rowIndex, colIdx);
     const cell = sheet.cells[key];
 
-    const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === columnIndex && selectedCell.sheetId === activeSheetId;
+    const isSelected =
+      selectedCell &&
+      selectedCell.row === rowIndex &&
+      selectedCell.col === colIdx &&
+      selectedCell.sheetId === activeSheetId;
 
     const isInRange =
       selectionRange &&
       rowIndex >= Math.min(selectionRange.startRow, selectionRange.endRow) &&
       rowIndex <= Math.max(selectionRange.startRow, selectionRange.endRow) &&
-      columnIndex >= Math.min(selectionRange.startCol, selectionRange.endCol) &&
-      columnIndex <= Math.max(selectionRange.startCol, selectionRange.endCol);
+      colIdx >= Math.min(selectionRange.startCol, selectionRange.endCol) &&
+      colIdx <= Math.max(selectionRange.startCol, selectionRange.endCol);
 
     const isEditing = editingKey === key;
 
@@ -296,10 +318,10 @@ export default function Grid() {
             ? 'bg-[#00E5FF]/10'
             : ''
         }`}
-        onClick={(e) => handleCellClick(rowIndex, columnIndex, e)}
-        onContextMenu={(e) => handleContextMenu(e, rowIndex, columnIndex)}
-        onDoubleClick={() => handleDoubleClick(rowIndex, columnIndex)}
-        onMouseEnter={() => handleCellMouseEnter(rowIndex, columnIndex)}
+        onClick={(e) => handleCellClick(rowIndex, colIdx, e)}
+        onContextMenu={(e) => handleContextMenu(e, rowIndex, colIdx)}
+        onDoubleClick={() => handleDoubleClick(rowIndex, colIdx)}
+        onMouseEnter={() => handleCellMouseEnter(rowIndex, colIdx)}
         role="gridcell"
       >
         {isEditing ? (
@@ -354,33 +376,6 @@ export default function Grid() {
     </div>
   );
 
-  const renderRow = (props: { index: number; style: React.CSSProperties }) => {
-    const { index, style } = props;
-    if (sheet.hiddenRows?.includes(index)) return null;
-    const isRowSelected = selectedCell?.row === index;
-    return (
-      <div key={index} style={style} className="flex" onMouseUp={handleMouseUp}>
-        <div
-          style={{ width: ROW_HEADER_WIDTH, height: CELL_HEIGHT, backgroundColor: isRowSelected ? '#00E5FF' : '#0D1117', color: isRowSelected ? '#000' : '#888' }}
-          className="flex-none sticky left-0 z-10 flex items-center justify-center font-bold text-[10px] border-r border-[#00E5FF]/10"
-        >
-          {index + 1}
-        </div>
-        <GridVirt
-          columnCount={cols}
-          columnWidth={CELL_WIDTH}
-          height={CELL_HEIGHT}
-          rowCount={1}
-          rowHeight={CELL_HEIGHT}
-          width={cols * CELL_WIDTH}
-          style={{ overflow: 'visible' }}
-        >
-          {(cellProps) => renderCell({ columnIndex: cellProps.columnIndex, rowIndex: index, style: cellProps.style })}
-        </GridVirt>
-      </div>
-    );
-  };
-
   return (
     <div
       className="flex-1 overflow-auto bg-[#05070B] text-[#F5F7FA] select-none font-mono text-xs focus:outline-none scrollbar-thin relative"
@@ -392,15 +387,15 @@ export default function Grid() {
     >
       <HeaderRow />
       <GridVirt
-        columnCount={1}
-        columnWidth={ROW_HEADER_WIDTH + cols * CELL_WIDTH}
+        columnCount={cols + 1}
+        columnWidth={(index) => (index === 0 ? ROW_HEADER_WIDTH : CELL_WIDTH)}
         height={Math.min(rows, 22) * CELL_HEIGHT}
         rowCount={rows}
-        rowHeight={CELL_HEIGHT}
+        rowHeight={() => CELL_HEIGHT}
         width={ROW_HEADER_WIDTH + cols * CELL_WIDTH}
         style={{ overflow: 'visible' }}
       >
-        {renderRow}
+        {CellRenderer}
       </GridVirt>
 
       {/* Right-Click Context Menu */}
