@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, KeyboardEvent, MouseEvent } from 'react';
-import { Grid as GridVirt } from 'react-window';
+import { Grid as GridVirt, GridChildComponentProps } from 'react-window';
 import { useExcelStudio, CellAddress, SelectionRange } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { evaluateFormula, colIndexToLetter, formatCellReference } from '@/lib/utils/excel/formulaEvaluator';
 import { Copy, Scissors, Clipboard, Plus, Trash2, EyeOff, Combine } from 'lucide-react';
@@ -244,7 +244,7 @@ export default function Grid() {
   const cols = sheet.cols;
   const rows = sheet.rows;
 
-  const renderCell = ({ columnIndex, rowIndex, style }: { columnIndex: number; rowIndex: number; style: React.CSSProperties }) => {
+  const CellRenderer = ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
     if (columnIndex === 0) {
       const isRowSelected = selectedCell?.row === rowIndex;
       return (
@@ -394,7 +394,7 @@ export default function Grid() {
         width={ROW_HEADER_WIDTH + cols * CELL_WIDTH}
         style={{ overflow: 'visible' }}
       >
-        {({ columnIndex, rowIndex, style }: any) => renderCell({ columnIndex, rowIndex, style })}
+        {CellRenderer as any}
       </GridVirt>
 
       {/* Right-Click Context Menu */}
@@ -422,7 +422,7 @@ export default function Grid() {
           >
             <Clipboard className="w-4 h-4 text-[#00E5FF]" /> Paste (Ctrl+V)
           </button>
-          <div className="h-px bg-white/10 my-1" />
+          <div className="h-px bg-[#00E5FF]/20 my-1" />
           <button
             onClick={() => { dispatch({ type: 'INSERT_ROW', payload: { rowIndex: contextMenu.row } }); setContextMenu(null); }}
             className="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors text-left"
@@ -435,7 +435,7 @@ export default function Grid() {
           >
             <Trash2 className="w-4 h-4 text-rose-400" /> Delete Row
           </button>
-          <div className="h-px bg-white/10 my-1" />
+          <div className="h-px bg-[#00E5FF]/20 my-1" />
           <button
             onClick={() => { dispatch({ type: 'INSERT_COL', payload: { colIndex: contextMenu.col } }); setContextMenu(null); }}
             className="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors text-left"
@@ -448,7 +448,7 @@ export default function Grid() {
           >
             <Trash2 className="w-4 h-4 text-rose-400" /> Delete Column
           </button>
-          <div className="h-px bg-white/10 my-1" />
+          <div className="h-px bg-[#00E5FF]/20 my-1" />
           <button
             onClick={() => { dispatch({ type: 'TOGGLE_HIDE_ROW', payload: { rowIndex: contextMenu.row } }); setContextMenu(null); }}
             className="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors text-left"
