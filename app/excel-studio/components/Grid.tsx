@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, KeyboardEvent, MouseEvent } from 'react';
-import { Grid as GridVirt, GridChildComponentProps } from 'react-window';
+import { Grid as GridVirtImport } from 'react-window';
+const GridVirt = GridVirtImport as any;
 import { useExcelStudio, CellAddress, SelectionRange } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { evaluateFormula, colIndexToLetter, formatCellReference } from '@/lib/utils/excel/formulaEvaluator';
 import { Copy, Scissors, Clipboard, Plus, Trash2, EyeOff, Combine } from 'lucide-react';
@@ -244,7 +245,7 @@ export default function Grid() {
   const cols = sheet.cols;
   const rows = sheet.rows;
 
-  const CellRenderer = ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
+  const CellRenderer = ({ columnIndex, rowIndex, style }: any) => {
     if (columnIndex === 0) {
       const isRowSelected = selectedCell?.row === rowIndex;
       return (
