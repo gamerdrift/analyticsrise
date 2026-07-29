@@ -388,7 +388,7 @@ export default function Grid() {
       <HeaderRow />
       <GridVirt
         columnCount={cols + 1}
-        columnWidth={(index) => (index === 0 ? ROW_HEADER_WIDTH : CELL_WIDTH)}
+        columnWidth={(index: number) => (index === 0 ? ROW_HEADER_WIDTH : CELL_WIDTH)}
         height={Math.min(rows, 22) * CELL_HEIGHT}
         rowCount={rows}
         rowHeight={() => CELL_HEIGHT}

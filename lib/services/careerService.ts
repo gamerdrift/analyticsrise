@@ -375,12 +375,11 @@ class CareerService {
         jobTitle: 'Senior Data Analyst, Business Intelligence',
         companyName: 'Google',
         appliedDate: '2026-07-25',
-        status: 'Interview Scheduled',
+        status: 'Interview',
         notes: 'Technical SQL rounds scheduled for Thursday',
         timeline: [
           { status: 'Applied', date: '2026-07-25' },
-          { status: 'Screening', date: '2026-07-26' },
-          { status: 'Interview Scheduled', date: '2026-07-27' },
+          { status: 'Interview', date: '2026-07-27' },
         ],
       },
       {
