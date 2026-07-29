@@ -4,13 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { Mail, ShieldCheck, Lock, Sparkles, Cpu, Clock, CheckCircle2, Briefcase } from 'lucide-react';
 
+import DeploymentFingerprint from './DeploymentFingerprint';
+
 export default function Footer() {
   return (
-    <footer className="border-t border-[#00E5FF]/20 bg-[#07090E] pt-12 pb-8 px-6 text-xs font-mono text-slate-400 relative overflow-hidden z-20">
+    <footer className="border-t border-[#00E5FF]/20 bg-[#07090E] pt-12 pb-0 text-xs font-mono text-slate-400 relative overflow-hidden z-20">
       {/* Background Neon Accent Glow */}
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#00E5FF]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 relative z-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 px-6 relative z-10">
         {/* Column 1: AnalyticsRise Brand */}
         <div className="space-y-4 sm:col-span-2 md:col-span-1">
           <Link href="/" className="flex items-center gap-2.5">
@@ -46,6 +48,21 @@ export default function Footer() {
             <li>
               <Link href="/get-hired" className="text-[#00E5FF] font-bold hover:underline transition-all">
                 🎯 Get Hired (Jobs Hub)
+              </Link>
+            </li>
+            <li>
+              <Link href="/referral" className="text-emerald-400 font-bold hover:underline transition-all">
+                🎁 Referral Program (Earn Pro)
+              </Link>
+            </li>
+            <li>
+              <Link href="/pricing" className="text-amber-400 font-bold hover:underline transition-all">
+                💎 Pricing & Plans
+              </Link>
+            </li>
+            <li>
+              <Link href="/settings/subscription" className="hover:text-[#00E5FF] transition-colors">
+                My Subscription
               </Link>
             </li>
             <li>
@@ -140,7 +157,7 @@ export default function Footer() {
       </div>
 
       {/* Trust Badges & Copyright Bar */}
-      <div className="max-w-7xl mx-auto pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-slate-500">
+      <div className="max-w-7xl mx-auto pt-6 pb-6 px-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-slate-500">
         <div className="flex items-center gap-4 flex-wrap">
           <span className="flex items-center gap-1 text-slate-400">
             <Lock className="w-3 h-3 text-[#00E5FF]" /> Secure Authentication
@@ -159,6 +176,9 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} ANALYTICSRISE. ALL RIGHTS RESERVED. RELEASE v1.0.0-BETA.
         </div>
       </div>
+
+      {/* Deployment Fingerprint Bar */}
+      <DeploymentFingerprint />
     </footer>
   );
 }

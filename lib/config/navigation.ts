@@ -10,8 +10,10 @@ export const MAIN_NAV_LINKS: NavLinkItem[] = [
   { label: 'Simulators', href: '/simulators/sql' },
   { label: 'Practice', href: '/practice' },
   { label: 'Certifications', href: '/certifications' },
-  { label: 'Career Hub', href: '/career-hub', badge: 'NEW' },
-  { label: 'Community', href: '/community' },
+  { label: 'Get Hired', href: '/get-hired', badge: 'JOBS' },
+  { label: 'Career Hub', href: '/career-hub' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Referrals', href: '/referral', badge: 'EARN' },
 ];
 
 export const AUTH_NAV_ROUTES = {
@@ -19,8 +21,12 @@ export const AUTH_NAV_ROUTES = {
   register: '/register',
   forgotPassword: '/forgot-password',
   dashboard: '/dashboard',
+  analytics: '/dashboard/analytics',
+  subscription: '/settings/subscription',
+  referral: '/referral',
   recruiter: '/recruiter',
   admin: '/admin',
+  adminGrowth: '/admin/growth',
 } as const;
 
 export const FOOTER_LEGAL_LINKS: NavLinkItem[] = [

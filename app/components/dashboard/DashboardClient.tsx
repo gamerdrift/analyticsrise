@@ -31,6 +31,17 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import TodaysMissionWidget from '@/app/components/growth/TodaysMissionWidget';
+import DailyChallengeCard from '@/app/components/growth/DailyChallengeCard';
+import StreakWidget from '@/app/components/growth/StreakWidget';
+import AIRecommendationCard from '@/app/components/growth/AIRecommendationCard';
+import LeaderboardWidget from '@/app/components/growth/LeaderboardWidget';
+import ConversionTriggers from '@/app/components/growth/ConversionTriggers';
+import OnboardingWizard from '@/app/components/onboarding/OnboardingWizard';
+import { OnboardingService } from '@/lib/services/onboardingService';
+import { StreakService } from '@/lib/services/streakService';
+import { AIRecommendationService } from '@/lib/services/aiRecommendationService';
+
 export default function DashboardClient() {
   const { userProfile, loading } = useAuth();
   const { toggleTheme } = useTheme();
@@ -38,6 +49,14 @@ export default function DashboardClient() {
   const { xp, level, streak, badges } = useGamification();
 
   const [greeting, setGreeting] = useState('');
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const onboardingState = OnboardingService.getState();
+    if (!onboardingState.completed) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -129,10 +148,31 @@ export default function DashboardClient() {
     { id: 'cert-2', name: 'Excel Financial Spreadsheet Architect', issueDate: '2026-07-15', hash: 'sha256-3c2d...71ab', verifyUrl: '/certifications' },
   ];
 
+  const currentStreakState = StreakService.getStreak();
+
   return (
     <DashboardLayout>
+      {/* Onboarding Wizard Modal */}
+      <OnboardingWizard isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+
+      {/* Exit Intent Conversion Modal */}
+      <ConversionTriggers />
+
       <div className="space-y-8 max-w-7xl mx-auto">
-        {/* ─── 1. GREETING & HERO HEADER ────────────────────────────────────────────── */}
+        {/* ─── 0. TODAY'S MISSION & DAILY ENGAGEMENT HERO ────────────────────────────── */}
+        <TodaysMissionWidget streak={currentStreakState} userXp={xp} dailyGoalProgress={70} />
+
+        {/* ─── 1. DAILY CHALLENGE & STREAK WIDGET ────────────────────────────────────── */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <DailyChallengeCard />
+          </div>
+          <div>
+            <StreakWidget />
+          </div>
+        </section>
+
+        {/* ─── 1B. GREETING & QUICK TELEMETRY ────────────────────────────────────── */}
         <section className="relative overflow-hidden p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0D1117] to-slate-900 border border-[#00E5FF]/20 shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E5FF]/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -148,7 +188,7 @@ export default function DashboardClient() {
                 {greeting}, <span className="text-[#00E5FF]">{displayName}</span>
               </h1>
               <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">
-                Ready to continue your analytical problem-solving? Your 7-day streak is active!
+                Ready to continue your analytical problem-solving? Your daily streak is active!
               </p>
             </div>
 
@@ -320,6 +360,23 @@ export default function DashboardClient() {
         {/* ─── 4. PERSONALIZED LEARNING ROADMAP COMPONENT ────────────────────────── */}
         <section>
           <CareerRoadmap />
+        </section>
+
+        {/* ─── 4B. AI MENTOR RECOMMENDATIONS & GLOBAL LEADERBOARD ──────────────────── */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="text-base font-bold font-display text-white uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-cyan-400" /> AI Mentor Adaptive Recommendations
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {AIRecommendationService.getRecommendations().map((recItem) => (
+                <AIRecommendationCard key={recItem.id} item={recItem} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <LeaderboardWidget />
+          </div>
         </section>
 
         {/* ─── 5. TWO-COLUMN GRID: Recommended Courses & Upcoming Assessments ─────── */}

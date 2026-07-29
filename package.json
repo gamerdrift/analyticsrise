@@ -15,7 +15,8 @@
     "type-check": "npx tsc --noEmit",
     "format": "npx prettier --write .",
     "validate-i18n": "node scripts/validate-translations.js",
-    "export": "next export"
+    "export": "next export",
+    "release": "node scripts/release.js"
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.8.1",

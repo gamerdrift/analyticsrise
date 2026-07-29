@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AUTH_NAV_ROUTES } from '@/lib/config/navigation';
 
+import NotificationDrawer from '@/app/components/growth/NotificationDrawer';
+
 export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -13,8 +15,10 @@ export default function LandingNavbar() {
     { name: 'Home', href: '/' },
     { name: 'Learning Paths', href: '#paths' },
     { name: 'Simulators', href: '#simulators' },
+    { name: 'Get Hired', href: '/get-hired' },
     { name: 'Career Hub', href: '/career-hub' },
-    { name: 'Pricing', href: '#pricing' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Referrals', href: '/referral' },
   ];
 
   return (
@@ -45,6 +49,7 @@ export default function LandingNavbar() {
 
         {/* Navigation Action Buttons + Language Selector */}
         <div className="hidden md:flex items-center gap-4">
+          <NotificationDrawer />
           <LanguageSwitcher variant="compact" className="z-[100]" />
           <Link
             href={AUTH_NAV_ROUTES.login}
