@@ -47,16 +47,29 @@ function verifyBuildBundle() {
     process.exit(1);
   }
 
-  const indexContent = fs.readFileSync(indexPath, 'utf8');
-  const requiredKeywords = ['Get Hired', 'About', 'Contact', 'Career Hub'];
-  const missing = requiredKeywords.filter((kw) => !indexContent.includes(kw));
+  const requiredRoutes = [
+    'career-copilot',
+    'resume-studio',
+    'interview-lab',
+    'recruiter',
+    'companies',
+    'admin/executive',
+    'admin/health',
+    'feedback',
+  ];
 
-  if (missing.length > 0) {
-    console.error(`🔴 BUNDLE VERIFICATION FAILED: Missing keywords in out/index.html:`, missing);
+  const missingRoutes = requiredRoutes.filter((route) => {
+    const htmlPath = path.join(__dirname, '..', `out/${route}.html`);
+    const dirHtmlPath = path.join(__dirname, '..', `out/${route}/index.html`);
+    return !fs.existsSync(htmlPath) && !fs.existsSync(dirHtmlPath);
+  });
+
+  if (missingRoutes.length > 0) {
+    console.error(`🔴 BUNDLE VERIFICATION FAILED: Missing Sprint 10 production route bundles:`, missingRoutes);
     process.exit(1);
   }
 
-  console.log(`✅ BUNDLE VERIFICATION PASSED: All required navigation links found in out/index.html.`);
+  console.log(`✅ BUNDLE VERIFICATION PASSED: All ${requiredRoutes.length} Sprint 10 production route HTML bundles verified in out/.`);
 }
 
 function main() {

@@ -8,62 +8,74 @@ import { AUTH_NAV_ROUTES } from '@/lib/config/navigation';
 
 import NotificationDrawer from '@/app/components/growth/NotificationDrawer';
 
+import SearchModal from '@/app/components/navigation/GlobalSearchModal';
+import { Search } from 'lucide-react';
+
 export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const menuItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Learning Paths', href: '#paths' },
-    { name: 'Simulators', href: '#simulators' },
+    { name: 'AI Copilot', href: '/career-copilot' },
+    { name: 'Resume Studio', href: '/resume-studio' },
+    { name: 'Interview Lab', href: '/interview-lab' },
     { name: 'Get Hired', href: '/get-hired' },
-    { name: 'Career Hub', href: '/career-hub' },
+    { name: 'Companies', href: '/companies' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Referrals', href: '/referral' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/80 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-xl font-display tracking-tighter shadow-lg shadow-[#00E5FF]/20">
-            AR
+    <>
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Brand Logo */}
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-xl font-display tracking-tighter shadow-lg shadow-[#00E5FF]/20">
+              AR
+            </div>
+            <span className="font-display font-black text-white text-lg tracking-wider">
+              ANALYTICS<span className="text-[#00E5FF]">RISE</span>
+            </span>
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
-          <span className="font-display font-black text-white text-lg tracking-wider">
-            ANALYTICS<span className="text-[#00E5FF]">RISE</span>
-          </span>
-        </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
-          {menuItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-xs uppercase tracking-widest text-slate-400 hover:text-[#00E5FF] font-medium transition-colors"
+          {/* Navigation Action Buttons + Language Selector */}
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 rounded-xl bg-white/5 text-slate-400 hover:text-white border border-white/5 hover:border-[#00E5FF]/30 transition-all cursor-pointer"
+              title="Global Search (Ctrl+K)"
             >
-              {item.name}
-            </a>
-          ))}
-        </div>
-
-        {/* Navigation Action Buttons + Language Selector */}
-        <div className="hidden md:flex items-center gap-4">
-          <NotificationDrawer />
-          <LanguageSwitcher variant="compact" className="z-[100]" />
-          <Link
-            href={AUTH_NAV_ROUTES.login}
-            className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-3 py-2"
-          >
-            Login
-          </Link>
-          <Link
-            href={AUTH_NAV_ROUTES.register}
-            className="px-5 py-2.5 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
-          >
-            Register
-          </Link>
-        </div>
+              <Search className="w-4 h-4 text-[#00E5FF]" />
+            </button>
+            <NotificationDrawer />
+            <LanguageSwitcher variant="compact" className="z-[100]" />
+            <Link
+              href={AUTH_NAV_ROUTES.login}
+              className="text-xs uppercase tracking-widest text-slate-400 hover:text-white font-bold transition-colors px-2 py-2"
+            >
+              Login
+            </Link>
+            <Link
+              href={AUTH_NAV_ROUTES.register}
+              className="px-4 py-2.5 rounded-xl border border-[#00E5FF] text-[#00E5FF] text-[10px] font-bold tracking-widest uppercase hover:bg-[#00E5FF]/10 transition-all duration-300 shadow-md shadow-[#00E5FF]/10 hover:shadow-[#00E5FF]/20"
+            >
+              Register
+            </Link>
+          </div>
 
         {/* Mobile Navigation Toggle */}
         <button
@@ -124,5 +136,6 @@ export default function LandingNavbar() {
         )}
       </AnimatePresence>
     </nav>
-  );
+  </>
+);
 }

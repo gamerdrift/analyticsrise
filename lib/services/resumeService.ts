@@ -140,7 +140,7 @@ export const INITIAL_RESUME_DATA: ResumeData = {
   version: 1,
 };
 
-class ResumeService {
+export class ResumeService {
   /**
    * Calculates ATS Compatibility & Quality Score
    */

@@ -6,14 +6,14 @@ export interface NavLinkItem {
 }
 
 export const MAIN_NAV_LINKS: NavLinkItem[] = [
-  { label: 'Courses', href: '/courses' },
-  { label: 'Simulators', href: '/simulators/sql' },
-  { label: 'Practice', href: '/practice' },
-  { label: 'Certifications', href: '/certifications' },
+  { label: 'AI Copilot', href: '/career-copilot', badge: 'v2.0' },
+  { label: 'Resume Studio', href: '/resume-studio' },
+  { label: 'Interview Lab', href: '/interview-lab' },
   { label: 'Get Hired', href: '/get-hired', badge: 'JOBS' },
-  { label: 'Career Hub', href: '/career-hub' },
+  { label: 'Companies', href: '/companies' },
+  { label: 'Recruiters', href: '/recruiter' },
+  { label: 'Feedback', href: '/feedback' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Referrals', href: '/referral', badge: 'EARN' },
 ];
 
 export const AUTH_NAV_ROUTES = {
