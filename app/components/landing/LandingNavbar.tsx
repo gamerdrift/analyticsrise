@@ -16,12 +16,11 @@ export default function LandingNavbar() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const menuItems = [
-    { name: 'AI Copilot', href: '/career-copilot' },
-    { name: 'Resume Studio', href: '/resume-studio' },
-    { name: 'Interview Lab', href: '/interview-lab' },
-    { name: 'Get Hired', href: '/get-hired' },
-    { name: 'Companies', href: '/companies' },
+    { name: 'Home', href: '/' },
+    { name: 'Products', href: '/products' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Enterprise', href: '/enterprise' },
+    { name: 'About', href: '/about' },
   ];
 
   return (

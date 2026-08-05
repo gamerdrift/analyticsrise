@@ -16,6 +16,9 @@ import {
   LandingFooter,
 } from '@/app/components/landing/LandingSections';
 
+import ARStudioFeaturedShowcase from '@/app/components/landing/ARStudioFeaturedShowcase';
+import ExperienceCardsGrid from '@/app/components/landing/ExperienceCardsGrid';
+
 export default function RootLandingPage() {
   return (
     <div className="min-h-screen bg-[#05070B] text-[#F5F7FA] font-sans selection:bg-[#00E5FF]/20 selection:text-[#00E5FF] flex flex-col relative overflow-hidden">
@@ -29,6 +32,8 @@ export default function RootLandingPage() {
       {/* Main Page Layout */}
       <main className="flex-1 relative z-10">
         <LandingHero />
+        <ARStudioFeaturedShowcase />
+        <ExperienceCardsGrid />
         <InteractivePreview />
         <TechnologyShowcase />
         <LearningPaths />

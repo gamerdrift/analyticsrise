@@ -26,11 +26,11 @@ export default function LandingHero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-[#00E5FF]/30 bg-[#00E5FF]/5 text-[#00E5FF] mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#00E5FF]/40 bg-[#00E5FF]/10 text-[#00E5FF] mb-6 shadow-lg shadow-[#00E5FF]/10"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
-          <span className="text-[10px] font-mono uppercase tracking-widest font-bold">
-            Practice. Master. Get Certified. • DEPLOYMENT VERIFIED
+          <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
+          <span className="text-xs font-mono uppercase tracking-widest font-bold">
+            AnalyticsRise Ecosystem V1.0 • AI Business Intelligence
           </span>
         </motion.div>
 
@@ -39,22 +39,36 @@ export default function LandingHero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-black text-white font-display tracking-wide uppercase leading-[1.1] mb-6"
+          className="text-4xl sm:text-6xl md:text-7xl font-black text-white font-display tracking-tight uppercase leading-[1.05] mb-4"
         >
-          THE COMMAND CENTER FOR <br className="hidden sm:inline" />
-          <span className="bg-gradient-to-r from-[#00E5FF] to-[#4FC3F7] bg-clip-text text-transparent">
-            HANDS-ON DATA LITERACY
-          </span>
+          DEMOCRATIZE DATA ANALYTICS <br className="hidden sm:inline" />
+          THROUGH <span className="bg-gradient-to-r from-[#00E5FF] via-purple-400 to-[#00E5FF] bg-clip-text text-transparent">ARTIFICIAL INTELLIGENCE</span>
         </motion.h1>
+
+        {/* Tagline */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-base sm:text-xl font-mono text-[#00E5FF] font-bold tracking-widest uppercase mb-6 flex items-center justify-center gap-2 flex-wrap"
+        >
+          <span>Upload.</span>
+          <span className="text-slate-500">•</span>
+          <span>Analyze.</span>
+          <span className="text-slate-500">•</span>
+          <span>Visualize.</span>
+          <span className="text-slate-500">•</span>
+          <span>Understand.</span>
+        </motion.div>
 
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg text-slate-400 max-w-2xl leading-relaxed mb-10"
+          className="text-sm sm:text-base md:text-lg text-slate-300 max-w-3xl leading-relaxed mb-10"
         >
-          Build production-ready SQL queries, interactive dashboards, and spreadsheet models directly inside in-browser replica interfaces. Stop watching video tutorials. Start analytical problem-solving.
+          An immersive AI software ecosystem empowering individuals and enterprise organizations. From real-time Business Intelligence in AR Studio to conversational AI co-pilots and interactive simulators.
         </motion.p>
 
         {/* Action Buttons */}
@@ -62,19 +76,19 @@ export default function LandingHero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 mb-20 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row gap-4 mb-16 w-full sm:w-auto"
         >
           <Link
-            href="/dashboard"
-            className="px-8 py-3.5 rounded border border-[#00E5FF] text-black bg-[#00E5FF] text-xs font-bold tracking-widest uppercase hover:bg-transparent hover:text-[#00E5FF] transition-all duration-300 shadow-lg shadow-[#00E5FF]/20 text-center"
+            href="/ar-studio"
+            className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#00A3FF] text-black font-mono font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all duration-300 shadow-xl shadow-[#00E5FF]/20 text-center"
           >
-            Console
+            Launch AR Studio
           </Link>
           <a
-            href="#simulators"
-            className="px-8 py-3.5 rounded border border-slate-700 text-slate-300 text-xs font-bold tracking-widest uppercase hover:bg-slate-800/50 hover:border-slate-500 transition-all duration-300 text-center"
+            href="#experiences"
+            className="px-8 py-4 rounded-xl border border-white/20 text-white text-xs font-mono font-bold tracking-widest uppercase hover:bg-white/10 transition-all duration-300 text-center"
           >
-            Explore Simulators
+            Explore Experience Cards
           </a>
         </motion.div>
 

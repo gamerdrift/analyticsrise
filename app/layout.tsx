@@ -120,13 +120,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       logoText="AnalyticsRISE"
                       links={[
                         { label: 'Home', href: '/' },
-                        { label: 'Get Hired', href: '/get-hired' },
+                        { label: 'Products', href: '/products' },
+                        { label: 'Pricing', href: '/pricing' },
+                        { label: 'Enterprise', href: '/enterprise' },
                         { label: 'About', href: '/about' },
-                        { label: 'Courses', href: '/courses' },
-                        { label: 'Simulators', href: '/simulators' },
-                        { label: 'Career Hub', href: '/career-hub' },
-                        { label: 'Contact', href: '/contact' },
-                        { label: 'Support', href: '/help' },
                       ]}
                       actions={
                         <>
