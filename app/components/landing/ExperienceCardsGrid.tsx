@@ -227,7 +227,8 @@ export default function ExperienceCardsGrid() {
             key={card.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: idx * 0.05 }}
+            whileHover={{ y: -6, scale: 1.01 }}
+            transition={{ duration: 0.3, delay: idx * 0.03, ease: 'easeOut' }}
             viewport={{ once: true }}
             className="group"
           >

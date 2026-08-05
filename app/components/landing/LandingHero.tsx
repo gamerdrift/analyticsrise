@@ -78,18 +78,22 @@ export default function LandingHero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 mb-16 w-full sm:w-auto"
         >
-          <Link
-            href="/ar-studio"
-            className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#00A3FF] text-black font-mono font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all duration-300 shadow-xl shadow-[#00E5FF]/20 text-center"
-          >
-            Launch AR Studio
-          </Link>
-          <a
-            href="#experiences"
-            className="px-8 py-4 rounded-xl border border-white/20 text-white text-xs font-mono font-bold tracking-widest uppercase hover:bg-white/10 transition-all duration-300 text-center"
-          >
-            Explore Experience Cards
-          </a>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+            <Link
+              href="/ar-studio"
+              className="block px-8 py-4 rounded-2xl bg-gradient-to-r from-[#00E5FF] via-[#4FC3F7] to-[#00E5FF] text-black font-mono font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] transition-all duration-300 shadow-xl shadow-[#00E5FF]/20 text-center cursor-pointer"
+            >
+              Launch AR Studio
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+            <a
+              href="#experiences"
+              className="block px-8 py-4 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-md text-white text-xs font-mono font-bold tracking-widest uppercase hover:bg-white/10 hover:border-white/40 transition-all duration-300 text-center cursor-pointer"
+            >
+              Explore Experience Cards
+            </a>
+          </motion.div>
         </motion.div>
 
         {/* Telemetry Stats Ticker */}
