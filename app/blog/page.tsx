@@ -63,7 +63,7 @@ export default function BlogPortalPage() {
               <p className="text-slate-400 text-xs font-sans leading-relaxed">{p.excerpt}</p>
 
               <div className="pt-2">
-                <Link href="#" className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300">
+                <Link href="/building-analyticsrise" className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300">
                   Read Article <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

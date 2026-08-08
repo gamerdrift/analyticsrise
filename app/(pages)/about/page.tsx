@@ -59,7 +59,61 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Key Platform Pillars */}
+        {/* Founder & Technical Leadership */}
+        <section className="p-8 rounded-2xl bg-gradient-to-br from-[#0D1117] via-[#0A101D] to-[#070B14] border border-[#00E5FF]/30 space-y-6 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#00E5FF]/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#00E5FF]/10 text-[#00E5FF] text-[10px] font-mono font-bold uppercase tracking-widest mb-2 border border-[#00E5FF]/20">
+                <Award className="w-3.5 h-3.5" /> Founder & Principal Architect
+              </div>
+              <h2 className="text-2xl font-display font-bold text-white uppercase tracking-wider">
+                Founder Leadership & Credentials
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono font-bold uppercase">
+                Lean Six Sigma Green Belt
+              </span>
+              <span className="px-3 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold uppercase">
+                ISO 31000 Risk & Compliance
+              </span>
+            </div>
+          </div>
+
+          <p className="text-slate-300 text-sm leading-relaxed">
+            AnalyticsRise was conceived and engineered by a seasoned Data Analytics & Machine Learning leader with extensive domain expertise across advanced predictive modeling, enterprise data architecture, statistical computing, and web platform development.
+          </p>
+
+          {/* Technical Competencies Grid */}
+          <div className="space-y-3 pt-2">
+            <h3 className="text-xs font-mono font-bold text-[#00E5FF] uppercase tracking-widest">
+              Core Technical Domain Expertise
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs font-mono">
+              {[
+                { name: 'Data Science', cat: 'Analytics' },
+                { name: 'Data Analytics', cat: 'Analytics' },
+                { name: 'Machine Learning', cat: 'AI' },
+                { name: 'Data Visualization', cat: 'BI' },
+                { name: 'Python', cat: 'Stack' },
+                { name: 'R', cat: 'Statistics' },
+                { name: 'SQL', cat: 'Database' },
+                { name: 'Excel & VBA', cat: 'Spreadsheets' },
+                { name: 'Alteryx', cat: 'ETL' },
+                { name: 'Tableau', cat: 'BI' },
+                { name: 'Web Development', cat: 'Engineering' },
+                { name: 'Risk Management', cat: 'ISO 31000' },
+              ].map((item, i) => (
+                <div key={i} className="p-2.5 rounded-lg bg-[#05070B] border border-white/10 hover:border-[#00E5FF]/40 transition-colors flex items-center justify-between">
+                  <span className="text-white font-semibold">{item.name}</span>
+                  <span className="text-[9px] text-slate-500 uppercase">{item.cat}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         <section className="space-y-6">
           <h2 className="text-2xl font-display font-bold text-white uppercase tracking-wider text-center">
             Why Professionals Choose <span className="text-[#00E5FF]">AnalyticsRise</span>

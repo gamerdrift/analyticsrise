@@ -271,9 +271,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <span>&copy; {new Date().getFullYear()} ANALYTICSRISE. ALL RIGHTS RESERVED.</span>
         <div className="flex gap-6">
-          <Link href="/help" className="hover:text-white transition-colors">Privacy</Link>
-          <Link href="/help" className="hover:text-white transition-colors">Terms</Link>
-          <Link href="/help" className="hover:text-white transition-colors">Security</Link>
+          <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+          <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+          <Link href="/cookies" className="hover:text-white transition-colors">Cookies</Link>
         </div>
       </div>
     </footer>

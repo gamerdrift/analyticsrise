@@ -102,14 +102,14 @@ export default function LandingNavbar() {
             className="absolute top-20 left-0 right-0 bg-[#0D1117]/95 border-b border-white/5 backdrop-blur-lg px-6 py-8 flex flex-col gap-6 md:hidden z-40"
           >
             {menuItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className="text-sm uppercase tracking-widest text-slate-300 hover:text-[#00E5FF] font-medium"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
             <div className="h-px bg-white/5 my-2" />
             <div className="flex flex-col gap-4">
