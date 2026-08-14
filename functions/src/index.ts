@@ -4,14 +4,6 @@ import { getAuth } from 'firebase-admin/auth';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 
-// Re-export secret definitions for downstream billing function modules
-export {
-  razorpayKeyId,
-  razorpayKeySecret,
-  razorpayWebhookSecret,
-  RAZORPAY_SECRETS,
-} from './config';
-
 /**
  * Firebase Admin SDK Initialization
  *
@@ -24,6 +16,25 @@ if (!getApps().length) {
 
 export const db = getFirestore();
 export const auth = getAuth();
+
+// Re-export secret definitions for downstream billing function modules
+export {
+  razorpayKeyId,
+  razorpayKeySecret,
+  razorpayWebhookSecret,
+  RAZORPAY_SECRETS,
+} from './config';
+
+// Re-export pricing utilities
+export {
+  resolvePlanPricing,
+  AUTHORITATIVE_PLANS,
+  type PaidPlanTier,
+  type BillingCycle,
+} from './pricing';
+
+// Export Cloud Functions
+export { createRazorpayOrder } from './orders';
 
 /**
  * Health Check Cloud Function (v2 HTTPS)
