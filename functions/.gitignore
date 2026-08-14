@@ -9,7 +9,14 @@ node_modules/
 firebase-debug.log
 firebase-debug.*.log
 
-# Local environment variables
+# Local environment variables & secrets (Secret Manager emulation)
+.env
+.env.*
 .env.local
 .env.*.local
+.secret.local
 *.secret.local
+
+# Service account credentials
+*credentials*.json
+*service-account*.json

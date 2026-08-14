@@ -4,6 +4,14 @@ import { getAuth } from 'firebase-admin/auth';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as logger from 'firebase-functions/logger';
 
+// Re-export secret definitions for downstream billing function modules
+export {
+  razorpayKeyId,
+  razorpayKeySecret,
+  razorpayWebhookSecret,
+  RAZORPAY_SECRETS,
+} from './config';
+
 /**
  * Firebase Admin SDK Initialization
  *
