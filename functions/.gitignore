@@ -1,0 +1,22 @@
+# Compiled JavaScript
+lib/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+firebase-debug.log
+firebase-debug.*.log
+
+# Local environment variables & secrets (Secret Manager emulation)
+.env
+.env.*
+.env.local
+.env.*.local
+.secret.local
+*.secret.local
+
+# Service account credentials
+*credentials*.json
+*service-account*.json

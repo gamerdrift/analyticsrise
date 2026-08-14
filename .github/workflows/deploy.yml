@@ -22,14 +22,30 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
 
-      - name: Run linter
+      - name: Install functions dependencies
+        run: |
+          cd functions
+          npm ci
+          cd ..
+
+      - name: Validate Cloud Functions (Type Check & Tests)
+        run: |
+          cd functions
+          npm run build
+          npm test
+          cd ..
+
+      - name: Run root linter
         run: npm run lint
 
-      - name: Type check
+      - name: Root type check
         run: npm run type-check
+
+      - name: Run root tests
+        run: npm test
 
       - name: Build project
         run: npm run build:npx

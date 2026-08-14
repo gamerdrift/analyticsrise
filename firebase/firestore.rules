@@ -253,5 +253,39 @@ service cloud.firestore {
         allow read, write: if false;
       }
     }
+
+
+    // ============================================================
+    // BILLING, SUBSCRIPTIONS & ENTITLEMENTS (RAZORPAY)
+    //
+    // Authoritative billing collections are managed exclusively by
+    // Firebase Admin SDK inside Cloud Functions.
+    // Client SDK write access is STRICTLY FORBIDDEN.
+    // Users may read only their own subscriptions/entitlements/orders.
+    // ============================================================
+
+    match /subscriptions/{subscriptionId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /entitlements/{userId} {
+      allow read: if isAuthenticated() && (userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /webhookEvents/{eventId} {
+      allow read, write: if false;
+    }
   }
 }

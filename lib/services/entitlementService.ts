@@ -84,9 +84,17 @@ export class EntitlementService {
   }
 
   /**
-   * Get active plan definition for user
+   * Get active plan definition for user (synchronous fast lookup)
    */
   static getCurrentPlan(uid: string = 'demo-user'): PlanTier {
     return MembershipService.getSubscription(uid).planId;
+  }
+
+  /**
+   * Asynchronously fetch authoritative plan directly from Firestore
+   */
+  static async fetchAuthoritativePlan(uid?: string): Promise<PlanTier> {
+    const sub = await MembershipService.fetchAuthoritativeSubscription(uid);
+    return sub.planId;
   }
 }

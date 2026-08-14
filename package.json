@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "npx next dev",
+    "build": "npx next build",
     "build:fast": "npx next build",
     "build:npx": "npx next build",
     "build:wasm": "npm run build:npx",
