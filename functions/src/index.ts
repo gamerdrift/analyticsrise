@@ -34,7 +34,8 @@ export {
 } from './pricing';
 
 // Export Cloud Functions
-export { createRazorpayOrder } from './orders';
+export { createRazorpayOrder, processOrderCreation, getRazorpayClient } from './orders';
+export { verifyRazorpayPayment, processPaymentVerification, verifySignatureHmacSha256 } from './verifyPayment';
 
 /**
  * Health Check Cloud Function (v2 HTTPS)
