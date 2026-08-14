@@ -90,9 +90,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             };
             setUserProfile(appUser);
 
-            // Sync auth session and user role cookies (used by Next.js edge middleware)
-            document.cookie = `__session=${token}; path=/; max-age=${3600 * 24 * 7}; SameSite=Lax; Secure`;
-            document.cookie = `user-role=${role}; path=/; max-age=${3600 * 24 * 7}; SameSite=Lax; Secure`;
+            // Firebase Authentication is the source of truth for the client session.
+	    // No client-created authorization cookies are required.
           }
         } catch (error) {
           logger.error('Error synchronizing authenticated user profile:', error);
@@ -121,8 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setUserProfile(null);
         // Clean session and role cookies on sign-out
-        document.cookie = '__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure';
-        document.cookie = 'user-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure';
+        // Firebase Authentication handles session cleanup.
       }
       setLoading(false);
     });
