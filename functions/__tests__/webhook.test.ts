@@ -141,6 +141,9 @@ describe('Mission 05 & 05.1: Webhook Ingestion & Idempotency Hardening', () => {
       }),
     });
 
+    let mockSubscriptionStore = new Map<string, any>();
+    let mockEntitlementStore = new Map<string, any>();
+
     mockDb = {
       collection: jest.fn().mockImplementation((colName: string) => {
         if (colName === 'webhookEvents') {
@@ -158,28 +161,73 @@ describe('Mission 05 & 05.1: Webhook Ingestion & Idempotency Hardening', () => {
             doc: jest.fn().mockImplementation((id: string) => createDocMock(mockPaymentStore, id)),
           };
         }
+        if (colName === 'subscriptions') {
+          return {
+            doc: jest.fn().mockImplementation((id: string) => createDocMock(mockSubscriptionStore, id)),
+          };
+        }
+        if (colName === 'entitlements') {
+          return {
+            doc: jest.fn().mockImplementation((id: string) => createDocMock(mockEntitlementStore, id)),
+          };
+        }
         return { doc: jest.fn() };
       }),
       runTransaction: jest.fn().mockImplementation(async (updateFunction: (transaction: any) => Promise<any>) => {
         const mockTransaction = {
           get: jest.fn().mockImplementation((docRef: any) => {
             const id = docRef?._id || testEventId;
-            const exists = mockEventStore.has(id);
+            let exists = false;
+            let data: any = null;
+
+            if (mockEventStore.has(id)) {
+              exists = true;
+              data = mockEventStore.get(id);
+            } else if (mockSubscriptionStore.has(id)) {
+              exists = true;
+              data = mockSubscriptionStore.get(id);
+            } else if (mockEntitlementStore.has(id)) {
+              exists = true;
+              data = mockEntitlementStore.get(id);
+            } else if (mockOrderStore.has(id)) {
+              exists = true;
+              data = mockOrderStore.get(id);
+            } else if (mockPaymentStore.has(id)) {
+              exists = true;
+              data = mockPaymentStore.get(id);
+            }
+
             return Promise.resolve({
               exists,
-              data: () => mockEventStore.get(id),
+              data: () => data,
             });
           }),
           set: jest.fn().mockImplementation((docRef: any, data: any) => {
             const id = docRef?._id || testEventId;
-            mockEventStore.set(id, { ...data });
+            if (id?.startsWith('sub_')) {
+              mockSubscriptionStore.set(id, { ...data });
+            } else if (id === testUserId) {
+              mockEntitlementStore.set(id, { ...data });
+            } else if (id?.startsWith('pay_')) {
+              mockPaymentStore.set(id, { ...data });
+            } else if (id?.startsWith('order_')) {
+              mockOrderStore.set(id, { ...data });
+            } else {
+              mockEventStore.set(id, { ...data });
+            }
           }),
           update: jest.fn().mockImplementation((docRef: any, data: any) => {
             const id = docRef?._id || testEventId;
             if (mockEventStore.has(id)) {
               mockEventStore.set(id, { ...mockEventStore.get(id), ...data });
-            } else {
-              mockEventStore.set(id, { ...data });
+            } else if (mockOrderStore.has(id)) {
+              mockOrderStore.set(id, { ...mockOrderStore.get(id), ...data });
+            } else if (mockPaymentStore.has(id)) {
+              mockPaymentStore.set(id, { ...mockPaymentStore.get(id), ...data });
+            } else if (mockSubscriptionStore.has(id)) {
+              mockSubscriptionStore.set(id, { ...mockSubscriptionStore.get(id), ...data });
+            } else if (mockEntitlementStore.has(id)) {
+              mockEntitlementStore.set(id, { ...mockEntitlementStore.get(id), ...data });
             }
           }),
         };

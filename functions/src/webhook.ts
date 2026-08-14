@@ -5,6 +5,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 import * as crypto from 'crypto';
 import { db } from './index';
 import { razorpayWebhookSecret, RAZORPAY_SECRETS } from './config';
+import { activateSubscriptionFromPayment } from './subscriptions';
 
 export interface WebhookProcessingResult {
   status: number;
@@ -330,14 +331,20 @@ export async function processWebhookEvent(
           } else if (currency && orderData?.currency && currency !== orderData.currency) {
             processingStatus = 'reconciliation_required';
             reconciliationNotes = `Currency mismatch: Webhook=${currency}, Order=${orderData.currency}`;
-          } else {
-            // Update order with payment captured status (leaving subscription activation for Mission 06)
-            await orderDocRef.update({
-              paymentStatus: 'captured',
-              latestPaymentId: razorpayPaymentId || null,
-              paymentCapturedAt: FieldValue.serverTimestamp(),
-              updatedAt: FieldValue.serverTimestamp(),
-            });
+          } else if (orderData && razorpayPaymentId) {
+            // Authoritatively activate subscription and feature entitlements in Firestore
+            await activateSubscriptionFromPayment(
+              {
+                userId: orderData.userId,
+                orderId: razorpayOrderId,
+                paymentId: razorpayPaymentId,
+                planId: orderData.planId,
+                billingCycle: orderData.billingCycle,
+                amount: orderData.amount,
+                currency: orderData.currency,
+              },
+              database
+            );
           }
         } else {
           processingStatus = 'reconciliation_required';

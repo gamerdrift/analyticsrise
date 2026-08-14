@@ -37,6 +37,18 @@ export {
 export { createRazorpayOrder, processOrderCreation, getRazorpayClient } from './orders';
 export { verifyRazorpayPayment, processPaymentVerification, verifySignatureHmacSha256 } from './verifyPayment';
 export { handleRazorpayWebhook, processWebhookEvent, verifyWebhookSignature, extractRawBody } from './webhook';
+export {
+  activateSubscriptionFromPayment,
+  getAuthoritativeEntitlement,
+  cancelSubscriptionAtPeriodEnd,
+  calculatePeriodEnd,
+  AUTHORITATIVE_PLAN_LIMITS,
+  type ActivationParams,
+  type ActivationResult,
+  type SubscriptionRecord,
+  type EntitlementRecord,
+  type PlanLimits,
+} from './subscriptions';
 
 /**
  * Health Check Cloud Function (v2 HTTPS)
