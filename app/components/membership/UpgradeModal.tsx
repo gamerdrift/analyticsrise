@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Sparkles, ShieldCheck, Zap, Lock } from 'lucide-react';
+import { X, Check, Sparkles, ShieldCheck, Zap, Lock, AlertCircle, Loader2, LogIn } from 'lucide-react';
 import { PlanTier, MEMBERSHIP_PLANS } from '@/lib/config/plans';
-import { BillingService } from '@/lib/services/billingService';
+import { BillingService, CheckoutStep } from '@/lib/services/billingService';
+import { MembershipService } from '@/lib/services/membershipService';
+import { auth } from '@/lib/firebase/config';
 import PlanBadge from './PlanBadge';
 
 interface UpgradeModalProps {
@@ -24,20 +27,63 @@ export default function UpgradeModal({
 }: UpgradeModalProps) {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [checkoutStep, setCheckoutStep] = useState<CheckoutStep>('idle');
+  const [stepMessage, setStepMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successPlan, setSuccessPlan] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
+  const currentUser = auth.currentUser;
+
   const handleSelectPlan = async (planId: PlanTier) => {
+    if (loadingPlan) return; // Prevent double click
+
+    setErrorMessage(null);
+    setSuccessPlan(null);
+
+    // 1. Check Authentication
+    if (!currentUser) {
+      setErrorMessage('Please log in or create an account to upgrade your membership.');
+      return;
+    }
+
     setLoadingPlan(planId);
+
     try {
-      const res = await BillingService.createCheckoutSession({
+      await BillingService.initiateRazorpayCheckout({
         planId,
         billingCycle,
+        onStepChange: (step, msg) => {
+          setCheckoutStep(step);
+          if (msg) setStepMessage(msg);
+        },
+        onSuccess: async (verification) => {
+          setSuccessPlan(planId);
+          setLoadingPlan(null);
+          // Authoritative synchronization in background
+          if (currentUser?.uid) {
+            await MembershipService.fetchAuthoritativeSubscription(currentUser.uid);
+          }
+          setTimeout(() => {
+            onClose();
+          }, 2500);
+        },
+        onFailure: (err) => {
+          setLoadingPlan(null);
+          setCheckoutStep('error');
+          setErrorMessage(err.message || 'Payment processing failed. Please try again.');
+        },
+        onDismiss: () => {
+          setLoadingPlan(null);
+          setCheckoutStep('idle');
+        },
       });
-      window.location.href = res.checkoutUrl;
-    } catch (e) {
-      console.error('Failed checkout:', e);
+    } catch (e: any) {
+      console.error('Failed to initiate checkout:', e);
       setLoadingPlan(null);
+      setCheckoutStep('error');
+      setErrorMessage(e.message || 'Unable to start checkout. Please try again.');
     }
   };
 
@@ -53,7 +99,9 @@ export default function UpgradeModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={() => {
+            if (!loadingPlan) onClose();
+          }}
           className="fixed inset-0 bg-[#05070B]/80 backdrop-blur-xl"
         />
 
@@ -71,10 +119,62 @@ export default function UpgradeModal({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer"
+            disabled={!!loadingPlan}
+            className="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <X className="w-5 h-5" />
           </button>
+
+          {/* Success Banner */}
+          {successPlan && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-center flex flex-col items-center justify-center gap-1"
+            >
+              <div className="flex items-center gap-2 font-bold text-sm">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span>Payment Verified Successfully!</span>
+              </div>
+              <p className="text-xs text-emerald-200/80">
+                Your account has been upgraded to {MEMBERSHIP_PLANS[successPlan as PlanTier]?.name || 'Pro'}. Unlocking full access...
+              </p>
+            </motion.div>
+          )}
+
+          {/* Error Banner */}
+          {errorMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs flex items-center justify-between gap-3"
+            >
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
+              {!currentUser && (
+                <Link
+                  href="/login"
+                  className="px-3 py-1.5 rounded-lg bg-rose-500 text-black text-[10px] font-black uppercase flex items-center gap-1 shrink-0"
+                >
+                  <LogIn className="w-3 h-3" /> Log In
+                </Link>
+              )}
+            </motion.div>
+          )}
+
+          {/* Step Progress Notice */}
+          {loadingPlan && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-6 p-3 rounded-xl bg-[#00E5FF]/10 border border-[#00E5FF]/30 text-[#00E5FF] text-xs flex items-center justify-center gap-2"
+            >
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>{stepMessage || 'Processing checkout...'}</span>
+            </motion.div>
+          )}
 
           {/* Header */}
           <div className="text-center max-w-xl mx-auto mb-8">
@@ -92,7 +192,8 @@ export default function UpgradeModal({
             <div className="inline-flex items-center gap-3 p-1 rounded-2xl bg-slate-900 border border-white/10 mt-6">
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                disabled={!!loadingPlan}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer disabled:opacity-50 ${
                   billingCycle === 'monthly'
                     ? 'bg-[#00E5FF] text-black shadow-md shadow-[#00E5FF]/20'
                     : 'text-slate-400 hover:text-white'
@@ -102,7 +203,8 @@ export default function UpgradeModal({
               </button>
               <button
                 onClick={() => setBillingCycle('annual')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                disabled={!!loadingPlan}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 ${
                   billingCycle === 'annual'
                     ? 'bg-[#00E5FF] text-black shadow-md shadow-[#00E5FF]/20'
                     : 'text-slate-400 hover:text-white'
@@ -141,9 +243,10 @@ export default function UpgradeModal({
               </div>
               <button
                 onClick={() => handleSelectPlan('student_pro')}
-                disabled={loadingPlan === 'student_pro'}
-                className="w-full py-2.5 rounded-xl border border-cyan-500/40 text-cyan-400 text-xs font-bold tracking-wider uppercase hover:bg-cyan-500/10 transition-all cursor-pointer"
+                disabled={!!loadingPlan}
+                className="w-full py-2.5 rounded-xl border border-cyan-500/40 text-cyan-400 text-xs font-bold tracking-wider uppercase hover:bg-cyan-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
+                {loadingPlan === 'student_pro' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 {loadingPlan === 'student_pro' ? 'Processing...' : 'Get Student Pro'}
               </button>
             </div>
@@ -174,11 +277,15 @@ export default function UpgradeModal({
               </div>
               <button
                 onClick={() => handleSelectPlan('pro')}
-                disabled={loadingPlan === 'pro'}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#4FC3F7] text-black text-xs font-black tracking-wider uppercase hover:shadow-lg hover:shadow-[#00E5FF]/30 transition-all cursor-pointer flex items-center justify-center gap-2"
+                disabled={!!loadingPlan}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#4FC3F7] text-black text-xs font-black tracking-wider uppercase hover:shadow-lg hover:shadow-[#00E5FF]/30 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Zap className="w-4 h-4 fill-black" />
-                {loadingPlan === 'pro' ? 'Redirecting to Checkout...' : 'Upgrade to Pro Now'}
+                {loadingPlan === 'pro' ? (
+                  <Loader2 className="w-4 h-4 animate-spin fill-black" />
+                ) : (
+                  <Zap className="w-4 h-4 fill-black" />
+                )}
+                {loadingPlan === 'pro' ? 'Opening Checkout...' : 'Upgrade to Pro Now'}
               </button>
             </div>
 
@@ -205,10 +312,11 @@ export default function UpgradeModal({
               </div>
               <button
                 onClick={() => handleSelectPlan('enterprise')}
-                disabled={loadingPlan === 'enterprise'}
-                className="w-full py-2.5 rounded-xl border border-purple-500/40 text-purple-300 text-xs font-bold tracking-wider uppercase hover:bg-purple-500/10 transition-all cursor-pointer"
+                disabled={!!loadingPlan}
+                className="w-full py-2.5 rounded-xl border border-purple-500/40 text-purple-300 text-xs font-bold tracking-wider uppercase hover:bg-purple-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {loadingPlan === 'enterprise' ? 'Processing...' : 'Contact Enterprise Sales'}
+                {loadingPlan === 'enterprise' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                {loadingPlan === 'enterprise' ? 'Processing...' : 'Get Enterprise'}
               </button>
             </div>
           </div>
@@ -223,7 +331,7 @@ export default function UpgradeModal({
                 <Lock className="w-3.5 h-3.5 text-[#00E5FF]" /> Cancel Anytime
               </span>
             </div>
-            <div>7-Day Money Back Guarantee • Instant Activation</div>
+            <div>7-Day Money Back Guarantee • Instant Activation via Razorpay</div>
           </div>
         </motion.div>
       </div>

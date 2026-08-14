@@ -20,6 +20,7 @@ import { MembershipService, UserSubscription } from '@/lib/services/membershipSe
 import { UsageTracker, MonthlyUsage } from '@/lib/services/usageTracker';
 import { EntitlementService } from '@/lib/services/entitlementService';
 import { BillingService, InvoiceItem } from '@/lib/services/billingService';
+import { auth } from '@/lib/firebase/config';
 import PlanBadge from '@/app/components/membership/PlanBadge';
 import UpgradeModal from '@/app/components/membership/UpgradeModal';
 
@@ -30,12 +31,23 @@ export default function SubscriptionSettingsPage() {
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   useEffect(() => {
-    const s = MembershipService.getSubscription();
+    const targetUid = auth.currentUser?.uid || 'demo-user';
+    const s = MembershipService.getSubscription(targetUid);
     const u = UsageTracker.getUsage();
-    const inv = BillingService.getBillingHistory();
     setSub(s);
     setUsage(u);
-    setInvoices(inv);
+
+    // Subscribe to real-time Firestore entitlement updates
+    const unsubscribe = MembershipService.subscribeToSubscription(targetUid, (updatedSub) => {
+      setSub(updatedSub);
+    });
+
+    // Load async billing history
+    BillingService.fetchBillingHistory(targetUid).then((inv) => {
+      setInvoices(inv);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   if (!sub || !usage) {
