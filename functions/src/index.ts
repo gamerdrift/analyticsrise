@@ -50,6 +50,23 @@ export {
   type PlanLimits,
 } from './subscriptions';
 
+// Export AI Intelligence Engine Cloud Functions
+export {
+  aiMentorQuery,
+  processAIMentorQuery,
+  AISecurityFirewall,
+  AIModelPolicyResolver,
+  AIQuotaService,
+  AIContextEngine,
+  AIConversationRepository,
+  AIProviderManager,
+  mockAIProvider,
+  MockAIProvider,
+  type AIMentorQueryData,
+  type AIMentorQueryResponse,
+  type AICapability,
+} from './ai';
+
 /**
  * Health Check Cloud Function (v2 HTTPS)
  *
