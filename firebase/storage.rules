@@ -30,16 +30,22 @@ service firebase.storage {
       allow write: if isOwner(userId);
     }
 
-    // 3. Digital Certificates
+    // 3. Digital Certificates (Platform-Managed Assets)
+    // Publicly readable for cryptographic verification and portfolio sharing.
+    // Client write access is STRICTLY FORBIDDEN (zero-trust).
+    // Issued exclusively by trusted backend Cloud Functions / Firebase Admin SDK.
     match /certificates/{allPaths=**} {
-      allow read: if true; // Public validation access
-      allow write: if isAuthenticated(); // Restrict to secure backend actions or admins in production
+      allow read: if true;
+      allow write: if false;
     }
 
-    // 4. Course Datasets
+    // 4. Course Datasets (Platform-Managed Assets)
+    // Readable by authenticated platform learners.
+    // Client write access is STRICTLY FORBIDDEN (zero-trust).
+    // Managed exclusively by trusted backend Cloud Functions / Firebase Admin SDK.
     match /datasets/{allPaths=**} {
       allow read: if isAuthenticated();
-      allow write: if isAuthenticated(); // Restrict to instructors/admins
+      allow write: if false;
     }
   }
 }
