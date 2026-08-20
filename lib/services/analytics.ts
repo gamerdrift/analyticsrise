@@ -103,6 +103,37 @@ export const AnalyticsService = {
   logProductUpgradeExplored(productId: string): void {
     this.logCustomEvent('product_upgrade_explored', { productId, timestamp: Date.now() });
   },
+
+  // --------------------------------------------------------------------------
+  // SQL Workspace Telemetry Methods (Mission 05)
+  // --------------------------------------------------------------------------
+
+  logWorkspaceOpened(): void {
+    this.logCustomEvent('workspace_opened', { timestamp: Date.now() });
+  },
+
+  logWorkspaceUploadStarted(fileSize: number): void {
+    this.logCustomEvent('workspace_upload_started', { fileSize, timestamp: Date.now() });
+  },
+
+  logWorkspaceUploadCompleted(fileName: string, rowCount: number, colCount: number): void {
+    this.logCustomEvent('workspace_upload_completed', { fileName, rowCount, colCount, timestamp: Date.now() });
+  },
+
+  logWorkspaceDatasetRejected(reason: string): void {
+    this.logCustomEvent('workspace_dataset_rejected', { reason, timestamp: Date.now() });
+  },
+
+  logWorkspaceQueryRun(rowCount: number, executionMs: number): void {
+    this.logCustomEvent('workspace_query_run', { rowCount, executionMs, timestamp: Date.now() });
+  },
+
+  logWorkspaceProjectSaved(projectId: string): void {
+    this.logCustomEvent('workspace_project_saved', { projectId, timestamp: Date.now() });
+  },
+
+  logWorkspaceExported(rowCount: number): void {
+    this.logCustomEvent('workspace_exported', { rowCount, timestamp: Date.now() });
+  },
 };
 export default AnalyticsService;
-

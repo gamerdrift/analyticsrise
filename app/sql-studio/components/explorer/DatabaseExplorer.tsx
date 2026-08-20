@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useSqlStudio } from '@/app/sql-studio/contexts/SqlStudioContext';
+
 import { getDataset } from '@/lib/sql/datasets/registry';
 import { getUpgradeContext } from '@/lib/entitlements/entitlements';
 import UpgradePromptModal from '@/app/components/monetization/UpgradePromptModal';
@@ -70,27 +72,20 @@ export default function DatabaseExplorer() {
         </div>
       </div>
 
-      {/* Upload Custom Dataset Action (Freemium Value Trigger) */}
-      <button
-        type="button"
-        onClick={() => setIsUpgradeModalOpen(true)}
-        className="w-full p-2 rounded-lg bg-white/[0.03] hover:bg-[#00E5FF]/10 border border-white/10 hover:border-[#00E5FF]/40 text-slate-300 hover:text-[#00E5FF] text-[11px] font-mono flex items-center justify-between transition-all group"
+      {/* Upload Custom Dataset Action -> SQL Workspace Launcher */}
+      <Link
+        href="/sql-workspace"
+        className="w-full p-2.5 rounded-xl bg-[#00E5FF]/10 hover:bg-[#00E5FF]/20 border border-[#00E5FF]/30 hover:border-[#00E5FF]/50 text-[#00E5FF] text-[11px] font-mono font-bold flex items-center justify-between transition-all group shadow-sm shadow-[#00E5FF]/10"
       >
         <div className="flex items-center gap-1.5">
-          <Upload className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00E5FF]" />
-          <span>Upload Custom Dataset</span>
+          <Upload className="w-3.5 h-3.5 text-[#00E5FF]" />
+          <span>Open SQL Workspace</span>
         </div>
-        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/5 group-hover:bg-[#00E5FF]/20 text-slate-400 group-hover:text-[#00E5FF]">
-          PRO
+        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-[#00E5FF]/20 text-[#00E5FF]">
+          NEW
         </span>
-      </button>
+      </Link>
 
-      {/* Upgrade Prompt Modal */}
-      <UpgradePromptModal
-        isOpen={isUpgradeModalOpen}
-        context={customDatasetUpgradeContext}
-        onClose={() => setIsUpgradeModalOpen(false)}
-      />
 
 
       {/* Tables & Columns Tree */}

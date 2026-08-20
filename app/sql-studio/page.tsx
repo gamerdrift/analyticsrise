@@ -87,7 +87,17 @@ function SqlStudioWorkbench() {
         </div>
 
         {/* Top Right Live Telemetry / Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            href="/sql-workspace"
+            className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-[#00E5FF]/15 border border-white/10 hover:border-[#00E5FF]/40 text-slate-200 hover:text-[#00E5FF] text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm"
+            title="Analyze your own CSV data"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#00E5FF]" />
+            <span className="hidden sm:inline">SQL Workspace</span>
+            <span className="text-[9px] px-1 py-0.2 rounded bg-[#00E5FF]/20 text-[#00E5FF]">NEW</span>
+          </Link>
+
           <button
             type="button"
             onClick={() => setIsConceptGuideOpen(true)}
@@ -101,6 +111,7 @@ function SqlStudioWorkbench() {
             In-Browser Sandbox
           </span>
         </div>
+
       </header>
 
       {/* SQL Concept Guide Modal */}
