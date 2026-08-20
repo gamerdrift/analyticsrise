@@ -153,12 +153,31 @@ export async function processChallengeSubmissionServer(
     throw new HttpsError('invalid-argument', 'Missing or invalid "challengeId" parameter.');
   }
 
+  if (data.challengeId.trim().length > 100) {
+    throw new HttpsError('invalid-argument', 'Challenge ID exceeds maximum allowed length of 100 characters.');
+  }
+
   if (typeof data.sql !== 'string') {
     throw new HttpsError('invalid-argument', 'Missing or invalid "sql" parameter.');
   }
 
+  if (data.sql.length > 10000) {
+    throw new HttpsError('invalid-argument', 'SQL payload exceeds maximum allowed length of 10,000 characters.');
+  }
+
+  if (data.hintsUsed !== undefined) {
+    if (typeof data.hintsUsed !== 'number' || !Number.isInteger(data.hintsUsed) || data.hintsUsed < 0 || data.hintsUsed > 10) {
+      throw new HttpsError('invalid-argument', 'Invalid hintsUsed parameter; must be an integer between 0 and 10.');
+    }
+  }
+
   const challengeId = data.challengeId.trim();
   const idempotencyKey = data.idempotencyKey?.trim();
+
+  if (idempotencyKey && idempotencyKey.length > 128) {
+    throw new HttpsError('invalid-argument', 'Idempotency key exceeds maximum allowed length of 128 characters.');
+  }
+
   const database = firestoreDb || db;
 
   // 1. Check idempotency
@@ -318,7 +337,12 @@ export async function processChallengeSubmissionServer(
  * Cloud Function v2 Callable: submitChallengeAttempt
  */
 export const submitChallengeAttempt = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 15,
+  },
   async (request: CallableRequest<SubmitChallengeAttemptData>): Promise<SubmitChallengeAttemptResponse> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to submit a challenge attempt.');
@@ -331,13 +355,21 @@ export const submitChallengeAttempt = onCall(
  * Cloud Function v2 Callable: getChallengeProgress
  */
 export const getChallengeProgress = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 10,
+  },
   async (request: CallableRequest<GetChallengeProgressData>): Promise<any | null> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get challenge progress.');
     }
-    if (!request.data?.challengeId) {
-      throw new HttpsError('invalid-argument', 'Missing "challengeId" parameter.');
+    if (!request.data?.challengeId || typeof request.data.challengeId !== 'string') {
+      throw new HttpsError('invalid-argument', 'Missing or invalid "challengeId" parameter.');
+    }
+    if (request.data.challengeId.trim().length > 100) {
+      throw new HttpsError('invalid-argument', 'Challenge ID exceeds maximum allowed length of 100 characters.');
     }
 
     const userId = request.auth.uid;
@@ -356,7 +388,12 @@ export const getChallengeProgress = onCall(
  * Cloud Function v2 Callable: getChallengeAttempts
  */
 export const getChallengeAttempts = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 10,
+  },
   async (request: CallableRequest<GetChallengeAttemptsData>): Promise<any[]> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get challenge attempts.');
@@ -364,7 +401,10 @@ export const getChallengeAttempts = onCall(
 
     const userId = request.auth.uid;
     const challengeId = request.data?.challengeId?.trim();
-    const limit = Math.min(request.data?.limit || 20, 50);
+    if (challengeId && challengeId.length > 100) {
+      throw new HttpsError('invalid-argument', 'Challenge ID exceeds maximum allowed length of 100 characters.');
+    }
+    const limit = Math.min(Math.max(1, typeof request.data?.limit === 'number' ? request.data.limit : 20), 50);
 
     let query: FirebaseFirestore.Query = db.collection('challengeAttempts').where('userId', '==', userId);
     if (challengeId) {
@@ -380,7 +420,12 @@ export const getChallengeAttempts = onCall(
  * Cloud Function v2 Callable: getUserChallengeSummary
  */
 export const getUserChallengeSummary = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 10,
+  },
   async (request: CallableRequest<void>): Promise<UserChallengeSummaryResponse> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get challenge summary.');
@@ -424,13 +469,21 @@ export const getUserChallengeSummary = onCall(
  * Cloud Function v2 Callable: getChallengeUnlockStatus
  */
 export const getChallengeUnlockStatus = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 10,
+  },
   async (request: CallableRequest<{ challengeId: string }>): Promise<any> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get unlock status.');
     }
-    if (!request.data?.challengeId) {
-      throw new HttpsError('invalid-argument', 'Missing "challengeId" parameter.');
+    if (!request.data?.challengeId || typeof request.data.challengeId !== 'string') {
+      throw new HttpsError('invalid-argument', 'Missing or invalid "challengeId" parameter.');
+    }
+    if (request.data.challengeId.trim().length > 100) {
+      throw new HttpsError('invalid-argument', 'Challenge ID exceeds maximum allowed length of 100 characters.');
     }
 
     const userId = request.auth.uid;
@@ -507,7 +560,12 @@ export const getChallengeUnlockStatus = onCall(
  * Authoritatively builds the sanitized full curriculum progression map for the learner
  */
 export const getUserProgressionMap = onCall(
-  { cors: true, maxInstances: 20 },
+  {
+    cors: true,
+    maxInstances: 10,
+    memory: '256MiB',
+    timeoutSeconds: 15,
+  },
   async (request: CallableRequest<void>): Promise<any> => {
     if (!request.auth || !request.auth.uid) {
       throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get progression map.');

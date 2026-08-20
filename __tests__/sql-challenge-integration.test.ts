@@ -200,4 +200,63 @@ describe('Mission 02 Stage 2C — Phase C5: SQL Studio Challenge API Integration
       expect(raw.gradingRubric).toBeUndefined();
     });
   });
+
+  describe('6. Production Cost Guardrails & Payload Boundary Enforcement', () => {
+    test('Rejects SQL payloads exceeding 10,000 characters', async () => {
+      const oversizedSql = 'SELECT ' + 'x'.repeat(10001);
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: 'sql.select.001',
+          sql: oversizedSql,
+        })
+      ).rejects.toThrow('SQL payload exceeds maximum allowed length of 10,000 characters.');
+    });
+
+    test('Rejects Challenge ID exceeding 100 characters', async () => {
+      const oversizedId = 'sql.select.' + 'a'.repeat(101);
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: oversizedId,
+          sql: 'SELECT 1;',
+        })
+      ).rejects.toThrow('Challenge ID exceeds maximum allowed length of 100 characters.');
+    });
+
+    test('Rejects Idempotency Key exceeding 128 characters', async () => {
+      const oversizedKey = 'idemp_' + 'k'.repeat(130);
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: 'sql.select.001',
+          sql: 'SELECT 1;',
+          idempotencyKey: oversizedKey,
+        })
+      ).rejects.toThrow('Idempotency key exceeds maximum allowed length of 128 characters.');
+    });
+
+    test('Rejects invalid hintsUsed parameter bounds', async () => {
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: 'sql.select.001',
+          sql: 'SELECT 1;',
+          hintsUsed: -1,
+        })
+      ).rejects.toThrow('Invalid hintsUsed parameter; must be an integer between 0 and 10.');
+
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: 'sql.select.001',
+          sql: 'SELECT 1;',
+          hintsUsed: 11,
+        })
+      ).rejects.toThrow('Invalid hintsUsed parameter; must be an integer between 0 and 10.');
+
+      await expect(
+        processChallengeSubmission('user_guardrail_test', {
+          challengeId: 'sql.select.001',
+          sql: 'SELECT 1;',
+          hintsUsed: 2.5 as any,
+        })
+      ).rejects.toThrow('Invalid hintsUsed parameter; must be an integer between 0 and 10.');
+    });
+  });
 });

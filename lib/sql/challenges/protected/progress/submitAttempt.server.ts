@@ -46,12 +46,30 @@ export async function processChallengeSubmission(
     throw new Error('Missing or invalid "challengeId" in submission payload.');
   }
 
+  if (request.challengeId.trim().length > 100) {
+    throw new Error('Challenge ID exceeds maximum allowed length of 100 characters.');
+  }
+
   if (typeof request.sql !== 'string') {
     throw new Error('Missing or invalid "sql" in submission payload.');
   }
 
+  if (request.sql.length > 10000) {
+    throw new Error('SQL payload exceeds maximum allowed length of 10,000 characters.');
+  }
+
+  if (request.hintsUsed !== undefined) {
+    if (typeof request.hintsUsed !== 'number' || !Number.isInteger(request.hintsUsed) || request.hintsUsed < 0 || request.hintsUsed > 10) {
+      throw new Error('Invalid hintsUsed parameter; must be an integer between 0 and 10.');
+    }
+  }
+
   const challengeId = request.challengeId.trim();
   const idempotencyKey = request.idempotencyKey?.trim();
+
+  if (idempotencyKey && idempotencyKey.length > 128) {
+    throw new Error('Idempotency key exceeds maximum allowed length of 128 characters.');
+  }
 
   // 3. Check Idempotency Key
   if (idempotencyKey) {
