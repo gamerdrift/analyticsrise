@@ -135,5 +135,38 @@ export const AnalyticsService = {
   logWorkspaceExported(rowCount: number): void {
     this.logCustomEvent('workspace_exported', { rowCount, timestamp: Date.now() });
   },
+
+  // --------------------------------------------------------------------------
+  // Excel Workspace Telemetry Methods (Mission 07)
+  // --------------------------------------------------------------------------
+
+  logExcelWorkspaceOpened(): void {
+    this.logCustomEvent('excel_workspace_opened', { timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceUploadStarted(fileSize: number): void {
+    this.logCustomEvent('excel_workspace_upload_started', { fileSize, timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceUploadCompleted(fileName: string, sheetCount: number, rowCount: number, colCount: number): void {
+    this.logCustomEvent('excel_workspace_upload_completed', { fileName, sheetCount, rowCount, colCount, timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceDatasetRejected(reason: string): void {
+    this.logCustomEvent('excel_workspace_dataset_rejected', { reason, timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceFormulaEvaluated(formula: string): void {
+    this.logCustomEvent('excel_workspace_formula_evaluated', { formula, timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceProjectSaved(projectId: string): void {
+    this.logCustomEvent('excel_workspace_project_saved', { projectId, timestamp: Date.now() });
+  },
+
+  logExcelWorkspaceExported(format: string, rowCount: number): void {
+    this.logCustomEvent('excel_workspace_exported', { format, rowCount, timestamp: Date.now() });
+  },
 };
+
 export default AnalyticsService;

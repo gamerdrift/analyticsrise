@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useExcelStudio, CellFormatting } from '@/app/excel-studio/contexts/ExcelStudioContext';
 import { exportToCSV, exportToTSV, exportToPDF } from '@/lib/utils/excel/exportManager';
 import {
@@ -19,7 +20,9 @@ import {
   Undo2,
   Redo2,
   Keyboard,
+  FileSpreadsheet,
 } from 'lucide-react';
+
 
 interface Props {
   onOpenSearch?: () => void;
@@ -87,6 +90,15 @@ export default function Toolbar({
           >
             <Database className="w-3.5 h-3.5" /> Sample Datasets
           </button>
+
+          {/* Excel Workspace Link */}
+          <Link
+            href="/excel-workspace"
+            className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 font-bold transition-all flex items-center gap-1.5"
+            title="Open Excel Workspace to analyze your own workbooks"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" /> Use Your Own Data
+          </Link>
         </div>
 
         {/* Action Group: Search, Conditional Formatting, Charts, Shortcuts */}
