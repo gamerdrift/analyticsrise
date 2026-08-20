@@ -17,7 +17,6 @@ export default function LandingNavbar() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const menuItems = [
-    { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Enterprise', href: '/enterprise' },
@@ -29,8 +28,8 @@ export default function LandingNavbar() {
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          {/* Brand Logo - Primary Home Navigation */}
+          <Link href="/" className="flex items-center gap-3 group" aria-label="AnalyticsRise Home">
             <ArTriangleIcon size={38} className="transition-transform group-hover:scale-105" />
             <span className="font-display font-black text-white text-lg tracking-wider">
               ANALYTICS<span className="text-[#00E5FF]">RISE</span>
@@ -38,7 +37,7 @@ export default function LandingNavbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-8">
             {menuItems.map((item) => (
               <Link
                 key={item.name}

@@ -95,4 +95,35 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       expect(container.querySelector('svg')).toBeInTheDocument();
     });
   });
+
+  describe('4. Navigation Simplification & Home Link Removal Audit', () => {
+    test('LandingNavbar source code does not contain redundant Home navigation item', () => {
+      const landingNavPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'LandingNavbar.tsx');
+      const content = fs.readFileSync(landingNavPath, 'utf8');
+      expect(content).not.toMatch(/name:\s*['"]Home['"]/i);
+      expect(content).toContain("name: 'Products'");
+      expect(content).toContain("name: 'Pricing'");
+      expect(content).toContain("name: 'Enterprise'");
+      expect(content).toContain("name: 'About'");
+      expect(content).toContain('aria-label="AnalyticsRise Home"');
+    });
+
+    test('Root layout.tsx does not pass redundant Home navigation item to Navbar', () => {
+      const layoutPath = path.join(__dirname, '..', 'app', 'layout.tsx');
+      const content = fs.readFileSync(layoutPath, 'utf8');
+      expect(content).not.toMatch(/label:\s*['"]Home['"]/i);
+      expect(content).toContain("label: 'Products'");
+      expect(content).toContain("label: 'Pricing'");
+      expect(content).toContain("label: 'Enterprise'");
+      expect(content).toContain("label: 'About'");
+    });
+
+    test('NavControls Navbar renders logo with aria-label="AnalyticsRise Home" linking to "/"', () => {
+      const navControlsPath = path.join(__dirname, '..', 'app', 'components', 'navigation', 'NavControls.tsx');
+      const content = fs.readFileSync(navControlsPath, 'utf8');
+      expect(content).toContain('href="/"');
+      expect(content).toContain('aria-label="AnalyticsRise Home"');
+    });
+  });
 });
+

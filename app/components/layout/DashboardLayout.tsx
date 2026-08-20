@@ -194,7 +194,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Menu className="w-6 h-6" />
           </button>
           
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" className="flex items-center gap-2.5 group" aria-label="AnalyticsRise Home">
             <ArTriangleIcon size={34} className="transition-transform group-hover:scale-105" />
             <span className="font-display font-black text-white text-base tracking-wider hidden sm:inline">
               ANALYTICS<span className="text-[#00E5FF]">RISE</span>

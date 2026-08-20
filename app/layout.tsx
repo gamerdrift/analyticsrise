@@ -152,7 +152,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Navbar
                       logoText="AnalyticsRISE"
                       links={[
-                        { label: 'Home', href: '/' },
                         { label: 'Products', href: '/products' },
                         { label: 'Pricing', href: '/pricing' },
                         { label: 'Enterprise', href: '/enterprise' },
