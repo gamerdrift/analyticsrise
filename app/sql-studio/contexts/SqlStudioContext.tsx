@@ -1,5 +1,8 @@
 "use client";
+
 import React, { createContext, useReducer, useContext, Dispatch } from 'react';
+import { PublicChallenge } from '@/lib/sql/challenges/types';
+import { getPublicChallenge } from '@/lib/sql/challenges/public/registry';
 
 // ----- Types ---------------------------------------------------------------
 export interface Mission {
@@ -9,7 +12,6 @@ export interface Mission {
   objectives: string[];
   hints: string[];
   xpReward: number;
-  // more fields can be added later
 }
 
 export interface ExplorerState {
@@ -22,12 +24,13 @@ export interface ExplorerState {
 
 export interface EditorState {
   query: string;
-  // future: cursor position, selection, etc.
 }
 
 export interface ResultState {
   rows: any[];
   columns: string[];
+  rowCount?: number;
+  executionMs?: number;
   validation: {
     passed: boolean;
     hints: string[];
@@ -42,7 +45,15 @@ export interface StatusBarState {
   missionProgress?: number; // 0‑100
 }
 
+export type ResponsiveStudioTab = 'instructions' | 'editor' | 'curriculum';
+
 export interface SqlStudioState {
+  activeChallengeId: string;
+  activeDatasetId: string;
+  activeTab: ResponsiveStudioTab;
+  isExecuting: boolean;
+  executionError: string | null;
+  hintsUsed: number;
   mission: Mission | null;
   explorer: ExplorerState;
   editor: EditorState;
@@ -51,17 +62,42 @@ export interface SqlStudioState {
 }
 
 export type SqlStudioAction =
+  | { type: 'SET_ACTIVE_CHALLENGE'; payload: string }
+  | { type: 'SET_ACTIVE_DATASET'; payload: string }
+  | { type: 'SET_ACTIVE_TAB'; payload: ResponsiveStudioTab }
+  | { type: 'SET_HINTS_USED'; payload: number }
+  | { type: 'SET_EXECUTING'; payload: boolean }
+  | { type: 'SET_EXECUTION_ERROR'; payload: string | null }
   | { type: 'SET_MISSION'; payload: Mission }
   | { type: 'UPDATE_EXPLORER'; payload: Partial<ExplorerState> }
   | { type: 'SET_QUERY'; payload: string }
   | { type: 'SET_RESULTS'; payload: ResultState }
   | { type: 'SET_STATUS'; payload: Partial<StatusBarState> };
 
+// Resolve initial starter query from the default challenge
+const initialChallengeId = 'sql.select.001';
+const initialChallenge: PublicChallenge | undefined = getPublicChallenge(initialChallengeId);
+
 // ----- Initial State -------------------------------------------------------
 const initialState: SqlStudioState = {
-  mission: null,
-  explorer: { schemas: [], tables: {} , columns: {} },
-  editor: { query: '' },
+  activeChallengeId: initialChallengeId,
+  activeDatasetId: initialChallenge?.datasetId || 'ecommerce',
+  activeTab: 'editor',
+  isExecuting: false,
+  executionError: null,
+  hintsUsed: 0,
+  mission: initialChallenge
+    ? {
+        id: initialChallenge.id,
+        title: initialChallenge.title,
+        description: initialChallenge.scenario,
+        objectives: [initialChallenge.objective],
+        hints: initialChallenge.hints.map((h) => h.content),
+        xpReward: initialChallenge.xpReward,
+      }
+    : null,
+  explorer: { schemas: [], tables: {}, columns: {} },
+  editor: { query: initialChallenge?.starterQuery || 'SELECT * FROM products;' },
   results: { rows: [], columns: [], validation: { passed: false, hints: [] } },
   status: { autosave: 'idle' },
 };
@@ -69,6 +105,38 @@ const initialState: SqlStudioState = {
 // ----- Reducer -------------------------------------------------------------
 function sqlStudioReducer(state: SqlStudioState, action: SqlStudioAction): SqlStudioState {
   switch (action.type) {
+    case 'SET_ACTIVE_CHALLENGE': {
+      const chal = getPublicChallenge(action.payload);
+      return {
+        ...state,
+        activeChallengeId: action.payload,
+        activeDatasetId: chal?.datasetId || state.activeDatasetId,
+        hintsUsed: 0,
+        executionError: null,
+        results: { rows: [], columns: [], validation: { passed: false, hints: [] } },
+        editor: { query: chal?.starterQuery || state.editor.query },
+        mission: chal
+          ? {
+              id: chal.id,
+              title: chal.title,
+              description: chal.scenario,
+              objectives: [chal.objective],
+              hints: chal.hints.map((h) => h.content),
+              xpReward: chal.xpReward,
+            }
+          : state.mission,
+      };
+    }
+    case 'SET_ACTIVE_DATASET':
+      return { ...state, activeDatasetId: action.payload };
+    case 'SET_ACTIVE_TAB':
+      return { ...state, activeTab: action.payload };
+    case 'SET_HINTS_USED':
+      return { ...state, hintsUsed: action.payload };
+    case 'SET_EXECUTING':
+      return { ...state, isExecuting: action.payload };
+    case 'SET_EXECUTION_ERROR':
+      return { ...state, executionError: action.payload };
     case 'SET_MISSION':
       return { ...state, mission: action.payload };
     case 'UPDATE_EXPLORER':
@@ -85,7 +153,9 @@ function sqlStudioReducer(state: SqlStudioState, action: SqlStudioAction): SqlSt
 }
 
 // ----- Context -------------------------------------------------------------
-const SqlStudioContext = createContext<{ state: SqlStudioState; dispatch: Dispatch<SqlStudioAction> } | undefined>(undefined);
+const SqlStudioContext = createContext<{ state: SqlStudioState; dispatch: Dispatch<SqlStudioAction> } | undefined>(
+  undefined
+);
 
 export const SqlStudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(sqlStudioReducer, initialState);
