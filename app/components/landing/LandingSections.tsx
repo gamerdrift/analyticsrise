@@ -317,41 +317,64 @@ export function PricingSection() {
     {
       name: 'Sandbox Free',
       price: '0',
-      desc: 'Explore the basics and run initial test queries.',
-      features: ['Basic Excel & SQL Simulators', 'Mock transaction datasets', 'Community forum access', 'ReadOnly schemas viewer'],
-      cta: 'Start Practice',
+      desc: 'Explore core fundamentals and run initial practice challenges.',
+      features: [
+        'SQL Studio Practice Challenges',
+        'Excel & Power BI Workbenches',
+        'Community access & public datasets',
+        'Progress tracking & achievements',
+      ],
+      cta: 'Start Free Practice',
+      href: '/register',
       highlighted: false,
     },
     {
       name: 'Pro Analyst',
       price: annualBilling ? '19' : '29',
-      desc: 'Our standard tier for professionals seeking verified certifications.',
-      features: ['Full Simulator Workspaces', 'Unlimited practice modules', 'All timed exams & assessments', 'SHA256 Cryptographic Certificates', 'All catalog datasets download access'],
-      cta: 'Unlock Pro Console',
+      desc: 'Full access for serious learners seeking verified skills and certificates.',
+      features: [
+        'All Practice Studios & Interactive Labs',
+        'Unlimited challenge progression tiers',
+        'Timed exams & graded assessments',
+        'Verifiable SHA-256 Certificates',
+        'Career Hub & Portfolio Showcase',
+      ],
+      cta: 'Unlock Pro Access',
+      href: '/pricing',
       highlighted: true,
     },
     {
-      name: 'Enterprise cohort',
+      name: 'Enterprise Cohort',
       price: 'Custom',
-      desc: 'Collaborative analytics portal for teams and universities.',
-      features: ['Dedicated cohort control dashboard', 'Custom dataset file uploads', 'SSO authentication (SAML/Okta)', 'Automated student metric charts', 'Premium direct developer support'],
-      cta: 'Contact Sales',
+      desc: 'Collaborative analytics portal for teams, bootcamps, and universities.',
+      features: [
+        'Cohort management dashboard',
+        'Custom dataset file uploads',
+        'SSO authentication (SAML/Okta)',
+        'Learner progress & competency metrics',
+        'Dedicated onboarding & support',
+      ],
+      cta: 'Contact Enterprise',
+      href: '/enterprise',
       highlighted: false,
     },
   ];
 
   return (
-    <section id="pricing" className="py-20 px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
+    <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
       <div className="text-center mb-16">
-        <h2 className="text-xs uppercase tracking-widest text-[#00E5FF] font-mono font-bold mb-3">
-          SaaS Pricing Plans
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#00E5FF]/30 bg-[#00E5FF]/5 text-[#00E5FF] mb-4 text-xs font-mono uppercase tracking-widest font-bold">
+          <span>🔺 TRANSPARENT VALUE</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight uppercase mb-4">
+          SIMPLE, VALUE-DRIVEN <span className="text-[#00E5FF]">PRICING</span>
         </h2>
-        <h3 className="text-2xl md:text-3xl font-bold text-white font-display uppercase tracking-wide mb-6">
-          TRANSPARENT VALUE-BASED PLANS
-        </h3>
+        <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto mb-6">
+          Start for free, learn at your own pace, and upgrade whenever you are ready to prove your skills with verified certifications.
+        </p>
 
         {/* Toggle Button */}
-        <div className="inline-flex items-center gap-3 p-1 rounded-full border border-white/5 bg-[#0D1117] relative">
+        <div className="inline-flex items-center gap-3 p-1 rounded-full border border-white/10 bg-[#0D1117] relative">
           <button
             onClick={() => setAnnualBilling(false)}
             className={`px-4 py-1.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest transition-colors ${
@@ -375,27 +398,27 @@ export function PricingSection() {
         {plans.map((plan, idx) => (
           <div
             key={idx}
-            className={`p-6 rounded-xl border flex flex-col justify-between backdrop-blur-sm relative transition-all duration-300 ${
+            className={`p-8 rounded-2xl border flex flex-col justify-between backdrop-blur-sm relative transition-all duration-300 ${
               plan.highlighted
-                ? 'border-[#00E5FF] bg-[#0D1117]/80 shadow-lg shadow-[#00E5FF]/5'
-                : 'border-white/5 bg-[#0D1117]/50 hover:border-slate-800'
+                ? 'border-[#00E5FF] bg-[#0D1117]/90 shadow-xl shadow-[#00E5FF]/10'
+                : 'border-white/10 bg-[#0D1117]/60 hover:border-white/20'
             }`}
           >
             {plan.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded bg-[#00E5FF] text-black text-[9px] font-mono font-black uppercase tracking-widest">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#00E5FF] text-black text-[9px] font-mono font-black uppercase tracking-widest shadow-md shadow-[#00E5FF]/30">
                 RECOMMENDED
               </span>
             )}
 
             <div>
-              <h4 className="text-base font-bold text-white font-display uppercase tracking-wider mb-2">
+              <h4 className="text-lg font-bold text-white font-display uppercase tracking-wider mb-2">
                 {plan.name}
               </h4>
-              <p className="text-[11px] text-slate-500 leading-normal mb-6 min-h-[40px]">{plan.desc}</p>
+              <p className="text-xs text-slate-400 leading-relaxed mb-6 min-h-[36px] font-sans">{plan.desc}</p>
               
               <div className="mb-6 flex items-baseline font-mono">
                 {plan.price !== 'Custom' && <span className="text-slate-400 text-lg">$</span>}
-                <span className="text-3xl font-black text-white font-display">
+                <span className="text-4xl font-black text-white font-display">
                   {plan.price}
                 </span>
                 {plan.price !== 'Custom' && <span className="text-slate-500 text-xs font-mono">/mo</span>}
@@ -403,7 +426,7 @@ export function PricingSection() {
 
               <div className="h-px bg-white/5 mb-6" />
 
-              <ul className="space-y-3 text-xs text-slate-400">
+              <ul className="space-y-3 text-xs text-slate-300 font-sans">
                 {plan.features.map((feature, fIdx) => (
                   <li key={fIdx} className="flex items-start gap-2">
                     <svg className="w-4 h-4 text-[#00E5FF] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -415,13 +438,13 @@ export function PricingSection() {
               </ul>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 pt-6 border-t border-white/5">
               <Link
-                href="/dashboard"
-                className={`w-full py-3 block text-center rounded text-[10px] font-bold tracking-widest uppercase transition-all duration-300 border ${
+                href={plan.href}
+                className={`w-full py-3.5 block text-center rounded-xl text-xs font-mono font-bold tracking-widest uppercase transition-all duration-300 border ${
                   plan.highlighted
-                    ? 'bg-[#00E5FF] border-[#00E5FF] text-black hover:bg-transparent hover:text-[#00E5FF]'
-                    : 'border-slate-700 text-slate-300 hover:bg-slate-800'
+                    ? 'bg-[#00E5FF] border-[#00E5FF] text-black hover:bg-transparent hover:text-[#00E5FF] shadow-lg shadow-[#00E5FF]/20'
+                    : 'border-white/20 text-white hover:bg-white/10 hover:border-white/40'
                 }`}
               >
                 {plan.cta}
@@ -440,57 +463,57 @@ export function Testimonials() {
     {
       name: 'Sarah Chen',
       role: 'Lead Business Analyst',
-      comp: 'Logitech',
-      text: 'Watching videos is the slowest way to learn. The in-browser SQL console and Power BI planner on AnalyticsRise let me practice actual reporting layouts on real transaction logs.',
+      comp: 'Enterprise SaaS Corp',
+      text: 'Watching videos is the slowest way to learn. The in-browser SQL challenges and Power BI exercises on AnalyticsRise let me practice actual reporting on real business databases.',
       rating: 5,
     },
     {
       name: 'James Patel',
-      role: 'Junior Analyst',
-      comp: 'E-commerce Corp',
-      text: 'The spreadsheet compilation grids are outstanding. Being able to write formulas and see forecast visuals update dynamically in my browser helped me master modeling workflows.',
+      role: 'Junior Data Analyst',
+      comp: 'E-commerce Group',
+      text: 'The spreadsheet modeling environments and SQL practice studios helped me escape tutorial hell. I built real confidence because I was writing queries from day one.',
       rating: 5,
     },
     {
       name: 'Elena Rostova',
       role: 'BI Developer',
       comp: 'DataScale Systems',
-      text: 'Verification hashes on certifications are a game-changer. My hiring manager verified my practical projects using the ledger link on my LinkedIn profile.',
+      text: 'Verifiable proof on certifications is a game-changer. My hiring manager verified my practical projects using the public registry link on my portfolio.',
       rating: 5,
     },
   ];
 
   return (
-    <section id="testimonials" className="py-20 px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
+    <section id="testimonials" className="py-24 px-6 max-w-7xl mx-auto border-t border-white/5 relative z-10">
       <div className="text-center mb-16">
-        <h2 className="text-xs uppercase tracking-widest text-[#00E5FF] font-mono font-bold mb-3">
-          Verified Reviews
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#00E5FF]/30 bg-[#00E5FF]/5 text-[#00E5FF] mb-4 text-xs font-mono uppercase tracking-widest font-bold">
+          <span>🔺 LEARNER STORIES</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight uppercase mb-4">
+          WHAT LEARNERS <span className="text-[#00E5FF]">ACHIEVE</span>
         </h2>
-        <h3 className="text-2xl md:text-3xl font-bold text-white font-display uppercase tracking-wide">
-          WHAT ANALYSTS SAY
-        </h3>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
         {reviews.map((rev, idx) => (
           <div
             key={idx}
-            className="p-6 rounded-xl border border-white/5 bg-[#0D1117]/60 backdrop-blur-sm flex flex-col justify-between"
+            className="p-8 rounded-2xl border border-white/10 bg-[#0D1117]/80 backdrop-blur-md flex flex-col justify-between hover:border-[#00E5FF]/30 transition-all duration-300"
           >
-            <p className="text-xs text-slate-400 leading-relaxed italic mb-6">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed italic mb-8 font-sans">
               &ldquo;{rev.text}&rdquo;
             </p>
             
             <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-              <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-[10px] text-[#00E5FF] font-mono uppercase">
+              <div className="w-9 h-9 rounded-full bg-[#00E5FF]/10 border border-[#00E5FF]/30 flex items-center justify-center font-bold text-xs text-[#00E5FF] font-mono uppercase">
                 {rev.name.substring(0, 2)}
               </div>
               <div>
                 <span className="block text-xs font-bold text-white font-display uppercase">
                   {rev.name}
                 </span>
-                <span className="block text-[9px] text-slate-500 font-mono">
-                  {rev.role} / {rev.comp}
+                <span className="block text-[10px] text-slate-400 font-mono">
+                  {rev.role} • {rev.comp}
                 </span>
               </div>
             </div>
@@ -507,32 +530,36 @@ export function FaqSection() {
 
   const faqs = [
     {
-      q: 'Do I need to download or install SQL or Excel to use this platform?',
-      a: 'No. All tools are simulated directly inside your web browser. You do not need to purchase MS Office or host SQL Server locally to run our training modules.'
+      q: 'Do I need to install SQL, Excel, or Power BI on my computer?',
+      a: 'No. Every learning workbench and practice challenge runs entirely inside your web browser. You do not need to install local databases, buy software licenses, or configure development environments.',
     },
     {
-      q: 'How does the certificate validation engine work?',
-      a: 'Upon passing course exams, a unique SHA-256 hash gets written to our ledger databases. This code references your validated log records and can be displayed online for verification.'
+      q: 'I am a complete beginner. Where should I start?',
+      a: 'We recommend starting with either the SQL Studio beginner track or Excel Studio Pro. Both feature progressive, step-by-step guidance designed specifically for first-time learners.',
     },
     {
-      q: 'What is the daily streak tracker?',
-      a: 'The top telemetry bar displays your daily study streak. Completing at least one lab lesson daily keeps your streak active and awards extra XP levels.'
+      q: 'How do verifiable certificates work?',
+      a: 'When you pass an official assessment or complete a certification track, a unique cryptographic record is registered. Employers can verify your exact completed labs and score through your public verification link.',
     },
     {
-      q: 'Are custom enterprise datasets supported?',
-      a: 'Yes. Under the Enterprise plan, team leads can upload custom CSV transactions databases, configuring custom SQL schemas for their employees.'
-    }
+      q: 'Can I learn at my own pace?',
+      a: 'Yes. Your progress, challenge attempts, and workbench states are saved automatically. You can practice whenever you have time, on your own schedule.',
+    },
+    {
+      q: 'Are there team and university cohort options available?',
+      a: 'Yes. Our Enterprise Cohort plan offers dedicated administration dashboards, cohort progress tracking, custom dataset uploads, and SSO integration for universities and corporate teams.',
+    },
   ];
 
   return (
-    <section id="faq" className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 relative z-10">
+    <section id="faq" className="py-24 px-6 max-w-4xl mx-auto border-t border-white/5 relative z-10">
       <div className="text-center mb-16">
-        <h2 className="text-xs uppercase tracking-widest text-[#00E5FF] font-mono font-bold mb-3">
-          FAQ
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#00E5FF]/30 bg-[#00E5FF]/5 text-[#00E5FF] mb-4 text-xs font-mono uppercase tracking-widest font-bold">
+          <span>🔺 QUESTIONS & ANSWERS</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight uppercase mb-4">
+          FREQUENTLY ASKED <span className="text-[#00E5FF]">QUESTIONS</span>
         </h2>
-        <h3 className="text-2xl md:text-3xl font-bold text-white font-display uppercase tracking-wide">
-          FREQUENTLY ASKED QUESTIONS
-        </h3>
       </div>
 
       <div className="space-y-4">
@@ -541,16 +568,16 @@ export function FaqSection() {
           return (
             <div
               key={idx}
-              className="border border-white/5 rounded-lg bg-[#0D1117]/60 overflow-hidden"
+              className="border border-white/10 rounded-xl bg-[#0D1117]/80 backdrop-blur-md overflow-hidden transition-colors hover:border-white/20"
             >
               <button
                 onClick={() => setOpenIdx(isOpen ? null : idx)}
-                className="w-full p-5 text-left flex justify-between items-center text-white focus:outline-none"
+                className="w-full p-5 text-left flex justify-between items-center text-white focus:outline-none cursor-pointer"
               >
                 <span className="text-sm font-bold tracking-wide uppercase font-display">
                   {faq.q}
                 </span>
-                <span className="text-[#00E5FF] font-bold font-mono">
+                <span className="text-[#00E5FF] font-bold font-mono text-sm ml-4">
                   {isOpen ? '[-]' : '[+]'}
                 </span>
               </button>
@@ -562,9 +589,9 @@ export function FaqSection() {
                     animate={{ height: 'auto' }}
                     exit={{ height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="overflow-hidden bg-[#05070B]/50"
+                    className="overflow-hidden bg-[#05070B]/60"
                   >
-                    <p className="p-5 text-xs text-slate-400 leading-relaxed border-t border-white/5">
+                    <p className="p-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/5 font-sans">
                       {faq.a}
                     </p>
                   </motion.div>
@@ -581,36 +608,36 @@ export function FaqSection() {
 // --- LANDING FOOTER ---
 export function LandingFooter() {
   return (
-    <footer className="border-t border-white/5 bg-[#05070B] relative z-10 py-12 px-6">
+    <footer className="border-t border-white/10 bg-[#05070B] relative z-10 py-16 px-6">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-[#00E5FF] flex items-center justify-center font-bold text-black text-sm">
-            AR
-          </div>
-          <span className="font-display font-bold text-white text-base tracking-wider uppercase">
+        <Link href="/" className="flex items-center gap-3 group" aria-label="AnalyticsRise Home">
+          <ArTriangleIcon size={32} className="transition-transform group-hover:scale-105" />
+          <span className="font-display font-black text-white text-base tracking-wider uppercase">
             Analytics<span className="text-[#00E5FF]">Rise</span>
           </span>
-        </div>
+        </Link>
 
-        <div className="flex flex-wrap justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-slate-500">
-          <a href="#simulators" className="hover:text-white transition-colors">Simulators</a>
-          <a href="#paths" className="hover:text-white transition-colors">Curriculums</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-          <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+        <div className="flex flex-wrap justify-center gap-8 text-xs font-mono uppercase tracking-widest text-slate-400">
+          <Link href="/products" className="hover:text-[#00E5FF] transition-colors">Products</Link>
+          <Link href="/courses" className="hover:text-[#00E5FF] transition-colors">Learning Paths</Link>
+          <Link href="/pricing" className="hover:text-[#00E5FF] transition-colors">Pricing</Link>
+          <Link href="/enterprise" className="hover:text-[#00E5FF] transition-colors">Enterprise</Link>
+          <Link href="/about" className="hover:text-[#00E5FF] transition-colors">About</Link>
         </div>
 
         <div>
-          <span className="inline-flex items-center gap-2 text-[9px] font-mono text-emerald-400 bg-emerald-400/5 px-3 py-1 rounded border border-emerald-400/20">
+          <span className="inline-flex items-center gap-2 text-[10px] font-mono text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-400/30">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            ALL SYSTEMS OPERATIONAL
+            ALL WORKBENCHES OPERATIONAL
           </span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-slate-600 gap-4">
-        <span>&copy; {new Date().getFullYear()} ANALYTICSRISE. ALL RIGHTS RESERVED.</span>
-        <span>VERIFIED SECURE PLATFORM</span>
+      <div className="max-w-7xl mx-auto mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4">
+        <span>&copy; {new Date().getFullYear()} AnalyticsRise. All rights reserved.</span>
+        <span>Learn Data • Practice Real Skills • Rise Higher</span>
       </div>
     </footer>
   );
 }
+

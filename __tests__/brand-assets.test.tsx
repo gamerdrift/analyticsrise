@@ -125,5 +125,62 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       expect(content).toContain('aria-label="AnalyticsRise Home"');
     });
   });
+
+  describe('5. Mission 03: Learner-First Homepage Architecture Audit', () => {
+    test('LandingHero embodies "LEARN DATA. PRACTICE REAL SKILLS. RISE HIGHER."', () => {
+      const heroPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'LandingHero.tsx');
+      const content = fs.readFileSync(heroPath, 'utf8');
+      expect(content).toContain('LEARN DATA.');
+      expect(content).toContain('PRACTICE REAL SKILLS.');
+      expect(content).toContain('RISE HIGHER.');
+      expect(content).toContain('/courses');
+      expect(content).toContain('#flagships');
+    });
+
+    test('ThreePillarsSection contains 01 LEARN, 02 PRACTICE, 03 RISE', () => {
+      const pillarsPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'ThreePillarsSection.tsx');
+      const content = fs.readFileSync(pillarsPath, 'utf8');
+      expect(content).toContain('LEARN');
+      expect(content).toContain('PRACTICE');
+      expect(content).toContain('RISE');
+      expect(content).toContain('Learn the concepts');
+      expect(content).toContain('Practice real skills');
+      expect(content).toContain('Prove your progress');
+    });
+
+    test('FlagshipProductsSection features SQL Studio, Excel Studio Pro, and Power BI Studio', () => {
+      const flagshipsPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'FlagshipProductsSection.tsx');
+      const content = fs.readFileSync(flagshipsPath, 'utf8');
+      expect(content).toContain('SQL Studio');
+      expect(content).toContain('Excel Studio Pro');
+      expect(content).toContain('Power BI Studio');
+      expect(content).toContain('/sql-studio');
+      expect(content).toContain('/excel-studio');
+      expect(content).toContain('/simulators/powerbi');
+      expect(content).toContain('Python Lab');
+      expect(content).toContain('Tableau Studio');
+    });
+
+    test('LearnerJourneySection implements 5-Step Ascension Pathway', () => {
+      const journeyPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'LearnerJourneySection.tsx');
+      const content = fs.readFileSync(journeyPath, 'utf8');
+      expect(content).toContain('Choose Your Skill');
+      expect(content).toContain('Learn the Concepts');
+      expect(content).toContain('Practice by Doing');
+      expect(content).toContain('Test Yourself');
+      expect(content).toContain('Track Your Rise');
+      expect(content).toContain('Start Where You Are');
+    });
+
+    test('WhyAnalyticsRiseSection contrasts passive video courses with active in-browser practice', () => {
+      const whyPath = path.join(__dirname, '..', 'app', 'components', 'landing', 'WhyAnalyticsRiseSection.tsx');
+      const content = fs.readFileSync(whyPath, 'utf8');
+      expect(content).toContain('Traditional Video Courses');
+      expect(content).toContain('The AnalyticsRise Platform');
+      expect(content).toContain('Learning Method');
+      expect(content).toContain('Proof of Skill');
+    });
+  });
 });
+
 
