@@ -501,3 +501,170 @@ export const getChallengeUnlockStatus = onCall(
     };
   }
 );
+
+/**
+ * Cloud Function v2 Callable: getUserProgressionMap
+ * Authoritatively builds the sanitized full curriculum progression map for the learner
+ */
+export const getUserProgressionMap = onCall(
+  { cors: true, maxInstances: 20 },
+  async (request: CallableRequest<void>): Promise<any> => {
+    if (!request.auth || !request.auth.uid) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get progression map.');
+    }
+
+    const userId = request.auth.uid;
+    const snapshot = await db.collection('challengeProgress').where('userId', '==', userId).get();
+    const progressMap = new Map<string, any>();
+    snapshot.docs.forEach((doc) => progressMap.set(doc.data().challengeId, doc.data()));
+
+    const challengesDef = [
+      { id: 'sql.select.001', moduleId: 'sql-select', trackId: 'sql-foundation', sequence: 1, title: 'Product Catalog Scout', difficulty: 'Beginner', xpReward: 50, prereqs: [] as string[] },
+      { id: 'sql.select.002', moduleId: 'sql-select', trackId: 'sql-foundation', sequence: 2, title: 'Customer Directory Lookup', difficulty: 'Beginner', xpReward: 60, prereqs: ['sql.select.001'] },
+      { id: 'sql.where.001', moduleId: 'sql-where', trackId: 'sql-foundation', sequence: 1, title: 'Enterprise Subscription Filter', difficulty: 'Beginner', xpReward: 75, prereqs: ['sql.select.002'] },
+      { id: 'sql.where.002', moduleId: 'sql-where', trackId: 'sql-foundation', sequence: 2, title: 'High-Value Customer Orders', difficulty: 'Beginner', xpReward: 80, prereqs: ['sql.where.001'] },
+      { id: 'sql.orderby.001', moduleId: 'sql-orderby-limit', trackId: 'sql-foundation', sequence: 1, title: 'Top-Selling Products by Revenue', difficulty: 'Beginner', xpReward: 90, prereqs: ['sql.where.002'] },
+      { id: 'sql.orderby.002', moduleId: 'sql-orderby-limit', trackId: 'sql-foundation', sequence: 2, title: 'Recent High-Value Shipments', difficulty: 'Beginner', xpReward: 100, prereqs: ['sql.orderby.001'] },
+    ];
+
+    const modulesDef = [
+      { id: 'sql-select', trackId: 'sql-foundation', sequence: 1, title: 'SELECT & Projections', prereqs: [] as string[] },
+      { id: 'sql-where', trackId: 'sql-foundation', sequence: 2, title: 'WHERE Filtering & Logic', prereqs: ['sql-select'] },
+      { id: 'sql-orderby-limit', trackId: 'sql-foundation', sequence: 3, title: 'ORDER BY & LIMIT Sorting', prereqs: ['sql-where'] },
+    ];
+
+    const tracksDef = [
+      { id: 'sql-foundation', sequence: 1, title: 'SQL Foundation' },
+      { id: 'data-analysis-core', sequence: 2, title: 'Data Analysis Core' },
+      { id: 'relational-sql', sequence: 3, title: 'Relational SQL' },
+      { id: 'analytical-thinking', sequence: 4, title: 'Analytical Thinking' },
+      { id: 'advanced-analytics', sequence: 5, title: 'Advanced Analytics' },
+      { id: 'real-world-sql', sequence: 6, title: 'Real-World SQL & Investigation' },
+    ];
+
+    let totalUnlocked = 0;
+    let totalCompleted = 0;
+    let totalMastered = 0;
+    let totalXpEarned = 0;
+
+    // Evaluate Challenges
+    const challenges = challengesDef.map((c) => {
+      const prog = progressMap.get(c.id);
+      const progressStatus = prog?.status || 'NOT_STARTED';
+      const bestScore = prog?.bestScore || 0;
+      const xpEarned = prog?.xpEarned || 0;
+
+      if (xpEarned > 0) totalXpEarned += xpEarned;
+      if (progressStatus === 'COMPLETED' || progressStatus === 'MASTERED') totalCompleted++;
+      if (progressStatus === 'MASTERED') totalMastered++;
+
+      let isUnlocked = false;
+      let reasonCode = 'PREREQUISITES_INCOMPLETE';
+
+      if (c.prereqs.length === 0) {
+        isUnlocked = true;
+        reasonCode = 'ALWAYS_UNLOCKED';
+      } else {
+        const allPrereqsMet = c.prereqs.every((pId) => {
+          const pProg = progressMap.get(pId);
+          return pProg?.status === 'COMPLETED' || pProg?.status === 'MASTERED';
+        });
+        if (allPrereqsMet) {
+          isUnlocked = true;
+          reasonCode = 'PREREQUISITES_COMPLETE';
+        }
+      }
+
+      if (isUnlocked) totalUnlocked++;
+
+      return {
+        id: c.id,
+        type: 'challenge',
+        title: c.title,
+        isUnlocked,
+        status: isUnlocked ? 'UNLOCKED' : 'LOCKED',
+        reasonCode,
+        explanation: isUnlocked ? 'Challenge is available.' : 'Complete prerequisite challenges to unlock.',
+        progressStatus,
+        bestScore,
+        xpEarned,
+        requirements: c.prereqs.length > 0 ? [
+          {
+            type: 'PREREQUISITE_CHALLENGES',
+            satisfied: isUnlocked,
+            required: c.prereqs,
+            completed: c.prereqs.filter((pId) => {
+              const pProg = progressMap.get(pId);
+              return pProg?.status === 'COMPLETED' || pProg?.status === 'MASTERED';
+            }),
+            remaining: isUnlocked ? 0 : 1,
+            description: `Requires completion of: ${c.prereqs.join(', ')}`,
+          },
+        ] : [],
+      };
+    });
+
+    // Evaluate Modules
+    const modules = modulesDef.map((m) => {
+      let isUnlocked = false;
+      let reasonCode = 'MODULE_INCOMPLETE';
+
+      if (m.prereqs.length === 0) {
+        isUnlocked = true;
+        reasonCode = 'ALWAYS_UNLOCKED';
+      } else {
+        const allPrereqsMet = m.prereqs.every((prereqModId) => {
+          const modChallenges = challengesDef.filter((c) => c.moduleId === prereqModId);
+          return modChallenges.every((c) => {
+            const p = progressMap.get(c.id);
+            return p?.status === 'COMPLETED' || p?.status === 'MASTERED';
+          });
+        });
+        if (allPrereqsMet) {
+          isUnlocked = true;
+          reasonCode = 'MODULE_COMPLETE';
+        }
+      }
+
+      return {
+        id: m.id,
+        type: 'module',
+        title: m.title,
+        isUnlocked,
+        status: isUnlocked ? 'UNLOCKED' : 'LOCKED',
+        reasonCode,
+        explanation: isUnlocked ? 'Module is available.' : 'Complete prerequisite modules to unlock.',
+        requirements: [],
+      };
+    });
+
+    // Evaluate Tracks
+    const tracks = tracksDef.map((t) => {
+      const isUnlocked = t.sequence === 1;
+      return {
+        id: t.id,
+        type: 'track',
+        title: t.title,
+        isUnlocked,
+        status: isUnlocked ? 'UNLOCKED' : 'LOCKED',
+        reasonCode: isUnlocked ? 'ALWAYS_UNLOCKED' : 'TRACK_INCOMPLETE',
+        explanation: isUnlocked ? 'Foundational track is available.' : 'Complete previous tracks to unlock.',
+        requirements: [],
+      };
+    });
+
+    return {
+      userId,
+      productId: 'sql',
+      tracks,
+      modules,
+      challenges,
+      totalChallenges: challengesDef.length,
+      totalUnlockedChallenges: totalUnlocked,
+      totalCompletedChallenges: totalCompleted,
+      totalMasteredChallenges: totalMastered,
+      totalXpEarned,
+      evaluatedAt: new Date().toISOString(),
+    };
+  }
+);

@@ -17,6 +17,17 @@ export type {
   ChallengeModule,
   PublicChallenge,
   ChallengeFilter,
+  SubmitChallengeAttemptRequest,
+  SubmitChallengeAttemptResponse,
+  ChallengeProgressRecord,
+  ChallengeAttemptRecord,
+  UserChallengeSummary,
+  UnlockStatus,
+  UnlockReasonCode,
+  UnlockRequirementResult,
+  UnlockDecision,
+  ProgressionMapItem,
+  UserProgressionMap,
 } from './types';
 
 // Track and Module definitions
