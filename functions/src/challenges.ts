@@ -419,3 +419,85 @@ export const getUserChallengeSummary = onCall(
     };
   }
 );
+
+/**
+ * Cloud Function v2 Callable: getChallengeUnlockStatus
+ */
+export const getChallengeUnlockStatus = onCall(
+  { cors: true, maxInstances: 20 },
+  async (request: CallableRequest<{ challengeId: string }>): Promise<any> => {
+    if (!request.auth || !request.auth.uid) {
+      throw new HttpsError('unauthenticated', 'User must be authenticated with Firebase Auth to get unlock status.');
+    }
+    if (!request.data?.challengeId) {
+      throw new HttpsError('invalid-argument', 'Missing "challengeId" parameter.');
+    }
+
+    const userId = request.auth.uid;
+    const challengeId = request.data.challengeId.trim();
+
+    // Default unlock evaluation for seed challenges
+    const isFirst = challengeId === 'sql.select.001';
+    if (isFirst) {
+      return {
+        targetId: challengeId,
+        targetType: 'challenge',
+        isUnlocked: true,
+        status: 'UNLOCKED',
+        reasonCode: 'ALWAYS_UNLOCKED',
+        explanation: 'This challenge is available immediately.',
+        requirements: [],
+      };
+    }
+
+    const snapshot = await db.collection('challengeProgress').where('userId', '==', userId).get();
+    const progressMap = new Map<string, any>();
+    snapshot.docs.forEach((doc) => progressMap.set(doc.data().challengeId, doc.data()));
+
+    // Prerequisite mapping for representative seed challenges
+    const prereqMap: Record<string, string> = {
+      'sql.select.002': 'sql.select.001',
+      'sql.where.001': 'sql.select.002',
+      'sql.where.002': 'sql.where.001',
+      'sql.orderby.001': 'sql.where.002',
+      'sql.orderby.002': 'sql.orderby.001',
+    };
+
+    const prereqId = prereqMap[challengeId];
+    if (!prereqId) {
+      return {
+        targetId: challengeId,
+        targetType: 'challenge',
+        isUnlocked: true,
+        status: 'UNLOCKED',
+        reasonCode: 'ALWAYS_UNLOCKED',
+        explanation: 'Challenge is available.',
+        requirements: [],
+      };
+    }
+
+    const prereqProg = progressMap.get(prereqId);
+    const isPrereqComplete = prereqProg?.status === 'COMPLETED' || prereqProg?.status === 'MASTERED';
+
+    return {
+      targetId: challengeId,
+      targetType: 'challenge',
+      isUnlocked: isPrereqComplete,
+      status: isPrereqComplete ? 'UNLOCKED' : 'LOCKED',
+      reasonCode: isPrereqComplete ? 'PREREQUISITES_COMPLETE' : 'PREREQUISITES_INCOMPLETE',
+      explanation: isPrereqComplete
+        ? 'Prerequisite challenge completed.'
+        : `Complete prerequisite challenge '${prereqId}' to unlock.`,
+      requirements: [
+        {
+          type: 'PREREQUISITE_CHALLENGES',
+          satisfied: isPrereqComplete,
+          required: [prereqId],
+          completed: isPrereqComplete ? [prereqId] : [],
+          remaining: isPrereqComplete ? 0 : 1,
+          description: `Requires completion of ${prereqId}`,
+        },
+      ],
+    };
+  }
+);

@@ -3,9 +3,11 @@ import { PUBLIC_CHALLENGES } from '../public/challenges';
 import { SQL_TRACKS, SQL_MODULES } from '../modules';
 import { PROTECTED_CHALLENGES } from './challenges.server';
 import { listDatasets } from '../../datasets';
+import { detectCurriculumCycles } from './unlock/cycleDetection.server';
 
 export * from './validation/index.server';
 export * from './progress/index.server';
+export * from './unlock/index.server';
 
 /**
  * Server-Authoritative Challenge Registry
@@ -53,7 +55,7 @@ export function listFullChallenges(): FullChallengeDefinition[] {
 }
 
 /**
- * Validates the full relational and referential integrity of the challenge catalog
+ * Validates the full relational, referential, and acyclic integrity of the challenge catalog
  */
 export function validateChallengeIntegrity(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
@@ -116,6 +118,12 @@ export function validateChallengeIntegrity(): { valid: boolean; errors: string[]
         errors.push(`Challenge '${chal.id}' references non-existent prerequisite '${prereqId}'`);
       }
     }
+  }
+
+  // 3. Verify No Circular Dependencies in Prerequisite Graphs
+  const cycleResult = detectCurriculumCycles(PUBLIC_CHALLENGES, SQL_MODULES, SQL_TRACKS);
+  if (cycleResult.hasCycle) {
+    errors.push(...cycleResult.errors);
   }
 
   return {

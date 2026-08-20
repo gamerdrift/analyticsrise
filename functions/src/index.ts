@@ -113,6 +113,7 @@ export {
   getChallengeProgress,
   getChallengeAttempts,
   getUserChallengeSummary,
+  getChallengeUnlockStatus,
   processChallengeSubmissionServer,
   calculateXpDelta,
   calculateNextStatus,
