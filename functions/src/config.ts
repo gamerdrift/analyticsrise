@@ -22,3 +22,16 @@ export const RAZORPAY_SECRETS = [
   razorpayKeySecret,
   razorpayWebhookSecret,
 ];
+
+/**
+ * Certificate HMAC Cryptographic Signing Secret
+ *
+ * Managed securely via Google Cloud Secret Manager / Firebase Functions v2.
+ * Used exclusively on the server to compute and verify tamper-proof HMAC signatures.
+ */
+export const certificateSigningSecret = defineSecret('CERTIFICATE_SIGNING_SECRET');
+
+export const CERTIFICATE_SECRETS = [
+  certificateSigningSecret,
+];
+

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="arGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="100%" stop-color="#4FC3F7" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="#05070B" />
+  <rect x="8" y="8" width="84" height="84" rx="16" fill="url(#arGrad)" />
+  <text x="50" y="62" font-family="'Orbitron', 'Inter', -apple-system, sans-serif" font-weight="900" font-size="44" fill="#05070B" text-anchor="middle" letter-spacing="-3">AR</text>
+</svg>

@@ -140,7 +140,39 @@ service cloud.firestore {
 
 
     // ============================================================
-    // SUBMISSIONS
+    // ASSESSMENT PRIVATE ANSWER KEYS (Platform-Authoritative)
+    // Strictly forbidden to all client SDKs (learners, instructors, admins).
+    // Answer keys are accessed EXCLUSIVELY by Cloud Functions Admin SDK.
+    // ============================================================
+
+    match /assessmentAnswers/{assessmentId} {
+      allow read, write: if false;
+    }
+
+
+    // ============================================================
+    // ASSESSMENT ATTEMPTS (Platform-Authoritative Timed Sessions)
+    // Learners may read only their own timed attempt sessions.
+    // Client write access is STRICTLY FORBIDDEN (zero-trust).
+    // Initialized and updated exclusively by Cloud Functions Admin SDK.
+    // ============================================================
+
+    match /assessmentAttempts/{attemptId} {
+      allow read: if isAuthenticated() &&
+        (
+          resource.data.userId == request.auth.uid ||
+          isAdmin()
+        );
+
+      allow write: if false;
+    }
+
+
+    // ============================================================
+    // SUBMISSIONS (Official Graded Records)
+    // Learners may read only their own official submissions.
+    // Client write access is STRICTLY FORBIDDEN (zero-trust).
+    // Graded and persisted exclusively by Cloud Functions Admin SDK.
     // ============================================================
 
     match /submissions/{submissionId} {
@@ -150,15 +182,15 @@ service cloud.firestore {
           isAdmin()
         );
 
-      allow create: if isAuthenticated() &&
-        request.resource.data.userId == request.auth.uid;
-
-      allow update, delete: if isAdmin();
+      allow write: if false;
     }
 
 
     // ============================================================
-    // ASSESSMENTS
+    // ASSESSMENTS (Sanitized Curriculum Metadata)
+    // Authenticated learners may read sanitized assessment definitions.
+    // Official curriculum is managed by instructors/administrators.
+    // Contains NO private answer keys.
     // ============================================================
 
     match /assessments/{assessmentId} {
@@ -315,6 +347,31 @@ service cloud.firestore {
 
     match /aiUsage/{userId} {
       allow read: if isAuthenticated() && (userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+
+    // ============================================================
+    // SQL CHALLENGE ENGINE — ATTEMPTS, PROGRESS & IDEMPOTENCY
+    //
+    // Challenge attempts, progress records, and idempotency logs
+    // are strictly read-only for their authenticated owner.
+    // Client SDK write access is STRICTLY FORBIDDEN (zero-trust).
+    // Mutated exclusively by Cloud Functions Admin SDK.
+    // ============================================================
+
+    match /challengeAttempts/{attemptId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /challengeProgress/{progressId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+
+    match /challengeIdempotency/{idempId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
       allow write: if false;
     }
   }

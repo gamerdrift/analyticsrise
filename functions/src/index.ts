@@ -23,6 +23,8 @@ export {
   razorpayKeySecret,
   razorpayWebhookSecret,
   RAZORPAY_SECRETS,
+  certificateSigningSecret,
+  CERTIFICATE_SECRETS,
 } from './config';
 
 // Re-export pricing utilities
@@ -32,6 +34,44 @@ export {
   type PaidPlanTier,
   type BillingCycle,
 } from './pricing';
+
+// Export Assessment Functions & Authority
+export {
+  startAssessment,
+  processAssessmentStart,
+  submitAssessment,
+  processAssessmentSubmission,
+  getSanitizedAssessment,
+  getAssessmentAnswerKey,
+  AUTHORITATIVE_ASSESSMENTS,
+  AUTHORITATIVE_ANSWER_KEYS,
+  type PublicAssessmentQuestion,
+  type PublicAssessmentMetadata,
+  type PrivateQuestionKey,
+  type PrivateAssessmentKey,
+  type StartAssessmentData,
+  type StartAssessmentResponse,
+  type SubmitAssessmentData,
+  type SubmitAssessmentResponse,
+} from './assessments';
+
+// Export Certificate Authority Functions & Helpers
+export {
+  issueCertificate,
+  processCertificateIssuance,
+  verifyCertificate,
+  processCertificateVerification,
+  canonicalizeCertificatePayload,
+  signCertificatePayload,
+  verifyCertificateSignature,
+  getCertificateSigningKey,
+  type CanonicalCertificateData,
+  type CertificateRecord,
+  type IssueCertificateData,
+  type IssueCertificateResponse,
+  type VerifyCertificateData,
+  type VerifyCertificateResponse,
+} from './certificates';
 
 // Export Cloud Functions
 export { createRazorpayOrder, processOrderCreation, getRazorpayClient } from './orders';
@@ -66,6 +106,23 @@ export {
   type AIMentorQueryResponse,
   type AICapability,
 } from './ai';
+
+// Export Challenge Engine Cloud Functions
+export {
+  submitChallengeAttempt,
+  getChallengeProgress,
+  getChallengeAttempts,
+  getUserChallengeSummary,
+  processChallengeSubmissionServer,
+  calculateXpDelta,
+  calculateNextStatus,
+  SERVER_CHALLENGES,
+  type SubmitChallengeAttemptData,
+  type SubmitChallengeAttemptResponse,
+  type GetChallengeProgressData,
+  type GetChallengeAttemptsData,
+  type UserChallengeSummaryResponse,
+} from './challenges';
 
 /**
  * Health Check Cloud Function (v2 HTTPS)
