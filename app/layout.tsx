@@ -153,10 +153,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       logoText="AnalyticsRISE"
                       links={[
                         { label: 'Products', href: '/products' },
-                        { label: 'Pricing', href: '/pricing' },
+                        { label: 'Learning Paths', href: '/courses' },
                         { label: 'Enterprise', href: '/enterprise' },
                         { label: 'About', href: '/about' },
                       ]}
+
                       actions={
                         <>
                           <LanguageSwitcher variant="compact" className="mb-2 md:mr-2 z-50" />

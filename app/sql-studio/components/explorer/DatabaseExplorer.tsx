@@ -3,13 +3,17 @@
 import React, { useState } from 'react';
 import { useSqlStudio } from '@/app/sql-studio/contexts/SqlStudioContext';
 import { getDataset } from '@/lib/sql/datasets/registry';
-import { Database, Table, Key, ChevronDown, ChevronRight, Hash, Type, Calendar, ToggleLeft } from 'lucide-react';
+import { getUpgradeContext } from '@/lib/entitlements/entitlements';
+import UpgradePromptModal from '@/app/components/monetization/UpgradePromptModal';
+import { Database, Table, Key, ChevronDown, ChevronRight, Hash, Type, Calendar, ToggleLeft, Upload, Sparkles } from 'lucide-react';
 
 export default function DatabaseExplorer() {
   const { state, dispatch } = useSqlStudio();
   const [expandedTables, setExpandedTables] = useState<string[]>([]);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const dataset = getDataset(state.activeDatasetId) || getDataset('ecommerce');
+  const customDatasetUpgradeContext = getUpgradeContext('sql.custom_datasets');
 
   if (!dataset) {
     return (
@@ -52,17 +56,42 @@ export default function DatabaseExplorer() {
   return (
     <div className="space-y-3">
       {/* Dataset Header */}
-      <div className="p-2.5 bg-[#090D16] border border-white/5 rounded-xl flex items-center gap-2">
-        <Database className="w-4 h-4 text-[#00E5FF] shrink-0" />
-        <div className="truncate">
-          <div className="text-xs font-mono font-bold text-slate-200 truncate">
-            {dataset.name}
-          </div>
-          <div className="text-[10px] text-slate-500 truncate">
-            {tableNames.length} tables • {dataset.estimatedRows} rows
+      <div className="p-2.5 bg-[#090D16] border border-white/5 rounded-xl flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 truncate">
+          <Database className="w-4 h-4 text-[#00E5FF] shrink-0" />
+          <div className="truncate">
+            <div className="text-xs font-mono font-bold text-slate-200 truncate">
+              {dataset.name}
+            </div>
+            <div className="text-[10px] text-slate-500 truncate">
+              {tableNames.length} tables • {dataset.estimatedRows} rows
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Upload Custom Dataset Action (Freemium Value Trigger) */}
+      <button
+        type="button"
+        onClick={() => setIsUpgradeModalOpen(true)}
+        className="w-full p-2 rounded-lg bg-white/[0.03] hover:bg-[#00E5FF]/10 border border-white/10 hover:border-[#00E5FF]/40 text-slate-300 hover:text-[#00E5FF] text-[11px] font-mono flex items-center justify-between transition-all group"
+      >
+        <div className="flex items-center gap-1.5">
+          <Upload className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00E5FF]" />
+          <span>Upload Custom Dataset</span>
+        </div>
+        <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/5 group-hover:bg-[#00E5FF]/20 text-slate-400 group-hover:text-[#00E5FF]">
+          PRO
+        </span>
+      </button>
+
+      {/* Upgrade Prompt Modal */}
+      <UpgradePromptModal
+        isOpen={isUpgradeModalOpen}
+        context={customDatasetUpgradeContext}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      />
+
 
       {/* Tables & Columns Tree */}
       <div className="space-y-1.5">

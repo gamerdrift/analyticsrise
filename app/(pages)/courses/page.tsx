@@ -241,15 +241,17 @@ export default function Courses() {
                   {selectedCourse.enrollment === 'Active' ? (
                     <Link 
                       href={
-                        selectedCourse.id === 'excel-01' ? '/simulators/excel' :
-                        selectedCourse.id === 'sql-01' ? '/simulators/sql' :
+                        selectedCourse.id === 'excel-01' ? '/excel-studio' :
+                        selectedCourse.id === 'sql-01' ? '/sql-studio' :
                         selectedCourse.id === 'powerbi-01' ? '/simulators/powerbi' :
-                        selectedCourse.id === 'tableau-01' ? '/simulators/tableau' : '/simulators/excel'
+                        selectedCourse.id === 'tableau-01' ? '/tableau-studio' :
+                        selectedCourse.id === 'python-01' ? '/python-lab' : '/courses'
                       }
-                      className="w-full py-3 block text-center cyber-button text-xs font-bold tracking-widest"
+                      className="w-full py-3.5 block text-center rounded-xl bg-gradient-to-r from-[#00E5FF] via-[#4FC3F7] to-[#00E5FF] text-black font-mono font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_25px_rgba(0,229,255,0.4)] transition-all shadow-lg shadow-[#00E5FF]/20"
                     >
-                      ENTER SIMULATOR LAB
+                      ENTER PRACTICE STUDIO
                     </Link>
+
                   ) : (
                     <button 
                       onClick={() => {

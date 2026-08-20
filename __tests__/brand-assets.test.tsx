@@ -102,7 +102,7 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       const content = fs.readFileSync(landingNavPath, 'utf8');
       expect(content).not.toMatch(/name:\s*['"]Home['"]/i);
       expect(content).toContain("name: 'Products'");
-      expect(content).toContain("name: 'Pricing'");
+      expect(content).toContain("name: 'Learning Paths'");
       expect(content).toContain("name: 'Enterprise'");
       expect(content).toContain("name: 'About'");
       expect(content).toContain('aria-label="AnalyticsRise Home"');
@@ -113,7 +113,7 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       const content = fs.readFileSync(layoutPath, 'utf8');
       expect(content).not.toMatch(/label:\s*['"]Home['"]/i);
       expect(content).toContain("label: 'Products'");
-      expect(content).toContain("label: 'Pricing'");
+      expect(content).toContain("label: 'Learning Paths'");
       expect(content).toContain("label: 'Enterprise'");
       expect(content).toContain("label: 'About'");
     });
@@ -181,6 +181,34 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       expect(content).toContain('Proof of Skill');
     });
   });
+
+  describe('6. Mission 04: Reusable Entitlements & Freemium Architecture', () => {
+    test('Entitlements module correctly evaluates Free vs Pro feature capabilities', () => {
+      const { canUseFeature, requiresUpgrade, getUpgradeContext } = require('../lib/entitlements/entitlements');
+      expect(canUseFeature('sql.core_challenges', 'free')).toBe(true);
+      expect(canUseFeature('sql.custom_datasets', 'free')).toBe(false);
+      expect(canUseFeature('sql.custom_datasets', 'pro')).toBe(true);
+      expect(requiresUpgrade('sql.custom_datasets', 'free')).toBe(true);
+      
+      const context = getUpgradeContext('sql.custom_datasets');
+      expect(context.title).toBe('Analyze Your Own Data');
+      expect(context.productId).toBe('sql');
+      expect(context.benefits.length).toBeGreaterThan(0);
+    });
+
+    test('Multi-currency pricing configuration supports INR and USD explicitly', () => {
+      const { getPlanPriceDisplay, PRICING_CONFIG } = require('../lib/monetization/pricingConfig');
+      expect(PRICING_CONFIG.INR.pro.monthlyPrice).toBe(1499);
+      expect(PRICING_CONFIG.USD.pro.monthlyPrice).toBe(29);
+      
+      const inrDisplay = getPlanPriceDisplay('pro', 'INR', 'annual');
+      expect(inrDisplay.formatted).toContain('₹999');
+      
+      const usdDisplay = getPlanPriceDisplay('pro', 'USD', 'annual');
+      expect(usdDisplay.formatted).toContain('$19');
+    });
+  });
 });
+
 
 

@@ -62,6 +62,47 @@ export const AnalyticsService = {
     } else {
       logger.debug('Analytics User Properties (Simulated):', properties);
     }
-  }
+  },
+
+  // --------------------------------------------------------------------------
+  // Learner Lifecycle & Conversion Telemetry Methods (Mission 04)
+  // --------------------------------------------------------------------------
+
+  logLearningStarted(trackId: string, source: string = 'homepage'): void {
+    this.logCustomEvent('learning_started', { trackId, source, timestamp: Date.now() });
+  },
+
+  logStudioOpened(studioId: string): void {
+    this.logCustomEvent('studio_opened', { studioId, timestamp: Date.now() });
+  },
+
+  logExerciseCompleted(exerciseId: string, durationMs?: number): void {
+    this.logCustomEvent('exercise_completed', { exerciseId, durationMs, timestamp: Date.now() });
+  },
+
+  logChallengeStarted(challengeId: string, difficulty?: string): void {
+    this.logCustomEvent('challenge_started', { challengeId, difficulty, timestamp: Date.now() });
+  },
+
+  logChallengeCompleted(challengeId: string, score: number, xpAwarded: number): void {
+    this.logCustomEvent('challenge_completed', { challengeId, score, xpAwarded, timestamp: Date.now() });
+  },
+
+  logUpgradePromptViewed(featureId: string, productId: string): void {
+    this.logCustomEvent('upgrade_prompt_viewed', { featureId, productId, timestamp: Date.now() });
+  },
+
+  logUpgradePromptDismissed(featureId: string, productId: string): void {
+    this.logCustomEvent('upgrade_prompt_dismissed', { featureId, productId, timestamp: Date.now() });
+  },
+
+  logUpgradeInterest(featureId: string, planId: string): void {
+    this.logCustomEvent('upgrade_interest', { featureId, planId, timestamp: Date.now() });
+  },
+
+  logProductUpgradeExplored(productId: string): void {
+    this.logCustomEvent('product_upgrade_explored', { productId, timestamp: Date.now() });
+  },
 };
 export default AnalyticsService;
+

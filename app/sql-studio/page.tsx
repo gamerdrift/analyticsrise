@@ -1,18 +1,25 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SqlStudioProvider, useSqlStudio, ResponsiveStudioTab } from '@/app/sql-studio/contexts/SqlStudioContext';
 import LeftPanel from '@/app/sql-studio/components/layout/LeftPanel';
 import CenterPanel from '@/app/sql-studio/components/layout/CenterPanel';
 import RightPanel from '@/app/sql-studio/components/layout/RightPanel';
 import StatusBar from '@/app/sql-studio/components/layout/StatusBar';
+import SqlConceptGuideModal from '@/app/sql-studio/components/concept/SqlConceptGuideModal';
 import Link from 'next/link';
-import { Terminal, Target, Code, BookOpen, ChevronLeft } from 'lucide-react';
+import { Terminal, Target, Code, BookOpen, ChevronLeft, HelpCircle, Sparkles } from 'lucide-react';
 import { ArTriangleIcon } from '@/app/components/brand';
+import { AnalyticsService } from '@/lib/services/analytics';
 
 function SqlStudioWorkbench() {
   const { state, dispatch } = useSqlStudio();
   const { activeTab } = state;
+  const [isConceptGuideOpen, setIsConceptGuideOpen] = useState(false);
+
+  useEffect(() => {
+    AnalyticsService.logStudioOpened('sql');
+  }, []);
 
   return (
     <div className="flex flex-col h-screen bg-[#05070B] text-white font-sans overflow-hidden select-none">
@@ -22,6 +29,7 @@ function SqlStudioWorkbench() {
           <Link
             href="/"
             className="flex items-center gap-2 text-slate-400 hover:text-white text-xs font-mono transition-colors group"
+            aria-label="AnalyticsRise Home"
           >
             <ChevronLeft className="w-4 h-4" />
             <ArTriangleIcon size={18} className="transition-transform group-hover:scale-110" />
@@ -78,13 +86,29 @@ function SqlStudioWorkbench() {
           </button>
         </div>
 
-        {/* Top Right Live Telemetry / Links */}
-        <div className="hidden sm:flex items-center gap-3">
-          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">
-            Stage 2C Challenge Engine
+        {/* Top Right Live Telemetry / Actions */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setIsConceptGuideOpen(true)}
+            className="px-3 py-1.5 rounded-lg bg-[#00E5FF]/10 hover:bg-[#00E5FF]/20 border border-[#00E5FF]/30 text-[#00E5FF] text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm shadow-[#00E5FF]/10"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Concept Guide</span>
+          </button>
+
+          <span className="hidden sm:inline text-[10px] font-mono text-slate-500 uppercase tracking-widest border-l border-white/10 pl-3">
+            In-Browser Sandbox
           </span>
         </div>
       </header>
+
+      {/* SQL Concept Guide Modal */}
+      <SqlConceptGuideModal
+        isOpen={isConceptGuideOpen}
+        onClose={() => setIsConceptGuideOpen(false)}
+      />
+
 
       {/* Main Studio Viewport */}
       <main className="flex-1 flex overflow-hidden">

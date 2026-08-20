@@ -18,10 +18,11 @@ export default function LandingNavbar() {
 
   const menuItems = [
     { name: 'Products', href: '/products' },
-    { name: 'Pricing', href: '/pricing' },
+    { name: 'Learning Paths', href: '/courses' },
     { name: 'Enterprise', href: '/enterprise' },
     { name: 'About', href: '/about' },
   ];
+
 
   return (
     <>
