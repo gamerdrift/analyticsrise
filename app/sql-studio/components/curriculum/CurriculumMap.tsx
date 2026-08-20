@@ -30,22 +30,32 @@ export default function CurriculumMap({ onSelectChallenge }: CurriculumMapProps)
 
   const allChallenges = listPublicChallenges();
 
-  // Load authoritative progression map when authenticated
+  // Load progression map for learner (both authenticated and guest)
+  const fetchMap = () => {
+    SqlChallengeClientService.getUserProgressionMap()
+      .then((map) => {
+        if (map) {
+          setProgressionMap(map);
+        }
+      })
+      .catch(() => {});
+  };
+
   useEffect(() => {
-    let isMounted = true;
-    if (isAuthenticated) {
-      SqlChallengeClientService.getUserProgressionMap()
-        .then((map) => {
-          if (isMounted && map) {
-            setProgressionMap(map);
-          }
-        })
-        .catch(() => {
-          // Fallback gracefully on network / auth error
-        });
+    fetchMap();
+
+    const handleProgressUpdate = () => {
+      fetchMap();
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('ar-sql-progress-updated', handleProgressUpdate);
     }
+
     return () => {
-      isMounted = false;
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('ar-sql-progress-updated', handleProgressUpdate);
+      }
     };
   }, [isAuthenticated, state.activeChallengeId]);
 

@@ -119,15 +119,15 @@ describe('Mission 02 Stage 2C — Phase C6B: SQL Studio Challenge Experience', (
       expect(selectChallenges.length).toBe(2);
     });
 
-    test('Submission requires authentication and rejects unauthenticated client context safely', async () => {
-      await expect(
-        SqlChallengeClientService.submitChallengeAttempt({
-          challengeId: 'sql.select.001',
-          sql: 'SELECT * FROM products;',
-        })
-      ).rejects.toMatchObject({
-        code: 'AUTH_REQUIRED',
+    test('Submission in Launch Mode evaluates and awards progress safely', async () => {
+      const res = await SqlChallengeClientService.submitChallengeAttempt({
+        challengeId: 'sql.select.001',
+        sql: 'SELECT name, category_id, price FROM products;',
       });
+      expect(res.status).toBe('PASS');
+      expect(res.passed).toBe(true);
+      expect(res.score).toBe(100);
+      expect(res.xpAwarded).toBe(50);
     });
   });
 });

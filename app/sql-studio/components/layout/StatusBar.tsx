@@ -18,19 +18,31 @@ export default function StatusBar() {
   const execTime = state.status.execTimeMs;
   const returnedRows = state.status.returnedRows;
 
+  const fetchSummary = () => {
+    SqlChallengeClientService.getUserChallengeSummary()
+      .then((summary) => {
+        if (summary) {
+          setTotalXp(summary.totalXpEarned);
+        }
+      })
+      .catch(() => {});
+  };
+
   useEffect(() => {
-    let isMounted = true;
-    if (isAuthenticated) {
-      SqlChallengeClientService.getUserChallengeSummary()
-        .then((summary) => {
-          if (isMounted && summary) {
-            setTotalXp(summary.totalXpEarned);
-          }
-        })
-        .catch(() => {});
+    fetchSummary();
+
+    const handleProgressUpdate = () => {
+      fetchSummary();
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('ar-sql-progress-updated', handleProgressUpdate);
     }
+
     return () => {
-      isMounted = false;
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('ar-sql-progress-updated', handleProgressUpdate);
+      }
     };
   }, [isAuthenticated, state.activeChallengeId]);
 

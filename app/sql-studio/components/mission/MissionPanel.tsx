@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSqlStudio } from '@/app/sql-studio/contexts/SqlStudioContext';
 import { getPublicChallenge, getNextChallenge, getPreviousChallenge } from '@/lib/sql/challenges/public/registry';
+import { SqlChallengeClientService } from '@/lib/services/sqlChallengeClientService';
 import HintAccordion from './HintAccordion';
 import {
   Target,
@@ -48,7 +49,15 @@ export default function MissionPanel() {
     setShowConfirmReset(false);
   };
 
-  const handleNavigate = (targetChallengeId: string) => {
+  const handleNavigate = async (targetChallengeId: string) => {
+    try {
+      const unlockStatus = await SqlChallengeClientService.getChallengeUnlockStatus(targetChallengeId);
+      if (unlockStatus && !unlockStatus.isUnlocked) {
+        alert(unlockStatus.explanation || 'Complete prerequisite challenges to unlock this mission.');
+        return;
+      }
+    } catch {}
+
     if (isDirty) {
       if (confirm('You have unsaved SQL changes. Do you want to discard them and load the selected challenge?')) {
         dispatch({ type: 'SET_ACTIVE_CHALLENGE', payload: targetChallengeId });

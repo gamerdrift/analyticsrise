@@ -146,6 +146,10 @@ export function useSqlChallenge(
         // Refresh learner progress after mutation
         refresh();
 
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('ar-sql-progress-updated', { detail: { challengeId, response } }));
+        }
+
         if (onSuccess) onSuccess(response);
         return response;
       } catch (err: any) {

@@ -1,9 +1,7 @@
-import { httpsCallable } from 'firebase/functions';
-import { functions, auth } from '@/lib/firebase/config';
+import { auth } from '@/lib/firebase/config';
 import {
   PublicChallenge,
   ChallengeFilter,
-  DifficultyLevel,
   SubmitChallengeAttemptRequest,
   SubmitChallengeAttemptResponse,
   ChallengeProgressRecord,
@@ -13,6 +11,14 @@ import {
   UserProgressionMap,
 } from '../sql/challenges/types';
 import { getPublicChallenge, listPublicChallenges } from '../sql/challenges/public/registry';
+import {
+  getLaunchProgress,
+  getLaunchAttempts,
+  getLaunchUserSummary,
+  evaluateLaunchUnlock,
+  getLaunchProgressionMap,
+  evaluateLaunchSubmission,
+} from '../sql/challenges/launch';
 
 export type ChallengeRequestStatus = 'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR';
 
@@ -42,7 +48,7 @@ export function generateSubmissionIdempotencyKey(challengeId: string): string {
 }
 
 /**
- * Normalizes backend and network exceptions into sanitized client-safe errors
+ * Normalizes exceptions into sanitized client-safe errors
  */
 export function normalizeChallengeError(error: any): NormalizedError {
   if (!error) {
@@ -59,7 +65,13 @@ export function normalizeChallengeError(error: any): NormalizedError {
     };
   }
 
-  if (errorCode.includes('unavailable') || errorMsg.includes('network') || errorMsg.includes('offline') || errorMsg.includes('fetch')) {
+  if (
+    errorCode.includes('unavailable') ||
+    errorCode.includes('network') ||
+    errorMsg.includes('network') ||
+    errorMsg.includes('offline') ||
+    errorMsg.includes('fetch')
+  ) {
     return {
       code: 'NETWORK_ERROR',
       message: 'Network connection issue. Please check your internet connection and retry.',
@@ -86,9 +98,18 @@ export function normalizeChallengeError(error: any): NormalizedError {
   };
 }
 
+function resolveCurrentUserId(): string {
+  try {
+    return auth?.currentUser?.uid || 'guest';
+  } catch {
+    return 'guest';
+  }
+}
+
 /**
- * SQL Challenge Client Service
- * Provides strongly-typed, client-safe interactions with the AnalyticsRise backend
+ * SQL Challenge Client Service — Launch Mode Free Tier & Hybrid Ready
+ * Provides instant, in-browser execution, progression, and unlock evaluation
+ * without requiring Firebase Blaze activation or Cloud Functions deployment.
  */
 export class SqlChallengeClientService {
   /**
@@ -106,77 +127,32 @@ export class SqlChallengeClientService {
   }
 
   /**
-   * Retrieves learner progress for a specific challenge
+   * Retrieves learner progress for a specific challenge in Launch Mode
    */
   static async getChallengeProgress(
     challengeId: string
   ): Promise<ChallengeProgressRecord | null> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      return null;
-    }
-
-    try {
-      const getProgressFn = httpsCallable<{ challengeId: string }, ChallengeProgressRecord | null>(
-        functions,
-        'getChallengeProgress'
-      );
-      const result = await getProgressFn({ challengeId });
-      return result.data;
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return getLaunchProgress(userId, challengeId);
   }
 
   /**
-   * Retrieves submission attempt history for a challenge
+   * Retrieves submission attempt history for a challenge in Launch Mode
    */
   static async getChallengeAttempts(
     challengeId?: string,
     limit: number = 10
   ): Promise<ChallengeAttemptRecord[]> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      return [];
-    }
-
-    try {
-      const getAttemptsFn = httpsCallable<
-        { challengeId?: string; limit?: number },
-        ChallengeAttemptRecord[]
-      >(functions, 'getChallengeAttempts');
-      const result = await getAttemptsFn({ challengeId, limit });
-      return result.data || [];
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return getLaunchAttempts(userId, challengeId, limit);
   }
 
   /**
-   * Retrieves cumulative challenge progression summary for the authenticated user
+   * Retrieves cumulative challenge progression summary for the learner
    */
   static async getUserChallengeSummary(): Promise<UserChallengeSummary | null> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      return null;
-    }
-
-    try {
-      const getSummaryFn = httpsCallable<void, UserChallengeSummary | null>(
-        functions,
-        'getUserChallengeSummary'
-      );
-      const result = await getSummaryFn();
-      return result.data;
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return getLaunchUserSummary(userId);
   }
 
   /**
@@ -185,79 +161,25 @@ export class SqlChallengeClientService {
   static async getChallengeUnlockStatus(
     challengeId: string
   ): Promise<UnlockDecision | null> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      return null;
-    }
-
-    try {
-      const getUnlockFn = httpsCallable<{ challengeId: string }, UnlockDecision | null>(
-        functions,
-        'getChallengeUnlockStatus'
-      );
-      const result = await getUnlockFn({ challengeId });
-      return result.data;
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return evaluateLaunchUnlock(userId, challengeId);
   }
 
   /**
    * Retrieves the full sanitized progression map for the learner
    */
   static async getUserProgressionMap(): Promise<UserProgressionMap | null> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      return null;
-    }
-
-    try {
-      const getMapFn = httpsCallable<void, UserProgressionMap | null>(
-        functions,
-        'getUserProgressionMap'
-      );
-      const result = await getMapFn();
-      return result.data;
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return getLaunchProgressionMap(userId);
   }
 
   /**
-   * Submits a challenge query for authoritative server execution, validation, scoring, and progress update
+   * Submits a challenge query for instant in-browser execution, validation, scoring, and progress update
    */
   static async submitChallengeAttempt(
     request: SubmitChallengeAttemptRequest
   ): Promise<SubmitChallengeAttemptResponse> {
-    if (!auth?.currentUser) {
-      throw { code: 'AUTH_REQUIRED', message: 'Authentication required' };
-    }
-    if (!functions) {
-      throw { code: 'SERVICE_UNAVAILABLE', message: 'Functions service unavailable.' };
-    }
-
-    const idempotencyKey = request.idempotencyKey || generateSubmissionIdempotencyKey(request.challengeId);
-
-    try {
-      const submitFn = httpsCallable<
-        SubmitChallengeAttemptRequest,
-        SubmitChallengeAttemptResponse
-      >(functions, 'submitChallengeAttempt');
-
-      const result = await submitFn({
-        challengeId: request.challengeId,
-        sql: request.sql,
-        hintsUsed: request.hintsUsed || 0,
-        idempotencyKey,
-      });
-
-      return result.data;
-    } catch (err) {
-      throw normalizeChallengeError(err);
-    }
+    const userId = resolveCurrentUserId();
+    return evaluateLaunchSubmission(userId, request);
   }
 }
