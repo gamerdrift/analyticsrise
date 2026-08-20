@@ -10,6 +10,7 @@ import NotificationDrawer from '@/app/components/growth/NotificationDrawer';
 
 import SearchModal from '@/app/components/navigation/GlobalSearchModal';
 import { Search } from 'lucide-react';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 export default function LandingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -29,10 +30,8 @@ export default function LandingNavbar() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#05070B]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-xl font-display tracking-tighter shadow-lg shadow-[#00E5FF]/20">
-              AR
-            </div>
+          <Link href="/" className="flex items-center gap-3 group">
+            <ArTriangleIcon size={38} className="transition-transform group-hover:scale-105" />
             <span className="font-display font-black text-white text-lg tracking-wider">
               ANALYTICS<span className="text-[#00E5FF]">RISE</span>
             </span>

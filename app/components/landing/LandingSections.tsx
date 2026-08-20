@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 // --- TECHNOLOGY SHOWCASE ---
 export function TechnologyShowcase() {
@@ -215,9 +216,7 @@ export function Certifications() {
 
             <div className="flex justify-between items-start mb-8">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded bg-[#00E5FF] flex items-center justify-center font-bold text-black text-sm font-display tracking-tighter">
-                  AR
-                </div>
+                <ArTriangleIcon size={26} />
                 <span className="text-[10px] font-display font-bold text-white uppercase tracking-wider">
                   Analytics<span className="text-[#00E5FF]">Rise</span>
                 </span>

@@ -10,6 +10,7 @@ import { AuthService } from '@/lib/services/auth';
 import { handleFirebaseError } from '@/lib/utils/error';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Globe as IconBrandGoogle, GitBranch as IconBrandGithub, Mail } from 'lucide-react';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -61,7 +62,10 @@ export default function LoginPage() {
       {(authLoading || submitting) && <LoadingOverlay message="Logging in..." />}
       <section className="flex min-h-screen items-center justify-center bg-[#05070B] p-4 font-mono">
         <div className="w-full max-w-md space-y-6 rounded-2xl bg-[#0D1117] p-8 shadow-2xl border border-white/10 backdrop-blur-md">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-3">
+            <Link href="/" className="inline-block group" title="Return to AnalyticsRise Home">
+              <ArTriangleIcon size={44} className="mx-auto transition-transform group-hover:scale-105" />
+            </Link>
             <h1 className="text-2xl font-bold font-display uppercase tracking-widest text-[#00E5FF]">
               AnalyticsRise Login
             </h1>

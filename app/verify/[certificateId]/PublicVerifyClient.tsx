@@ -6,6 +6,7 @@ import {
   VerifyCertificateResponse,
   verifyCertificateStatus,
 } from '@/lib/services/certificateService';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 interface PublicVerifyClientProps {
   certificateId: string;
@@ -53,8 +54,9 @@ export default function PublicVerifyClient({ certificateId }: PublicVerifyClient
     <div className="min-h-screen bg-[#05070B] text-white flex flex-col justify-between p-4 sm:p-8 font-sans">
       {/* Header */}
       <header className="max-w-4xl w-full mx-auto flex justify-between items-center py-4 border-b border-white/5">
-        <Link href="/" className="flex items-center gap-2 font-display font-black tracking-wider text-lg">
-          <span className="text-[#00E5FF]">ANALYTICS</span>RISE
+        <Link href="/" className="flex items-center gap-2.5 font-display font-black tracking-wider text-lg group">
+          <ArTriangleIcon size={28} className="transition-transform group-hover:scale-105" />
+          <span><span className="text-[#00E5FF]">ANALYTICS</span>RISE</span>
         </Link>
         <span className="text-[10px] font-mono uppercase text-slate-500 bg-white/5 px-2.5 py-1 rounded border border-white/5">
           Public Credential Registry

@@ -8,6 +8,7 @@ import RightPanel from '@/app/sql-studio/components/layout/RightPanel';
 import StatusBar from '@/app/sql-studio/components/layout/StatusBar';
 import Link from 'next/link';
 import { Terminal, Target, Code, BookOpen, ChevronLeft } from 'lucide-react';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 function SqlStudioWorkbench() {
   const { state, dispatch } = useSqlStudio();
@@ -20,9 +21,10 @@ function SqlStudioWorkbench() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-slate-400 hover:text-white text-xs font-mono transition-colors"
+            className="flex items-center gap-2 text-slate-400 hover:text-white text-xs font-mono transition-colors group"
           >
             <ChevronLeft className="w-4 h-4" />
+            <ArTriangleIcon size={18} className="transition-transform group-hover:scale-110" />
             <span className="hidden sm:inline">AnalyticsRise</span>
           </Link>
           <span className="text-slate-700">/</span>

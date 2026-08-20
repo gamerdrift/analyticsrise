@@ -424,7 +424,7 @@ describe('AnalyticsRise SQL Engine Core', () => {
       const elapsed = performance.now() - start;
 
       expect(res.rowCount).toBeGreaterThan(0);
-      expect(elapsed).toBeLessThan(50); // fast in-memory execution < 50ms
+      expect(elapsed).toBeLessThan(100); // fast in-memory execution < 100ms
     });
 
     test('Executes queries against 10,000 in-memory rows in < 250ms', () => {

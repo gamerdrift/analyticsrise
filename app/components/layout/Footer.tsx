@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Mail, ShieldCheck, Lock, Sparkles, Cpu, Clock, CheckCircle2, Briefcase } from 'lucide-react';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 import DeploymentFingerprint from './DeploymentFingerprint';
 
@@ -15,10 +16,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-10 px-6 relative z-10">
         {/* Column 1: AnalyticsRise Brand */}
         <div className="space-y-4 sm:col-span-2 md:col-span-1">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-base font-display tracking-tighter shadow-md shadow-[#00E5FF]/20">
-              AR
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <ArTriangleIcon size={32} className="transition-transform group-hover:scale-105" />
             <span className="font-display font-black text-white text-base tracking-wider uppercase">
               Analytics<span className="text-[#00E5FF]">Rise</span>
             </span>

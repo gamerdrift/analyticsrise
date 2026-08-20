@@ -13,6 +13,7 @@ import {
   Mail,
 } from 'lucide-react';
 import Link from 'next/link';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 export default function PublicPortfolioClient({ username }: { username: string }) {
   const cleanUsername = username || 'alex-rivera';
@@ -27,10 +28,8 @@ export default function PublicPortfolioClient({ username }: { username: string }
       <div className="max-w-5xl mx-auto space-y-10">
         {/* Top Navbar */}
         <div className="flex items-center justify-between border-b border-white/10 pb-6 font-mono text-xs">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black font-display">
-              AR
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <ArTriangleIcon size={30} className="transition-transform group-hover:scale-105" />
             <span className="font-bold text-white font-display text-sm tracking-wider">ANALYTICSRISE</span>
           </Link>
           <div className="flex items-center gap-2 text-slate-400">

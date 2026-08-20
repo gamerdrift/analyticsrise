@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { ChevronRight, Home, ChevronLeft, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { ArTriangleIcon } from '@/app/components/brand';
 
 // --- BREADCRUMB COMPONENT ---
 interface BreadcrumbItem {
@@ -172,10 +173,8 @@ export function Navbar({ logoText, links, actions }: NavbarProps) {
   return (
     <header className="fixed top-0 left-0 right-0 h-16 border-b border-white/5 bg-[#05070B]/70 backdrop-blur-md z-50">
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-gradient-to-br from-[#00E5FF] to-[#4FC3F7] flex items-center justify-center font-bold text-black text-lg font-display tracking-tighter">
-            AR
-          </div>
+        <Link href="/" className="flex items-center gap-3 group">
+          <ArTriangleIcon size={32} className="transition-transform group-hover:scale-105" />
           <span className="font-display font-black text-white text-base tracking-wider uppercase">
             {logoText}
           </span>

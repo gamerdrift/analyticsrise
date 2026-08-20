@@ -32,6 +32,7 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://analyticsrise.com'),
   title: 'AnalyticsRise - Practice. Master. Get Hired.',
   description:
     'Master data analytics with real business projects and land top jobs. Learn SQL, Power BI, Tableau, Excel, Python, and more through hands-on practice. Official support: support@analyticsrise.com',
@@ -62,14 +63,24 @@ export const metadata: Metadata = {
     title: 'AnalyticsRise - Practice. Master. Get Hired.',
     description:
       'Master data analytics with real business projects and land top analytics jobs globally.',
+    images: [
+      {
+        url: '/assets/logo/ar-triangle-logo.png',
+        width: 512,
+        height: 512,
+        alt: 'AnalyticsRise - Official Triangular AR Logo',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AnalyticsRise - Practice. Master. Get Hired.',
     description: 'Master data analytics through hands-on projects and discover global analytics careers.',
+    images: ['/assets/logo/ar-triangle-logo.png'],
   },
   icons: {
     icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
