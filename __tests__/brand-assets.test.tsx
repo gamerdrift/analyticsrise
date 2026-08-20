@@ -12,6 +12,7 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
 
   describe('1. Centralized Logo Asset Directory Audit (public/assets/logo/)', () => {
     const requiredLogoAssets = [
+      'ar-triangle-master.svg',
       'ar-triangle-logo.svg',
       'ar-triangle-logo.png',
       'favicon.ico',
@@ -28,6 +29,15 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       expect(fs.existsSync(assetPath)).toBe(true);
       const stat = fs.statSync(assetPath);
       expect(stat.size).toBeGreaterThan(0);
+    });
+
+    test('Canonical Master SVG contains pure vector geometric AR without <text> tags', () => {
+      const masterPath = path.join(logoDir, 'ar-triangle-master.svg');
+      const content = fs.readFileSync(masterPath, 'utf8');
+      expect(content).toContain('<svg');
+      expect(content).toContain('viewBox="0 0 100 100"');
+      expect(content).toContain('arMasterGrad');
+      expect(content).not.toContain('<text'); // Pure vector paths
     });
   });
 
@@ -56,13 +66,13 @@ describe('AnalyticsRise Official Triangular AR Brand Identity Audit', () => {
       expect(fs.statSync(appFavicon).size).toBeGreaterThan(0);
     });
 
-    test('SVG favicon contains triangular frame path geometry', () => {
+    test('SVG favicon contains triangular frame path geometry and pure vector paths', () => {
       const svgPath = path.join(publicDir, 'favicon.svg');
       const svgContent = fs.readFileSync(svgPath, 'utf8');
       expect(svgContent).toContain('<svg');
-      expect(svgContent).toContain('M 50 8'); // Triangular apex path
-      expect(svgContent).toContain('AR');
+      expect(svgContent).not.toContain('<text'); // Pure vector paths
     });
+
 
     test('manifest.json references valid icon paths', () => {
       const manifestPath = path.join(publicDir, 'manifest.json');

@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Download,
 } from 'lucide-react';
+import { ArTriangleIcon } from '@/app/components/brand';
 import { useExcelWorkspace } from '../../contexts/ExcelWorkspaceContext';
 import { formatWorksheetAsCsv, downloadExportFile } from '@/lib/excel/workspace/exporter';
 
@@ -39,25 +40,12 @@ export default function ExcelWorkspaceHeader() {
       {/* Brand & Breadcrumbs */}
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-3 group" aria-label="AnalyticsRise Home">
-          <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 select-none transition-transform group-hover:scale-105" role="img" aria-label="AnalyticsRise Logo">
-            <defs>
-              <linearGradient id="arGradSvgHeader" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00E5FF" />
-                <stop offset="100%" stopColor="#4FC3F7" />
-              </linearGradient>
-              <linearGradient id="arBorderGradSvgHeader" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00E5FF" />
-                <stop offset="50%" stopColor="#4FC3F7" />
-                <stop offset="100%" stopColor="#0070F3" />
-              </linearGradient>
-            </defs>
-            <path d="M 50 8 L 93 84 C 94.8 87.2 92.5 91 88.8 91 L 11.2 91 C 7.5 91 5.2 87.2 7.0 84 Z" fill="url(#arGradSvgHeader)" stroke="url(#arBorderGradSvgHeader)" strokeWidth="2.5" />
-            <text x="50" y="70" fontFamily="'Orbitron', 'Inter', sans-serif" fontWeight="900" fontSize="38" fill="#05070B" textAnchor="middle" letterSpacing="-2.5">AR</text>
-          </svg>
+          <ArTriangleIcon size={28} className="transition-transform group-hover:scale-105" />
           <span className="font-display font-black text-white text-sm tracking-wider uppercase hidden sm:inline-block">
             Analytics<span className="text-[#00E5FF]">RISE</span>
           </span>
         </Link>
+
 
         <div className="h-4 w-px bg-white/10 hidden sm:block" />
 
