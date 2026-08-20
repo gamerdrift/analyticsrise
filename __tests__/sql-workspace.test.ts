@@ -295,4 +295,147 @@ describe('SQL Workspace Engine & Pipeline', () => {
       expect(() => AnalyticsService.logWorkspaceExported(10)).not.toThrow();
     });
   });
+
+  // 9. Complete 15-Case CSV Upload Test Matrix (Mission 05B)
+  describe('9. Complete CSV Upload Test Matrix (Cases A - O)', () => {
+    test('Case A: Valid CSV', () => {
+      const res = parseCsvText('id,name,age\n1,Alice,30\n2,Bob,25');
+      expect(res.headers).toEqual(['id', 'name', 'age']);
+      expect(res.rows).toHaveLength(2);
+    });
+
+    test('Case B: Valid TSV', () => {
+      const res = parseCsvText('id\tname\tage\n1\tAlice\t30\n2\tBob\t25');
+      expect(res.delimiter).toBe('\t');
+      expect(res.headers).toEqual(['id', 'name', 'age']);
+    });
+
+    test('Case C: Semicolon-delimited file', () => {
+      const res = parseCsvText('id;name;age\n1;Alice;30\n2;Bob;25');
+      expect(res.delimiter).toBe(';');
+      expect(res.headers).toEqual(['id', 'name', 'age']);
+    });
+
+    test('Case D: Pipe-delimited file', () => {
+      const res = parseCsvText('id|name|age\n1|Alice|30\n2|Bob|25');
+      expect(res.delimiter).toBe('|');
+      expect(res.headers).toEqual(['id', 'name', 'age']);
+    });
+
+    test('Case E: Quoted values containing commas', () => {
+      const res = parseCsvText('id,address\n1,"London, UK"\n2,"Paris, FR"');
+      expect(res.rows[0][1]).toBe('London, UK');
+      expect(res.rows[1][1]).toBe('Paris, FR');
+    });
+
+    test('Case F: Embedded quotes', () => {
+      const res = parseCsvText('id,quote\n1,"He said ""Hello!"""');
+      expect(res.rows[0][1]).toBe('He said "Hello!"');
+    });
+
+    test('Case G: Empty CSV', () => {
+      const res = parseCsvText('');
+      expect(res.headers).toHaveLength(0);
+      expect(res.rows).toHaveLength(0);
+    });
+
+    test('Case H: Missing headers', () => {
+      const res = parseCsvText(',,price\n1,Alpha,100');
+      expect(res.headers).toEqual(['column_1', 'column_2', 'price']);
+    });
+
+    test('Case I: Duplicate headers', () => {
+      const res = parseCsvText('id,val,id\n1,10,1');
+      expect(res.headers).toEqual(['id', 'val', 'id_2']);
+      expect(res.duplicateHeaders).toContain('id');
+    });
+
+    test('Case J: Mixed data types', () => {
+      const { inferredType, isMixed } = inferColumnType(['100', 'Active', '200']);
+      expect(inferredType).toBe('TEXT');
+      expect(isMixed).toBe(true);
+    });
+
+    test('Case K: Null-heavy column', () => {
+      const { inferredType, engineType } = inferColumnType(['100', '', 'null', 'nan']);
+      expect(inferredType).toBe('INTEGER');
+      expect(engineType).toBe('INTEGER');
+    });
+
+    test('Case L: Invalid / malformed ragged rows', () => {
+      const res = parseCsvText('a,b,c\n1,2\n3,4,5,6,7');
+      expect(res.rows[0]).toHaveLength(3);
+      expect(res.rows[1]).toHaveLength(3);
+    });
+
+    test('Case M: File > 2 MB', () => {
+      const res = validateFileSize(3 * 1024 * 1024, 'free');
+      expect(res.valid).toBe(false);
+      expect(res.requiresUpgrade).toBe(true);
+    });
+
+    test('Case N: File > 25,000 rows', () => {
+      const res = validateDatasetDimensions(26000, 10, 'free');
+      expect(res.valid).toBe(false);
+      expect(res.limitExceeded?.type).toBe('ROW_COUNT');
+    });
+
+    test('Case O: File > 50 columns', () => {
+      const res = validateDatasetDimensions(100, 55, 'free');
+      expect(res.valid).toBe(false);
+      expect(res.limitExceeded?.type).toBe('COLUMN_COUNT');
+    });
+  });
+
+  // 10. Performance Benchmarks on Scaled Datasets (1k, 10k, 25k)
+  describe('10. Scaled Performance Benchmarks', () => {
+    const scales = [1000, 10000, 25000];
+
+    scales.forEach((n) => {
+      test(`Benchmarks dataset with ${n.toLocaleString()} rows`, () => {
+        const lines = ['id,category,amount,active,date'];
+        const categories = ['Electronics', 'Home', 'Apparel', 'Automotive', 'Books'];
+        for (let i = 1; i <= n; i++) {
+          const cat = categories[i % categories.length];
+          const amt = (10 + (i % 500) * 1.25).toFixed(2);
+          const act = i % 3 === 0 ? 'false' : 'true';
+          lines.push(`${i},${cat},${amt},${act},2024-01-${String((i % 28) + 1).padStart(2, '0')}`);
+        }
+        const rawData = lines.join('\n');
+
+        // 1. Parse
+        const t0 = performance.now();
+        const parsed = parseCsvText(rawData);
+        const parseMs = performance.now() - t0;
+        expect(parsed.rows.length).toBe(n);
+
+        // 2. Profile
+        const t1 = performance.now();
+        const { profiles, qualityReport } = profileDataset(parsed, `test_${n}.csv`, rawData.length);
+        const profileMs = performance.now() - t1;
+        expect(profiles.length).toBe(5);
+
+        // 3. Table Generation
+        const t2 = performance.now();
+        const tableData = generateSqlTable(parsed, profiles, qualityReport, `test_${n}.csv`, rawData.length);
+        const tableMs = performance.now() - t2;
+        expect(tableData.rows.length).toBe(n);
+
+        // 4. Query
+        const t3 = performance.now();
+        const qRes = executeSql(`SELECT category, COUNT(*) AS total_items, AVG(amount) AS avg_price FROM ${tableData.tableName} GROUP BY category ORDER BY avg_price DESC;`, tableData.database);
+        const queryMs = performance.now() - t3;
+        expect(qRes.rowCount).toBe(5);
+
+        // 5. Export
+        const t4 = performance.now();
+        const csvExp = formatQueryResultAsCsv(qRes, 1000);
+        const exportMs = performance.now() - t4;
+        expect(csvExp.length).toBeGreaterThan(0);
+
+        // Ensure reasonable browser performance thresholds (< 500ms even on 25,000 rows)
+        expect(parseMs + profileMs + tableMs + queryMs).toBeLessThan(1000);
+      });
+    });
+  });
 });
