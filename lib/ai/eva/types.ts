@@ -3,7 +3,7 @@
  * Universal AI learning assistant and Workspace Intelligence domain model.
  */
 
-import { ExcelWorkspaceContextData, AiEvaWorkspaceType, AiEvaPrivacyLevel } from './context/types';
+import { ExcelWorkspaceContextData, PowerBIWorkspaceContextData, AiEvaWorkspaceType, AiEvaPrivacyLevel } from './context/types';
 
 export type AiEvaRole = 'user' | 'assistant' | 'system';
 
@@ -24,6 +24,7 @@ export type AnalyticsRiseProduct =
   | 'excel-studio'
   | 'excel-workspace'
   | 'powerbi-studio'
+  | 'powerbi-workspace'
   | 'ar-academy'
   | 'general';
 
@@ -45,9 +46,13 @@ export interface AiEvaContext {
   // Excel Specific Workspace Intelligence Context (Mission 09)
   excelContext?: ExcelWorkspaceContextData;
 
+  // Power BI Specific Workspace Intelligence Context (Mission 10A)
+  powerbiContext?: PowerBIWorkspaceContextData;
+
   // General Key-Value Extensible Context
   additionalContext?: Record<string, string | number | boolean>;
 }
+
 
 export interface AiEvaRequest {
   messages: AiEvaMessage[];

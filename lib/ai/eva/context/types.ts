@@ -8,6 +8,7 @@ export type AiEvaWorkspaceType =
   | 'excel_studio'
   | 'excel_workspace'
   | 'powerbi_studio'
+  | 'powerbi_workspace'
   | 'academy';
 
 export type AiEvaPrivacyLevel = 'metadata' | 'approved_sample' | 'formula';
@@ -60,10 +61,46 @@ export interface ExcelWorkspaceContextData {
   privacyLevel: AiEvaPrivacyLevel;
 }
 
+export interface PowerBIDatasetSummary {
+  id: string;
+  name: string;
+  rowCount: number;
+  colCount: number;
+  columns: {
+    name: string;
+    inferredType: string;
+    nullCount?: number;
+    nullRatio?: number;
+    distinctCount?: number;
+    sampleValues?: string[];
+  }[];
+  suggestedKeys?: string[];
+}
+
+export interface PowerBIRelationshipCandidateSummary {
+  fromDataset: string;
+  fromColumn: string;
+  toDataset: string;
+  toColumn: string;
+  cardinality: string;
+  confidence: number;
+}
+
+export interface PowerBIWorkspaceContextData {
+  workspaceType: 'powerbi_workspace';
+  datasetCount: number;
+  datasets: PowerBIDatasetSummary[];
+  activeDatasetId?: string;
+  qualityWarnings: string[];
+  suggestedRelationships: PowerBIRelationshipCandidateSummary[];
+  privacyLevel: 'metadata';
+}
+
 export interface AiEvaWorkspaceContext {
   workspaceType: AiEvaWorkspaceType;
   metadata: Record<string, unknown>;
   excelContext?: ExcelWorkspaceContextData;
+  powerbiContext?: PowerBIWorkspaceContextData;
   activeContext?: Record<string, unknown>;
   userApprovedData?: unknown;
   privacyLevel: AiEvaPrivacyLevel;

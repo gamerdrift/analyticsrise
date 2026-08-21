@@ -239,8 +239,49 @@ export const AnalyticsService = {
   logAiEvaExcelSampleShared(context: { rowCount: number; colCount: number }): void {
     this.logCustomEvent('ai_eva_excel_sample_shared', { ...context, timestamp: Date.now() });
   },
+
+  // --------------------------------------------------------------------------
+  // Power BI Workspace Telemetry (Mission 10A)
+  // --------------------------------------------------------------------------
+
+  logPowerBIWorkspaceOpened(context: { datasetCount: number; totalRowsBucket: string }): void {
+    this.logCustomEvent('powerbi_workspace_opened', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceUploadStarted(context: { fileSizeBucket: string; extension: string }): void {
+    this.logCustomEvent('powerbi_workspace_upload_started', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceUploadCompleted(context: { rowBucket: string; colBucket: string; extension: string }): void {
+    this.logCustomEvent('powerbi_workspace_upload_completed', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceDatasetRejected(context: { reason: string }): void {
+    this.logCustomEvent('powerbi_workspace_dataset_rejected', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceDatasetRemoved(context: { remainingCount: number }): void {
+    this.logCustomEvent('powerbi_workspace_dataset_removed', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceProfileOpened(context: { columnCount: number; warningCount: number }): void {
+    this.logCustomEvent('powerbi_workspace_profile_opened', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceModelPreparationOpened(context: { datasetCount: number; candidateCount: number }): void {
+    this.logCustomEvent('powerbi_workspace_model_preparation_opened', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceProjectSaved(context: { projectId: string; datasetCount: number }): void {
+    this.logCustomEvent('powerbi_workspace_project_saved', { ...context, timestamp: Date.now() });
+  },
+
+  logPowerBIWorkspaceProjectLoaded(context: { projectId: string; datasetCount: number }): void {
+    this.logCustomEvent('powerbi_workspace_project_loaded', { ...context, timestamp: Date.now() });
+  },
 };
 
 export default AnalyticsService;
+
 
 

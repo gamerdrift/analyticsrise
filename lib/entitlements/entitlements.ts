@@ -32,9 +32,15 @@ const FEATURE_TIER_REQUIREMENTS: Record<FeatureId, ProductTier> = {
   'powerbi.core_dashboards': 'free',
   'powerbi.enterprise_schemas': 'pro',
   'powerbi.custom_dax_benchmarks': 'pro',
+  'powerbi.custom_datasets': 'free',
+  'powerbi.multiple_datasets': 'pro',
+  'powerbi.advanced_modeling': 'pro',
+  'powerbi.dashboard_export': 'pro',
+  'powerbi.ai_insights': 'pro',
   'general.progress_tracking': 'free',
   'general.community_access': 'free',
 };
+
 
 // Contextual Upgrade Presentation Catalog
 const UPGRADE_CONTEXTS: Record<FeatureId, UpgradeContext> = {
@@ -226,6 +232,86 @@ const UPGRADE_CONTEXTS: Record<FeatureId, UpgradeContext> = {
     recommendedPlan: 'Pro Analyst',
     ctaText: 'Unlock Advanced DAX',
   },
+  'powerbi.custom_datasets': {
+    productId: 'powerbi',
+    featureId: 'powerbi.custom_datasets',
+    badge: 'POWER BI WORKSPACE',
+    title: 'Bring Your Own Data',
+    subtitle: 'Upload CSV, TSV, and delimited files directly into your workspace.',
+    description: 'Load custom datasets and inspect column profiles in a secure in-browser environment.',
+    benefits: [],
+    recommendedPlan: 'Free',
+    ctaText: 'Start Modeling Free',
+  },
+  'powerbi.multiple_datasets': {
+    productId: 'powerbi',
+    featureId: 'powerbi.multiple_datasets',
+    badge: 'MULTI-DATASET MODELING',
+    title: 'Multi-Dataset Modeling',
+    subtitle: 'Load and connect up to 10 datasets in a single project.',
+    description: 'Unlock enterprise star schemas and multi-fact relational models.',
+    benefits: [
+      {
+        title: 'Up to 10 Datasets per Project',
+        description: 'Combine sales, products, customers, and territory datasets simultaneously.',
+      },
+      {
+        title: '100,000 Rows per Dataset',
+        description: 'Expand your capacity from 25,000 to 100,000 rows per dataset.',
+      },
+    ],
+    recommendedPlan: 'Pro Analyst',
+    ctaText: 'Upgrade to Pro Analyst',
+  },
+  'powerbi.advanced_modeling': {
+    productId: 'powerbi',
+    featureId: 'powerbi.advanced_modeling',
+    badge: 'ADVANCED SEMANTIC MODELING',
+    title: 'Semantic Data Modeling',
+    subtitle: 'Define custom relationships and cross-filter semantics.',
+    description: 'Build complex multi-table analytical schemas with automatic relationship candidate detection.',
+    benefits: [
+      {
+        title: 'Semantic Relationship Engine',
+        description: 'Configure 1:1, 1:N, and N:N cardinality with bidirectional cross-filtering.',
+      },
+    ],
+    recommendedPlan: 'Pro Analyst',
+    ctaText: 'Unlock Advanced Modeling',
+  },
+  'powerbi.dashboard_export': {
+    productId: 'powerbi',
+    featureId: 'powerbi.dashboard_export',
+    badge: 'MODEL EXPORT',
+    title: 'Portfolio Model Exporter',
+    subtitle: 'Export prepared data models and schemas.',
+    description: 'Export clean data models to showcase in your personal portfolio or presentation decks.',
+    benefits: [
+      {
+        title: 'Dataset Schema Exporter',
+        description: 'Export multi-table schemas and column profiles in standard formats.',
+      },
+    ],
+    recommendedPlan: 'Pro Analyst',
+    ctaText: 'Unlock Export Capabilities',
+  },
+  'powerbi.ai_insights': {
+    productId: 'powerbi',
+    featureId: 'powerbi.ai_insights',
+    badge: 'AI-EVA BI COPILOT',
+    title: 'AI-EVA Workspace Intelligence',
+    subtitle: 'Ask questions, detect model anomalies, and discover relationship candidates.',
+    description: 'Context-aware intelligence that analyzes your dataset schemas and profiling warnings.',
+    benefits: [
+      {
+        title: 'Intelligent Schema Assistant',
+        description: 'Discover join keys and receive guided modeling recommendations.',
+      },
+    ],
+    recommendedPlan: 'Pro Analyst',
+    ctaText: 'Unlock AI-EVA Insights',
+  },
+
   'general.progress_tracking': {
     productId: 'sql',
     featureId: 'general.progress_tracking',

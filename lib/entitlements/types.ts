@@ -21,8 +21,14 @@ export type FeatureId =
   | 'powerbi.core_dashboards'
   | 'powerbi.enterprise_schemas'
   | 'powerbi.custom_dax_benchmarks'
+  | 'powerbi.custom_datasets'
+  | 'powerbi.multiple_datasets'
+  | 'powerbi.advanced_modeling'
+  | 'powerbi.dashboard_export'
+  | 'powerbi.ai_insights'
   | 'general.progress_tracking'
   | 'general.community_access';
+
 
 export interface UpgradeBenefit {
   title: string;
