@@ -22,6 +22,22 @@ export const AI_EVA_LIMITS = {
   MAX_ATTACHED_ERROR_LENGTH: 500,
 
   /**
+   * Maximum character length allowed for attached formulas in workspace context
+   */
+  MAX_ATTACHED_FORMULA_LENGTH: 500,
+
+  /**
+   * Maximum rows allowed when a user approves sharing a small data sample
+   */
+  MAX_APPROVED_SAMPLE_ROWS: 10,
+
+  /**
+   * Maximum columns allowed in user-approved sample
+   */
+  MAX_APPROVED_SAMPLE_COLS: 20,
+
+
+  /**
    * Maximum conversation history turns sent to provider (user + assistant pairs)
    */
   MAX_CONVERSATION_HISTORY_TURNS: 6,

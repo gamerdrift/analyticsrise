@@ -1,7 +1,9 @@
 /**
  * AnalyticsRise — AI-EVA Core Types & Contracts
- * Universal AI learning assistant domain model.
+ * Universal AI learning assistant and Workspace Intelligence domain model.
  */
+
+import { ExcelWorkspaceContextData, AiEvaWorkspaceType, AiEvaPrivacyLevel } from './context/types';
 
 export type AiEvaRole = 'user' | 'assistant' | 'system';
 
@@ -27,7 +29,11 @@ export type AnalyticsRiseProduct =
 
 export interface AiEvaContext {
   product: AnalyticsRiseProduct;
+  workspaceType?: AiEvaWorkspaceType;
+  privacyLevel?: AiEvaPrivacyLevel;
   learnerLevel?: 'beginner' | 'intermediate' | 'advanced';
+  
+  // SQL Specific Context
   challengeId?: string;
   challengeTitle?: string;
   currentQuery?: string;
@@ -35,6 +41,11 @@ export interface AiEvaContext {
   activeSchema?: string;
   activeTable?: string;
   activeColumns?: string[];
+
+  // Excel Specific Workspace Intelligence Context (Mission 09)
+  excelContext?: ExcelWorkspaceContextData;
+
+  // General Key-Value Extensible Context
   additionalContext?: Record<string, string | number | boolean>;
 }
 
@@ -88,3 +99,5 @@ export interface SuggestedPromptItem {
   icon?: string;
   category?: 'explain' | 'fix' | 'hint' | 'concept' | 'next';
 }
+
+export * from './context/types';

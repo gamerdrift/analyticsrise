@@ -9,6 +9,7 @@
 import { IAiEvaProvider } from './types';
 import { AiEvaRequest, AiEvaResponse } from '../types';
 import { buildSqlStudioSystemPrompt } from '../prompts/sqlStudio';
+import { buildExcelWorkspaceSystemPrompt } from '../prompts/excelWorkspace';
 import { AI_EVA_BASE_SYSTEM_PROMPT } from '../prompts/base';
 import { postProcessAiResponse } from '../safety';
 import { AI_EVA_LIMITS, trimConversationHistory } from '../limits';
@@ -30,10 +31,13 @@ export class OpenAiEvaProvider implements IAiEvaProvider {
     }
 
     // Build system prompt based on active product context
-    const systemPrompt =
-      request.context?.product === 'sql-studio'
-        ? buildSqlStudioSystemPrompt(request.context)
-        : AI_EVA_BASE_SYSTEM_PROMPT;
+    let systemPrompt = AI_EVA_BASE_SYSTEM_PROMPT;
+    if (request.context?.product === 'sql-studio') {
+      systemPrompt = buildSqlStudioSystemPrompt(request.context);
+    } else if (request.context?.product === 'excel-workspace') {
+      systemPrompt = buildExcelWorkspaceSystemPrompt(request.context.excelContext);
+    }
+
 
     // Assemble messages payload
     const trimmedMessages = trimConversationHistory(

@@ -62,6 +62,8 @@ export interface ExcelWorkspaceState {
   isProjectManagerOpen: boolean;
   isUploadModalOpen: boolean;
   isUpgradeModalOpen: boolean;
+  isAiEvaOpen: boolean;
+  isSampleShared: boolean;
   history: ParsedWorkbook[];
   historyIndex: number;
 }
@@ -82,6 +84,8 @@ export type ExcelWorkspaceAction =
   | { type: 'TOGGLE_PROJECT_MANAGER'; payload?: boolean }
   | { type: 'TOGGLE_UPLOAD_MODAL'; payload?: boolean }
   | { type: 'TOGGLE_UPGRADE_MODAL'; payload?: boolean }
+  | { type: 'TOGGLE_AI_EVA'; payload?: boolean }
+  | { type: 'TOGGLE_SHARE_SAMPLE'; payload?: boolean }
   | { type: 'UNDO' }
   | { type: 'REDO' };
 
@@ -104,9 +108,12 @@ const initialState: ExcelWorkspaceState = {
   isProjectManagerOpen: false,
   isUploadModalOpen: false,
   isUpgradeModalOpen: false,
+  isAiEvaOpen: false,
+  isSampleShared: false,
   history: [initialWorkbook],
   historyIndex: 0,
 };
+
 
 function workspaceReducer(state: ExcelWorkspaceState, action: ExcelWorkspaceAction): ExcelWorkspaceState {
   switch (action.type) {
@@ -227,7 +234,12 @@ function workspaceReducer(state: ExcelWorkspaceState, action: ExcelWorkspaceActi
       return { ...state, isUploadModalOpen: action.payload !== undefined ? action.payload : !state.isUploadModalOpen };
     case 'TOGGLE_UPGRADE_MODAL':
       return { ...state, isUpgradeModalOpen: action.payload !== undefined ? action.payload : !state.isUpgradeModalOpen };
+    case 'TOGGLE_AI_EVA':
+      return { ...state, isAiEvaOpen: action.payload !== undefined ? action.payload : !state.isAiEvaOpen };
+    case 'TOGGLE_SHARE_SAMPLE':
+      return { ...state, isSampleShared: action.payload !== undefined ? action.payload : !state.isSampleShared };
     case 'UNDO': {
+
       if (state.historyIndex > 0) {
         const nextIdx = state.historyIndex - 1;
         const prevWb = state.history[nextIdx];

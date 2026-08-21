@@ -6,6 +6,8 @@
 
 import { AiEvaContext, AiEvaSecurityValidation } from './types';
 import { AI_EVA_LIMITS } from './limits';
+import { sanitizeExcelWorkspaceContext } from './context/sanitizer';
+
 
 // Patterns associated with prompt injection, system jailbreaks, and secret extraction
 const INJECTION_PATTERNS = [
@@ -138,6 +140,13 @@ export function sanitizeAiEvaContext(context?: AiEvaContext): AiEvaContext | und
     if (Object.keys(cleanedAdditional).length > 0) {
       sanitized.additionalContext = cleanedAdditional;
     }
+  }
+
+  // Sanitize Excel Workspace Context (Mission 09)
+  if (context.excelContext) {
+    sanitized.excelContext = sanitizeExcelWorkspaceContext(context.excelContext);
+    sanitized.workspaceType = context.workspaceType || 'excel_workspace';
+    sanitized.privacyLevel = sanitized.excelContext?.privacyLevel || 'metadata';
   }
 
   return sanitized;

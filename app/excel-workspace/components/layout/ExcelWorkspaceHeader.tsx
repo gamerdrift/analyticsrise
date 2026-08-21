@@ -17,6 +17,8 @@ import {
 import { ArTriangleIcon } from '@/app/components/brand';
 import { useExcelWorkspace } from '../../contexts/ExcelWorkspaceContext';
 import { formatWorksheetAsCsv, downloadExportFile } from '@/lib/excel/workspace/exporter';
+import { AiEvaLauncher } from '@/app/components/ai-eva';
+
 
 export default function ExcelWorkspaceHeader() {
   const { state, dispatch, saveCurrentProject } = useExcelWorkspace();
@@ -116,7 +118,16 @@ export default function ExcelWorkspaceHeader() {
           <span className="hidden md:inline">Profile</span>
         </button>
 
+        {/* AI-EVA Learning & Workspace Companion Launcher */}
+        <AiEvaLauncher
+          isOpen={state.isAiEvaOpen}
+          onToggle={() => dispatch({ type: 'TOGGLE_AI_EVA' })}
+          hasErrorContext={Boolean(state.profile && state.profile.qualityWarnings.length > 0)}
+        />
+
+
         {/* Save Project Button */}
+
         <button
           onClick={handleSave}
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs transition-all shadow-lg shadow-emerald-500/20 active:scale-95"

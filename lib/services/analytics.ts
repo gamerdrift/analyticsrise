@@ -199,7 +199,48 @@ export const AnalyticsService = {
   logAiEvaSuggestedPromptClicked(context: { product: string; promptKey: string }): void {
     this.logCustomEvent('ai_eva_suggested_prompt_clicked', { ...context, timestamp: Date.now() });
   },
+
+  // --------------------------------------------------------------------------
+  // AI-EVA Excel Workspace Intelligence Telemetry (Mission 09)
+  // --------------------------------------------------------------------------
+
+  logAiEvaExcelOpened(context: { sheetCount: number; rowCount: number; hasFormulaSelected: boolean }): void {
+    this.logCustomEvent('ai_eva_excel_opened', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelPromptSent(context: { promptLength: number; hasFormulaContext: boolean; hasSampleApproved: boolean }): void {
+    this.logCustomEvent('ai_eva_excel_prompt_sent', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelFormulaExplained(context: { formulaFunction: string }): void {
+    this.logCustomEvent('ai_eva_excel_formula_explained', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelFormulaErrorDetected(context: { errorType: string }): void {
+    this.logCustomEvent('ai_eva_excel_formula_error_detected', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelDataQualityRequested(context: { warningCount: number }): void {
+    this.logCustomEvent('ai_eva_excel_data_quality_requested', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelAnalysisRequested(context: { columnCount: number }): void {
+    this.logCustomEvent('ai_eva_excel_analysis_requested', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelVisualizationRequested(context: { recommendedChart: string }): void {
+    this.logCustomEvent('ai_eva_excel_visualization_requested', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelContextAttached(context: { privacyLevel: string }): void {
+    this.logCustomEvent('ai_eva_excel_context_attached', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaExcelSampleShared(context: { rowCount: number; colCount: number }): void {
+    this.logCustomEvent('ai_eva_excel_sample_shared', { ...context, timestamp: Date.now() });
+  },
 };
 
 export default AnalyticsService;
+
 

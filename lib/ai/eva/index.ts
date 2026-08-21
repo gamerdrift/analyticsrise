@@ -10,3 +10,5 @@ export * from './providers/types';
 export * from './providers/intelligentFallback';
 export * from './prompts/base';
 export * from './prompts/sqlStudio';
+export * from './prompts/excelWorkspace';
+export * from './context';
