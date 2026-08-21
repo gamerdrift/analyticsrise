@@ -39,3 +39,40 @@ export const aiMentorQuery = onCall(
     return processAIMentorQuery(userId, request.data);
   }
 );
+
+/**
+ * Cloud Function v2 Callable: aiEvaQuery (Mission 08)
+ *
+ * Authenticated endpoint for AI-EVA queries on the server-side.
+ */
+export const aiEvaQuery = onCall(
+  {
+    cors: true,
+    maxInstances: 20,
+  },
+  async (request: CallableRequest<any>): Promise<any> => {
+    if (!request.auth || !request.auth.uid) {
+      throw new HttpsError(
+        'unauthenticated',
+        'User must be authenticated with Firebase Auth to query AI-EVA.'
+      );
+    }
+
+    const data = request.data || {};
+    const question = String(data.userQuestion || '').trim();
+    if (!question) {
+      throw new HttpsError('invalid-argument', 'Question cannot be empty.');
+    }
+
+    // Default pedagogical response
+    return {
+      id: `eva_srv_${Date.now()}`,
+      content: `Hello from AI-EVA! I received your query regarding "${data.context?.challengeTitle || 'SQL'}". Let's work through this step by step.`,
+      modelUsed: 'eva-server-v1',
+      providerUsed: 'analyticsrise-cloud',
+      finishReason: 'stop',
+      timestamp: new Date().toISOString(),
+    };
+  }
+);
+

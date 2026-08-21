@@ -6,3 +6,4 @@ export * from './AIUsageMeter';
 export * from './aiProviderManager';
 export * from './providers/MockAIProvider';
 export * from './mentor';
+export * from './eva';

@@ -11,18 +11,33 @@ import Link from 'next/link';
 import { Terminal, Target, Code, BookOpen, ChevronLeft, HelpCircle, Sparkles } from 'lucide-react';
 import { ArTriangleIcon } from '@/app/components/brand';
 import { AnalyticsService } from '@/lib/services/analytics';
+import { AiEvaLauncher, AiEvaPanel } from '@/app/components/ai-eva';
+import { AiEvaContext } from '@/lib/ai/eva/types';
 
 function SqlStudioWorkbench() {
   const { state, dispatch } = useSqlStudio();
   const { activeTab } = state;
   const [isConceptGuideOpen, setIsConceptGuideOpen] = useState(false);
+  const [isAiEvaOpen, setIsAiEvaOpen] = useState(false);
 
   useEffect(() => {
     AnalyticsService.logStudioOpened('sql');
   }, []);
 
+  const aiContext: AiEvaContext = {
+    product: 'sql-studio',
+    learnerLevel: 'beginner',
+    challengeId: state.activeChallengeId,
+    challengeTitle: state.mission?.title,
+    currentQuery: state.editor.query,
+    sqlError: state.executionError || undefined,
+    activeSchema: state.explorer.selectedSchema,
+    activeTable: state.explorer.selectedTable,
+    activeColumns: state.explorer.selectedTable ? state.explorer.columns[state.explorer.selectedTable] : undefined,
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-[#05070B] text-white font-sans overflow-hidden select-none">
+    <div className="flex flex-col h-screen bg-[#05070B] text-white font-sans overflow-hidden select-none relative">
       {/* Top Studio Navbar */}
       <header className="h-12 bg-[#080C14] border-b border-white/10 flex items-center justify-between px-3 md:px-4 shrink-0">
         <div className="flex items-center gap-3">
@@ -88,6 +103,13 @@ function SqlStudioWorkbench() {
 
         {/* Top Right Live Telemetry / Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* AI-EVA Learning Assistant Launcher */}
+          <AiEvaLauncher
+            isOpen={isAiEvaOpen}
+            onToggle={() => setIsAiEvaOpen(!isAiEvaOpen)}
+            hasErrorContext={Boolean(state.executionError)}
+          />
+
           <Link
             href="/sql-workspace"
             className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-[#00E5FF]/15 border border-white/10 hover:border-[#00E5FF]/40 text-slate-200 hover:text-[#00E5FF] text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm"
@@ -111,7 +133,6 @@ function SqlStudioWorkbench() {
             In-Browser Sandbox
           </span>
         </div>
-
       </header>
 
       {/* SQL Concept Guide Modal */}
@@ -120,6 +141,13 @@ function SqlStudioWorkbench() {
         onClose={() => setIsConceptGuideOpen(false)}
       />
 
+      {/* AI-EVA Assistant Panel */}
+      <AiEvaPanel
+        isOpen={isAiEvaOpen}
+        onClose={() => setIsAiEvaOpen(false)}
+        context={aiContext}
+        onInsertCodeSnippet={(code) => dispatch({ type: 'SET_QUERY', payload: code })}
+      />
 
       {/* Main Studio Viewport */}
       <main className="flex-1 flex overflow-hidden">

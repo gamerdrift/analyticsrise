@@ -93,6 +93,7 @@ export {
 // Export AI Intelligence Engine Cloud Functions
 export {
   aiMentorQuery,
+  aiEvaQuery,
   processAIMentorQuery,
   AISecurityFirewall,
   AIModelPolicyResolver,

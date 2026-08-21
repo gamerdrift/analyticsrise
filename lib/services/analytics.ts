@@ -167,6 +167,39 @@ export const AnalyticsService = {
   logExcelWorkspaceExported(format: string, rowCount: number): void {
     this.logCustomEvent('excel_workspace_exported', { format, rowCount, timestamp: Date.now() });
   },
+
+  // --------------------------------------------------------------------------
+  // AI-EVA Telemetry Methods (Mission 08)
+  // --------------------------------------------------------------------------
+
+  logAiEvaOpened(context: { product: string; challengeId?: string }): void {
+    this.logCustomEvent('ai_eva_opened', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaMessageSent(context: { product: string; promptLength: number; hasErrorContext: boolean; hasQueryContext: boolean }): void {
+    this.logCustomEvent('ai_eva_message_sent', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaResponseReceived(context: { product: string; providerUsed: string; responseLength: number; latencyMs: number }): void {
+    this.logCustomEvent('ai_eva_response_received', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaContextUsed(context: { product: string; contextTypes: string[] }): void {
+    this.logCustomEvent('ai_eva_context_used', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaLimitReached(context: { product: string; quotaLimit: number }): void {
+    this.logCustomEvent('ai_eva_limit_reached', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaError(context: { product: string; errorType: string }): void {
+    this.logCustomEvent('ai_eva_error', { ...context, timestamp: Date.now() });
+  },
+
+  logAiEvaSuggestedPromptClicked(context: { product: string; promptKey: string }): void {
+    this.logCustomEvent('ai_eva_suggested_prompt_clicked', { ...context, timestamp: Date.now() });
+  },
 };
 
 export default AnalyticsService;
+
